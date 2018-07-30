@@ -1,0 +1,13 @@
+{
+    "only": "/\/test\//",
+    "presets": [
+        [
+            "env",
+            {
+                "targets": {
+                    "node": "current"
+                }
+            }
+        ]
+    ]
+}

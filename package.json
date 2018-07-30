@@ -1,0 +1,92 @@
+{
+  "author": "Christoph Guttandin",
+  "bin": {
+    "angular-prerender": "build/node/app.js"
+  },
+  "bugs": {
+    "url": "https://github.com/chrisguttandin/angular-prerender/issues"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
+  "dependencies": {
+    "@angular-devkit/core": "~0.7.1",
+    "@angular/animations": "^6.1.0",
+    "@angular/common": "^6.1.0",
+    "@angular/compiler": "^6.1.0",
+    "@angular/core": "^6.1.0",
+    "@angular/http": "^6.1.0",
+    "@angular/platform-browser": "^6.1.0",
+    "@angular/platform-browser-dynamic": "^6.1.0",
+    "@angular/platform-server": "^6.1.0",
+    "@nguniversal/module-map-ngfactory-loader": "^6.0.0",
+    "chalk": "^2.4.1",
+    "core-js": "^2.5.7",
+    "guess-parser": "^0.1.4",
+    "rxjs": "^6.2.2",
+    "tslib": "^1.9.3",
+    "yargs": "^12.0.1",
+    "zone.js": "~0.8.26"
+  },
+  "description": "An experimental command line tool prerender an Angular App.",
+  "devDependencies": {
+    "@commitlint/cli": "^7.0.0",
+    "@commitlint/config-angular": "^7.0.1",
+    "@types/yargs": "^11.1.1",
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.7.0",
+    "chai": "^4.1.2",
+    "commitizen": "^2.10.1",
+    "cz-conventional-changelog": "^2.1.0",
+    "eslint": "^5.2.0",
+    "eslint-config-holy-grail": "^29.0.2",
+    "greenkeeper-lockfile": "^1.15.1",
+    "grunt": "^1.0.3",
+    "grunt-babel": "^7.0.0",
+    "grunt-cli": "^1.2.0",
+    "grunt-contrib-clean": "^1.1.0",
+    "grunt-mocha-test": "^0.13.3",
+    "grunt-sh": "^0.2.0",
+    "grunt-tslint": "^5.0.2",
+    "gruntify-eslint": "^5.0.0",
+    "husky": "^0.14.3",
+    "install": "^0.12.1",
+    "load-grunt-config": "^0.19.2",
+    "mocha": "^5.2.0",
+    "sinon": "^6.1.4",
+    "sinon-chai": "^3.2.0",
+    "tsconfig-holy-grail": "^5.0.6",
+    "tslint": "^5.11.0",
+    "tslint-config-holy-grail": "^33.0.3",
+    "typescript": "~2.9.2"
+  },
+  "engines": {
+    "node": ">=10.6.0"
+  },
+  "files": [
+    "build/node/",
+    "build/es2015/",
+    "src/"
+  ],
+  "homepage": "https://github.com/chrisguttandin/angular-prerender",
+  "keywords": [
+    "backup",
+    "cli",
+    "command line"
+  ],
+  "license": "MIT",
+  "name": "angular-prerender",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chrisguttandin/angular-prerender.git"
+  },
+  "scripts": {
+    "precommit": "grunt lint",
+    "prepublishOnly": "grunt build",
+    "start": "node build/node/app.js",
+    "test": "grunt test"
+  },
+  "version": "1.0.0"
+}

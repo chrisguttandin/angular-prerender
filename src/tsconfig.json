@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "lib": [
+      "dom",
+      "es2017"
+    ]
+  },
+  "extends": "../node_modules/tsconfig-holy-grail/src/tsconfig-node"
+}
