@@ -4,4 +4,4 @@
 
 [![tests](https://img.shields.io/travis/chrisguttandin/angular-prerender/master.svg?style=flat-square)](https://travis-ci.org/chrisguttandin/angular-prerender)
 [![dependencies](https://img.shields.io/david/chrisguttandin/angular-prerender.svg?style=flat-square)](https://www.npmjs.com/package/angular-prerender)
-[![version](https://img.shields.io/npm/v/angular-prerender.svg?style=flat-square)](https://www.npmjs.com/package/angular-prerender)
+[![version](https://img.shields.io/npm/v/angular-prerender.svg?style=flat-square)](https://www.npmjs.com/package/angular-prerender) [![Greenkeeper badge](https://badges.greenkeeper.io/chrisguttandin/angular-prerender.svg)](https://greenkeeper.io/)
