@@ -62,11 +62,11 @@
     "typescript": "~2.9.2"
   },
   "engines": {
-    "node": ">=10.6.0"
+    "node": ">=10.7.0"
   },
   "files": [
-    "build/node/",
     "build/es2015/",
+    "build/node/",
     "src/"
   ],
   "homepage": "https://github.com/chrisguttandin/angular-prerender",
