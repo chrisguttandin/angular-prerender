@@ -52,7 +52,6 @@
     "grunt-tslint": "^5.0.2",
     "gruntify-eslint": "^5.0.0",
     "husky": "^0.14.3",
-    "install": "^0.12.1",
     "load-grunt-config": "^0.19.2",
     "mocha": "^5.2.0",
     "sinon": "^6.1.4",
