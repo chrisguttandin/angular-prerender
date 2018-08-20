@@ -71,9 +71,11 @@
   ],
   "homepage": "https://github.com/chrisguttandin/angular-prerender",
   "keywords": [
-    "backup",
+    "Angular",
     "cli",
-    "command line"
+    "command line",
+    "server side rendering",
+    "static site generator"
   ],
   "license": "MIT",
   "name": "angular-prerender",
