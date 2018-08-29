@@ -32,10 +32,10 @@
   },
   "description": "An experimental command line tool to prerender an Angular App.",
   "devDependencies": {
+    "@babel/core": "^7.0.0",
     "@commitlint/cli": "^7.0.0",
     "@commitlint/config-angular": "^7.0.1",
     "@types/yargs": "^11.1.1",
-    "babel-core": "^6.26.3",
     "babel-preset-env": "^1.7.0",
     "chai": "^4.1.2",
     "commitizen": "^2.10.1",
