@@ -49,14 +49,15 @@ const writeFileAsync = promisify(writeFile);
 
     const project = (defaultProject === undefined) ? Object.keys(projects)[0] : defaultProject;
 
-    const architect = projects[ project ].architect;
+    // @todo Remove support for the deprecated 'architect' property.
+    const targets = (projects[ project ].targets === undefined) ? projects[ project ].architect : projects[ project ].targets;
 
-    if (architect === undefined) {
+    if (targets === undefined) {
         throw new Error(`No target was found for the "${ project }" project.`);
     }
 
-    const browserOutputPath = join(dirname(config), architect[browserTarget].options.outputPath);
-    const serverOutputPath = join(dirname(config), architect[serverTarget].options.outputPath);
+    const browserOutputPath = join(dirname(config), targets[browserTarget].options.outputPath);
+    const serverOutputPath = join(dirname(config), targets[serverTarget].options.outputPath);
 
     const { AppServerModuleNgFactory, LAZY_MODULE_MAP } = <{
         AppServerModuleNgFactory: NgModuleFactory<any>,
@@ -78,7 +79,7 @@ const writeFileAsync = promisify(writeFile);
 
     const index = await readFileAsync(join(browserOutputPath, 'index.html'), 'utf8');
 
-    const routes = parseAngularRoutes(join(process.cwd(), architect[browserTarget].options.tsConfig));
+    const routes = parseAngularRoutes(join(process.cwd(), targets[browserTarget].options.tsConfig));
 
     const renderableRoutes = routes
         .map(({ path }) => path)
