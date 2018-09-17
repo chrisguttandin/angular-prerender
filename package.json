@@ -84,6 +84,7 @@
     "url": "https://github.com/chrisguttandin/angular-prerender.git"
   },
   "scripts": {
+    "commitmsg": "commitlint --edit --extends @commitlint/config-angular",
     "precommit": "grunt lint",
     "prepublishOnly": "grunt build",
     "start": "node build/node/app.js",
