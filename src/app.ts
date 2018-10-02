@@ -27,14 +27,14 @@ const writeFileAsync = promisify(writeFile);
 
     const { browserTarget, config, serverTarget } = yargs
         .help()
-        .option('config', {
-            default: join(process.cwd(), 'angular.json'),
-            describe: 'specify the path to the angular.json file',
-            type: 'string'
-        })
         .option('browserTarget', {
             default: 'build',
             describe: 'specify the target inside your angular.json file which is used to build the single page app',
+            type: 'string'
+        })
+        .option('config', {
+            default: join(process.cwd(), 'angular.json'),
+            describe: 'specify the path to the angular.json file',
             type: 'string'
         })
         .option('serverTarget', {
