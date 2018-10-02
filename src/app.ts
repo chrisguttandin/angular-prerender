@@ -79,7 +79,13 @@ const writeFileAsync = promisify(writeFile);
 
     const index = await readFileAsync(join(browserOutputPath, 'index.html'), 'utf8');
 
-    const routes = parseAngularRoutes(join(process.cwd(), targets[browserTarget].options.tsConfig));
+    const routes: { path: string }[] = parseAngularRoutes(join(process.cwd(), targets[browserTarget].options.tsConfig));
+
+    if (routes.length === 0) {
+        console.log(chalk`{yellow No routes could be retrieved thus the default route at "/" will be added.}`); // tslint:disable-line:max-line-length no-console
+
+        routes.push({ path: '/' });
+    }
 
     const renderableRoutes = routes
         .map(({ path }) => path)
