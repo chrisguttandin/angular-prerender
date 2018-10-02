@@ -1,7 +1,8 @@
 const { exec } = require('child_process');
-const { mkdtemp, readFile } = require('fs');
+const { mkdir, mkdtemp, readFile } = require('fs');
 const { tmpdir } = require('os');
 const { join } = require('path');
+const { env } = require('process');
 const { promisify } = require('util');
 const rimraf = require('rimraf');
 
@@ -9,6 +10,7 @@ const rimraf = require('rimraf');
 global.__Zone_disable_EventEmitter = true; // eslint-disable-line camelcase
 
 const execAsync = promisify(exec);
+const mkdirAsync = promisify(mkdir);
 const mkdtempAsync = promisify(mkdtemp);
 const readFileAsync = promisify(readFile);
 const rimrafAsync = (path) => new Promise((resolve, reject) => rimraf(path, (err) => (err === null) ? resolve() : reject(err)));
@@ -24,7 +26,14 @@ describe('angular-prerender', () => {
     it('should render the default URL', async function () {
         this.timeout(240000);
 
-        const directory = await mkdtempAsync(tmpdir());
+        const makeFakedTemporaryDirectory = async () => {
+            const fakedTemporaryDirectory = join(__dirname, 'temp');
+
+            await mkdirAsync(fakedTemporaryDirectory);
+
+            return fakedTemporaryDirectory;
+        };
+        const directory = (env.TRAVIS) ? await makeFakedTemporaryDirectory() : await mkdtempAsync(tmpdir());
 
         await execAsync('npx --package @angular/cli ng new universe --routing', { cwd: directory });
 
