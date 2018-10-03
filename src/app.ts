@@ -12,7 +12,8 @@ import { parseAngularRoutes } from 'guess-parser';
 import { dirname, join } from 'path';
 import { promisify } from 'util';
 import * as yargs from 'yargs';
-import { IModuleMap } from './interfaces';
+import { resolveRoutes } from './functions/resolve-routes';
+import { ICommandLineArguments, IModuleMap } from './interfaces';
 
 if (require.main !== module) {
     throw new Error('This script is meant to be executed from the command line.');
@@ -25,7 +26,7 @@ const writeFileAsync = promisify(writeFile);
 (async () => {
     enableProdMode();
 
-    const { browserTarget, config, serverTarget } = yargs
+    const { browserTarget, config, parameterValues: parameterValuesMap, serverTarget } = <ICommandLineArguments> yargs
         .help()
         .option('browserTarget', {
             default: 'build',
@@ -35,6 +36,12 @@ const writeFileAsync = promisify(writeFile);
         .option('config', {
             default: join(process.cwd(), 'angular.json'),
             describe: 'specify the path to the angular.json file',
+            type: 'string'
+        })
+        .option('parameterValues', {
+            coerce: JSON.parse,
+            default: '{}',
+            describe: 'specify the parameter values which should be replaced with the parameter in the routes',
             type: 'string'
         })
         .option('serverTarget', {
@@ -96,10 +103,22 @@ const writeFileAsync = promisify(writeFile);
                 return false;
             }
 
-            return true;
+            return route
+                .split(/\//)
+                .every((segment) => {
+                    if (segment.startsWith(':') && parameterValuesMap[segment] === undefined) {
+                        console.log(chalk`{yellow The route at "${ route }" will not be rendered because it contains a segement with an unspecified parameter "${ segment }".}`); // tslint:disable-line:max-line-length no-console
+
+                        return false;
+                    }
+
+                    return true;
+                });
         });
 
-    for (const route of renderableRoutes) {
+    const resolvedRoutes = resolveRoutes(renderableRoutes, parameterValuesMap);
+
+    for (const route of resolvedRoutes) {
         const path = join(browserOutputPath, route);
 
         await mkdirRecursively(path);
