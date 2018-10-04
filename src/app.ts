@@ -28,7 +28,7 @@ const writeFileAsync = promisify(writeFile);
 
     const { browserTarget, config, parameterValues: parameterValuesMap, serverTarget } = <ICommandLineArguments> yargs
         .help()
-        .option('browserTarget', {
+        .option('browser-target', {
             default: 'build',
             describe: 'specify the target inside your angular.json file which is used to build the single page app',
             type: 'string'
@@ -38,13 +38,13 @@ const writeFileAsync = promisify(writeFile);
             describe: 'specify the path to the angular.json file',
             type: 'string'
         })
-        .option('parameterValues', {
+        .option('parameter-values', {
             coerce: JSON.parse,
             default: '{}',
             describe: 'specify the parameter values which should be replaced with the parameter in the routes',
             type: 'string'
         })
-        .option('serverTarget', {
+        .option('server-target', {
             default: 'server',
             describe: 'specify the target inside your angular.json file which is used to build the server side code',
             type: 'string'
