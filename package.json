@@ -65,7 +65,7 @@
     "node": ">=10.11.0"
   },
   "files": [
-    "build/es2015/",
+    "build/es2018/",
     "build/node/",
     "src/"
   ],
