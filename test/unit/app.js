@@ -47,7 +47,7 @@ describe('angular-prerender', () => {
         await execAsync(`cp -r ${ join(__dirname, '../../build/node') } ${ join(projectDirectory, '/node_modules/angular-prerender/build') }`);
         await execAsync('node node_modules/angular-prerender/build/node/app.js', { cwd: projectDirectory });
 
-        const content = await readFileAsync(join(projectDirectory, 'dist/universe/index.html'));
+        const content = await readFileAsync(join(projectDirectory, 'dist/universe/index.html'), 'utf8');
 
         expect(content).to.match(/<h1(.*)> Welcome to universe! <\/h1>/);
 
