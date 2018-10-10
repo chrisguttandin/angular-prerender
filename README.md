@@ -34,7 +34,7 @@ This is a complete example which will generate a very basic static Angular app c
 npx --package @angular/cli ng new universe --routing
 cd universe
 ng generate universal --client-project universe
-npm i angular-prerender --save-dev
+npm install angular-prerender --save-dev
 ng build
 ng run universe:server
 angular-prerender

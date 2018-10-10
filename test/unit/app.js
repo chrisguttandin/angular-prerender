@@ -42,7 +42,7 @@ describe('angular-prerender', () => {
         await execAsync('ng generate universal --client-project universe', { cwd: projectDirectory });
         await execAsync('ng build', { cwd: projectDirectory });
         await execAsync('ng run universe:server', { cwd: projectDirectory });
-        await execAsync('npm i angular-prerender --save-dev', { cwd: projectDirectory });
+        await execAsync('npm install angular-prerender --save-dev', { cwd: projectDirectory });
         await rimrafAsync(join(directory, 'build/node'));
         await execAsync(`cp -r ${ join(__dirname, '../../build/node') } ${ join(projectDirectory, '/node_modules/angular-prerender/build') }`);
         await execAsync('node node_modules/angular-prerender/build/node/app.js', { cwd: projectDirectory });
