@@ -5,6 +5,7 @@ const { join } = require('path');
 const { env } = require('process');
 const { promisify } = require('util');
 const rimraf = require('rimraf');
+const { dependencies } = require('../../package');
 
 // @todo If the EventEmitter gets patched during the test it will throw an RangeError "Maximum call stack size exceeded".
 global.__Zone_disable_EventEmitter = true; // eslint-disable-line camelcase
@@ -24,7 +25,7 @@ describe('angular-prerender', () => {
     });
 
     it('should render the default URL', async function () {
-        this.timeout(240000);
+        this.timeout(360000);
 
         const makeFakedTemporaryDirectory = async () => {
             const fakedTemporaryDirectory = join(__dirname, 'temp');
@@ -43,8 +44,16 @@ describe('angular-prerender', () => {
         await execAsync('ng build', { cwd: projectDirectory });
         await execAsync('ng run universe:server', { cwd: projectDirectory });
         await execAsync('npm install angular-prerender --save-dev', { cwd: projectDirectory });
-        await rimrafAsync(join(directory, 'build/node'));
-        await execAsync(`cp -r ${ join(__dirname, '../../build/node') } ${ join(projectDirectory, '/node_modules/angular-prerender/build') }`);
+
+        const projectNodeModulesDirectory = join(projectDirectory, 'node_modules');
+
+        await rimrafAsync(join(projectNodeModulesDirectory, 'angular-prerender/build/node'));
+        await execAsync(`cp -r ${ join(__dirname, '../../build/node') } ${ join(projectNodeModulesDirectory, 'angular-prerender/build') }`);
+
+        for (const [ dependency, version ] of Object.entries(dependencies)) {
+            await execAsync(`npm install ${ dependency }@${ version } --save-dev`, { cwd: projectDirectory });
+        }
+
         await execAsync('node node_modules/angular-prerender/build/node/app.js', { cwd: projectDirectory });
 
         const content = await readFileAsync(join(projectDirectory, 'dist/universe/index.html'), 'utf8');
