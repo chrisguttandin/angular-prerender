@@ -1,5 +1,5 @@
 const { exec } = require('child_process');
-const { mkdir, mkdtemp, readFile } = require('fs');
+const { mkdir, mkdtemp, readFile, writeFile } = require('fs');
 const { tmpdir } = require('os');
 const { join } = require('path');
 const { env } = require('process');
@@ -15,6 +15,7 @@ const mkdirAsync = promisify(mkdir);
 const mkdtempAsync = promisify(mkdtemp);
 const readFileAsync = promisify(readFile);
 const rimrafAsync = (path) => new Promise((resolve, reject) => rimraf(path, (err) => (err === null) ? resolve() : reject(err)));
+const writeFileAsync = promisify(writeFile);
 
 describe('angular-prerender', () => {
 
@@ -50,9 +51,17 @@ describe('angular-prerender', () => {
         await rimrafAsync(join(projectNodeModulesDirectory, 'angular-prerender/build/node'));
         await execAsync(`cp -r ${ join(__dirname, '../../build/node') } ${ join(projectNodeModulesDirectory, 'angular-prerender/build') }`);
 
-        for (const [ dependency, version ] of Object.entries(dependencies)) {
-            await execAsync(`npm install ${ dependency }@${ version } --save-dev`, { cwd: projectDirectory });
-        }
+        const packageAsString = await readFileAsync(join(projectNodeModulesDirectory, 'angular-prerender/package.json'), 'utf8');
+
+        await writeFileAsync(join(projectNodeModulesDirectory, 'angular-prerender/package.json'), JSON.stringify({ ...JSON.parse(packageAsString), dependencies }, null, 2));
+        await execAsync(`mv ${ join(projectNodeModulesDirectory, 'angular-prerender') } ${ join(projectDirectory, 'angular-prerender') }`);
+        await execAsync(`rm -rf ${ projectNodeModulesDirectory }`);
+        await execAsync(`mkdir ${ projectNodeModulesDirectory }`);
+        await execAsync(`mv ${ join(projectDirectory, 'angular-prerender') } ${ join(projectNodeModulesDirectory, 'angular-prerender') }`);
+        await execAsync(`rm -rf ${ join(projectNodeModulesDirectory, 'angular-prerender/node_modules') }`);
+        await execAsync(`rm ${ join(projectDirectory, 'package-lock.json') }`);
+        await execAsync('npm install', { cwd: projectDirectory });
+        await execAsync('npm dedupe', { cwd: projectDirectory });
 
         await execAsync('node node_modules/angular-prerender/build/node/app.js', { cwd: projectDirectory });
 
