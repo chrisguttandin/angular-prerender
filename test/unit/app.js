@@ -36,7 +36,7 @@ describe('angular-prerender', () => {
         };
         const directory = (env.TRAVIS) ? await makeFakedTemporaryDirectory() : await mkdtempAsync(tmpdir());
 
-        await execAsync('npx --package @angular/cli ng new universe --routing', { cwd: directory });
+        await execAsync('npx --package @angular/cli ng new universe --no-interactive --routing', { cwd: directory });
 
         const projectDirectory = join(directory, 'universe');
 
