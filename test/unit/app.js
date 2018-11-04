@@ -26,7 +26,7 @@ describe('angular-prerender', () => {
     });
 
     it('should render the default URL', async function () {
-        this.timeout(360000);
+        this.timeout(600000);
 
         const makeFakedTemporaryDirectory = async () => {
             const fakedTemporaryDirectory = join(__dirname, 'temp');
