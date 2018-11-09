@@ -12,7 +12,7 @@
     }
   },
   "dependencies": {
-    "@angular-devkit/core": "^7.0.4",
+    "@angular-devkit/core": "^7.0.5",
     "@angular/animations": "^7.0.2",
     "@angular/common": "^7.0.2",
     "@angular/compiler": "^7.0.2",
