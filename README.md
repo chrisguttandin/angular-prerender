@@ -66,7 +66,7 @@ interface IParameterValuesMap {
 
 Lets imagine your app has a route with a `:name` parameter in it: `/team/:name`. A call to angular-prerender like this would render two routes by replacing the parameter with the given values:
 
-```
+```shell
 angular-prerender --parameter-values '{":name":["amelia","oliver"]}'
 ```
 
