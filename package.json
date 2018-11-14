@@ -32,7 +32,7 @@
   },
   "description": "An experimental command line tool to prerender an Angular App.",
   "devDependencies": {
-    "@babel/core": "^7.1.5",
+    "@babel/core": "^7.1.6",
     "@babel/preset-env": "^7.1.5",
     "@babel/register": "^7.0.0",
     "@commitlint/cli": "^7.2.1",
