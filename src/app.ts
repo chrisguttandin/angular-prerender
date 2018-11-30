@@ -1,5 +1,28 @@
 #!/usr/bin/env node
 
+// @todo Sync this array with the actual peer dependencies.
+const peerDependencies = [
+    '@angular-devkit/core',
+    '@angular/core',
+    '@angular/platform-server',
+    'zone.js'
+];
+
+const missingPeerDependencies = peerDependencies
+    .filter((peerDependency) => {
+        try {
+            require.resolve(peerDependency);
+        } catch {
+            return true;
+        }
+
+        return false;
+    });
+
+if (missingPeerDependencies.length > 0) {
+    throw new Error(`Some of the required peer dependencies could not be found. (${ missingPeerDependencies.join(', ') })`);
+}
+
 import 'core-js/es7/reflect'; // tslint:disable-line:no-submodule-imports
 import 'zone.js/dist/zone-node';
 import { experimental } from '@angular-devkit/core'; // tslint:disable-line:ordered-imports
