@@ -16,7 +16,7 @@ const peerDependencies = [
 const missingPeerDependencies = peerDependencies
     .filter((peerDependency) => {
         try {
-            require.resolve(peerDependency);
+            require.resolve(peerDependency, { paths: [ cwd() ]});
         } catch {
             return true;
         }
