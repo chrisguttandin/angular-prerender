@@ -3,6 +3,7 @@
 import { join } from 'path';
 import { cwd } from 'process';
 import * as yargs from 'yargs';
+import { loadPeerDependencies } from './functions/load-peer-dependencies';
 import { ICommandLineArguments } from './interfaces';
 
 // @todo Sync this array with the actual peer dependencies.
@@ -67,6 +68,7 @@ if (require.main !== module) {
 
     // @todo Use import() instead of require().
     const { prerender } = require('./functions/prerender'); // tslint:disable-line:no-require-imports
+    const { enableProdMode, renderModuleFactory } = loadPeerDependencies(cwd());
 
-    prerender(browserTarget, config, isVerbose, parameterValuesMap, serverTarget);
+    prerender(browserTarget, config, enableProdMode, isVerbose, parameterValuesMap, renderModuleFactory, serverTarget);
 })();
