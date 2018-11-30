@@ -119,7 +119,7 @@ const writeFileAsync = promisify(writeFile);
     const tsConfig = join(process.cwd(), targets[browserTarget].options.tsConfig);
 
     if (isVerbose) {
-        console.log(chalk`{gray The path of the tsconfig.json file used to retrieve to parse the routes is "${ tsConfig }".}`); // tslint:disable-line:max-line-length no-console
+        console.log(chalk`{gray The path of the tsconfig.json file used to retrieve the routes is "${ tsConfig }".}`); // tslint:disable-line:max-line-length no-console
     }
 
     const routes: { path: string }[] = parseAngularRoutes(tsConfig);
