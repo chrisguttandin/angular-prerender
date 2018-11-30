@@ -2,7 +2,7 @@
  * Loading the peer dependencies with this ugly construct is necessary to allow
  * the usage via npx. Currently npx will not install peer dependencies which is
  * fine but it will also not fall back to use the packages which are present in
- * the current working directory. At has to be pointed at those packages
+ * the current working directory. It has to be pointed at those packages
  * explicitly.
  */
 export const loadPeerDependencies = (cwd: string) => {
