@@ -26,7 +26,7 @@ const writeFileAsync = promisify(writeFile);
 (async () => {
     enableProdMode();
 
-    const { browserTarget, config, parameterValues: parameterValuesMap, serverTarget } = <ICommandLineArguments> yargs
+    const { browserTarget, config, parameterValues: parameterValuesMap, serverTarget, verbose: isVerbose } = <ICommandLineArguments> yargs
         .help()
         .option('browser-target', {
             default: 'build',
@@ -49,12 +49,26 @@ const writeFileAsync = promisify(writeFile);
             describe: 'specify the target inside your angular.json file which is used to build the server side code',
             type: 'string'
         })
+        .option('v', {
+            alias: 'verbose',
+            default: false,
+            describe: 'set this flag if you prefer more detailed log messages',
+            type: 'boolean'
+        })
         .strict()
         .argv;
+
+    if (isVerbose) {
+        console.log(chalk`{gray The path of the angular.json config file is "${ config }".}`); // tslint:disable-line:max-line-length no-console
+    }
 
     const { defaultProject, projects } = <experimental.workspace.WorkspaceSchema> require(config);
 
     const project = (defaultProject === undefined) ? Object.keys(projects)[0] : defaultProject;
+
+    if (isVerbose) {
+        console.log(chalk`{gray The project "${ project }" will be used to prerender your app.}`); // tslint:disable-line:max-line-length no-console
+    }
 
     // @todo Remove support for the deprecated 'architect' property.
     const targets = (projects[ project ].targets === undefined) ? projects[ project ].architect : projects[ project ].targets;
@@ -66,10 +80,21 @@ const writeFileAsync = promisify(writeFile);
     const browserOutputPath = join(dirname(config), targets[browserTarget].options.outputPath);
     const serverOutputPath = join(dirname(config), targets[serverTarget].options.outputPath);
 
+    if (isVerbose) {
+        console.log(chalk`{gray The resolved output path of the browser target is "${ browserOutputPath }".}`); // tslint:disable-line:max-line-length no-console
+        console.log(chalk`{gray The resolved output path of the server target is "${ serverOutputPath }".}`); // tslint:disable-line:max-line-length no-console
+    }
+
+    const main = join(serverOutputPath, 'main');
+
+    if (isVerbose) {
+        console.log(chalk`{gray The path of the main.js file is "${ main }".}`); // tslint:disable-line:max-line-length no-console
+    }
+
     const { AppServerModuleNgFactory, LAZY_MODULE_MAP } = <{
         AppServerModuleNgFactory: NgModuleFactory<any>,
         LAZY_MODULE_MAP: IModuleMap
-    }> require(join(serverOutputPath, 'main'));
+    }> require(main);
 
     const mkdirRecursively = async (path: string) => {
         try {
@@ -84,9 +109,20 @@ const writeFileAsync = promisify(writeFile);
         }
     };
 
-    const index = await readFileAsync(join(browserOutputPath, 'index.html'), 'utf8');
+    const index = join(browserOutputPath, 'index.html');
 
-    const routes: { path: string }[] = parseAngularRoutes(join(process.cwd(), targets[browserTarget].options.tsConfig));
+    if (isVerbose) {
+        console.log(chalk`{gray The path of the index.html file is "${ index }".}`); // tslint:disable-line:max-line-length no-console
+    }
+
+    const document = await readFileAsync(index, 'utf8');
+    const tsConfig = join(process.cwd(), targets[browserTarget].options.tsConfig);
+
+    if (isVerbose) {
+        console.log(chalk`{gray The path of the tsconfig.json file used to retrieve to parse the routes is "${ tsConfig }".}`); // tslint:disable-line:max-line-length no-console
+    }
+
+    const routes: { path: string }[] = parseAngularRoutes(tsConfig);
 
     if (routes.length === 0) {
         console.log(chalk`{yellow No routes could be retrieved thus the default route at "/" will be added.}`); // tslint:disable-line:max-line-length no-console
@@ -124,7 +160,7 @@ const writeFileAsync = promisify(writeFile);
         await mkdirRecursively(path);
 
         const html = await renderModuleFactory(AppServerModuleNgFactory, {
-            document: index,
+            document,
             extraProviders: [
                 provideModuleMap(LAZY_MODULE_MAP)
             ],

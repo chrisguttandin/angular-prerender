@@ -79,6 +79,10 @@ angular-prerender --parameter-values '{":name":["amelia","oliver"]}'
 
 This lets you specify the name of the target of your server app. The Angular CLI will normally call it "server" and this is also used as a default value.
 
+### --verbose (-v)
+
+This flag enables more detailed log messages.
+
 ## Acknowledgement
 
 This command line tool is only possible by bringing together the great power of [Angular Universal](https://github.com/angular/universal) (which is now on its way into the main [Angular repository](https://github.com/angular/angular)) and [Guess.js](https://github.com/guess-js) (which provides an excellent parser to retrieve the routes of an Angular app).

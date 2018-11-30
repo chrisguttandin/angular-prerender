@@ -11,4 +11,6 @@ export interface ICommandLineArguments extends Arguments {
 
     serverTarget: string;
 
+    verbose: boolean;
+
 }
