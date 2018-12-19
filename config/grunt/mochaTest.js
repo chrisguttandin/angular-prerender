@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/filename-case */
 const babelOptions = require('../babel/test.json');
 const babelRegister = require('@babel/register');
 const chai = require('chai');
