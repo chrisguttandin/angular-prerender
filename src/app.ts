@@ -63,8 +63,8 @@ if (require.main !== module) {
             describe: 'specify the target inside your angular.json file which is used to build the server side code',
             type: 'string'
         })
-        .option('v', {
-            alias: 'verbose',
+        .option('verbose', {
+            alias: 'v',
             default: false,
             describe: 'set this flag if you prefer more detailed log messages',
             type: 'boolean'
