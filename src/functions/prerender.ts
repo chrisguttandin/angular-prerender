@@ -61,8 +61,11 @@ export const prerender = async (
     }
 
     const { AppServerModuleNgFactory, LAZY_MODULE_MAP } = <{
-        AppServerModuleNgFactory: NgModuleFactory<any>,
-        LAZY_MODULE_MAP: IModuleMap
+
+        AppServerModuleNgFactory: NgModuleFactory<any>;
+
+        LAZY_MODULE_MAP: IModuleMap;
+
     }> require(main);
 
     const mkdirRecursively = async (path: string) => {
@@ -102,7 +105,7 @@ export const prerender = async (
     const renderableRoutes = routes
         .map(({ path }) => path)
         .filter((route) => {
-            if (route.match(/\*\*/)) {
+            if (route.match(/\*\*/) !== null) {
                 console.log(chalk`{yellow The route at "${ route }" will not be rendered because it contains a wildcard.}`); // tslint:disable-line:max-line-length no-console
 
                 return false;
