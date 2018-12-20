@@ -34,7 +34,13 @@ if (require.main !== module) {
 }
 
 (async () => {
-    const { browserTarget, config, parameterValues: parameterValuesMap, serverTarget, verbose: isVerbose } = <ICommandLineArguments> yargs
+    const {
+        browserTarget,
+        config,
+        parameterValues: parameterValuesMap,
+        serverTarget,
+        verbose: isVerbose
+    } = <ICommandLineArguments> (<yargs.Argv<ICommandLineArguments>> yargs)
         .help()
         .option('browser-target', {
             default: 'build',

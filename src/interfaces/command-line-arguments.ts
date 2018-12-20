@@ -1,7 +1,6 @@
-import { Arguments } from 'yargs';
 import { IParameterValuesMap } from './parameter-values-map';
 
-export interface ICommandLineArguments extends Arguments {
+export interface ICommandLineArguments {
 
     browserTarget: string;
 
