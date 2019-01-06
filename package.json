@@ -14,7 +14,7 @@
   "dependencies": {
     "@angular-devkit/core": "^7.1.4",
     "@nguniversal/module-map-ngfactory-loader": "^7.0.2",
-    "chalk": "^2.4.1",
+    "chalk": "^2.4.2",
     "core-js": "^2.6.1",
     "guess-parser": "0.1.6",
     "tslib": "^1.9.3",
