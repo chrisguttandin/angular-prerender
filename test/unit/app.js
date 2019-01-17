@@ -42,14 +42,6 @@ describe('angular-prerender', () => {
         const projectDirectory = join(directory, 'universe');
 
         await execAsync('ng generate universal --client-project universe', { cwd: projectDirectory });
-
-        // @todo Since @angular/cli v7.2 there is a minor syntax error in the generated code.
-        const sourceCode = await readFileAsync(join(projectDirectory, 'src/main.ts'), 'utf8');
-
-        expect(sourceCode).to.match(/\n\);/);
-
-        await writeFileAsync(join(projectDirectory, 'src/main.ts'), sourceCode.replace(/\n\);/, '\n});'));
-
         await execAsync('ng build', { cwd: projectDirectory });
         await execAsync('ng run universe:server', { cwd: projectDirectory });
         await execAsync('npm install angular-prerender --save-dev', { cwd: projectDirectory });
