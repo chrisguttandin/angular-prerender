@@ -3,16 +3,9 @@
 import { join } from 'path';
 import { cwd } from 'process';
 import * as yargs from 'yargs';
+import { peerDependencies } from './constants';
 import { loadPeerDependencies } from './functions/load-peer-dependencies';
 import { ICommandLineArguments } from './interfaces';
-
-// @todo Sync this array with the actual peer dependencies.
-const peerDependencies = [
-    '@angular-devkit/core',
-    '@angular/core',
-    '@angular/platform-server',
-    'zone.js'
-];
 
 const missingPeerDependencies = peerDependencies
     .filter((peerDependency) => {
