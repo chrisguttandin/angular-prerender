@@ -11,6 +11,6 @@ module.exports = {
     ],
     test: [
         'build',
-        'mochaTest:test'
+        'sh:test-unit'
     ]
 };
