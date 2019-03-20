@@ -16,7 +16,7 @@
     "@nguniversal/module-map-ngfactory-loader": "^7.1.1",
     "chalk": "^2.4.2",
     "core-js": "^2.6.5",
-    "guess-parser": "0.1.6",
+    "guess-parser": "0.1.7",
     "tslib": "^1.9.3",
     "yargs": "^13.2.2"
   },
