@@ -33,7 +33,7 @@ if (require.main !== module) {
         parameterValues: parameterValuesMap,
         serverTarget,
         verbose: isVerbose
-    } = <ICommandLineArguments> (<yargs.Argv<ICommandLineArguments>> yargs)
+    } = (<yargs.Argv<ICommandLineArguments>> yargs)
         .help()
         .option('browser-target', {
             default: 'build',
