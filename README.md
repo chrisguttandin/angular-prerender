@@ -31,7 +31,7 @@ npx angular-prerender
 This is a complete example which will generate a very basic static Angular app called "universe".
 
 ```shell
-npx --package @angular/cli ng new universe --routing
+npx @angular/cli new universe --routing
 cd universe
 ng generate universal --client-project universe
 npm install angular-prerender --save-dev
