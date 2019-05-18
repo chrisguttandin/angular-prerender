@@ -2,7 +2,7 @@
 
 import { join } from 'path';
 import { cwd } from 'process';
-import * as yargs from 'yargs';
+import yargs from 'yargs';
 import { peerDependencies } from './constants';
 import { loadPeerDependencies } from './functions/load-peer-dependencies';
 import { ICommandLineArguments } from './interfaces';
