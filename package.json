@@ -84,9 +84,9 @@
   "license": "MIT",
   "name": "angular-prerender",
   "peerDependencies": {
-    "@angular/core": "^7.0.1",
-    "@angular/platform-server": "^7.0.1",
-    "zone.js": "~0.8.26"
+    "@angular/core": "^8.0.0",
+    "@angular/platform-server": "^8.0.0",
+    "zone.js": "~0.9.1"
   },
   "repository": {
     "type": "git",
