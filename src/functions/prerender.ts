@@ -1,4 +1,4 @@
-import 'core-js/es7/reflect'; // tslint:disable-line:no-submodule-imports
+import 'core-js/es/reflect'; // tslint:disable-line:no-submodule-imports
 import { experimental } from '@angular-devkit/core'; // tslint:disable-line:ordered-imports
 import { NgModuleFactory } from '@angular/core';
 import { provideModuleMap } from '@nguniversal/module-map-ngfactory-loader';
