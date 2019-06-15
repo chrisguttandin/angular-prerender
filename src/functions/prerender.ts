@@ -68,19 +68,6 @@ export const prerender = async (
 
     }> require(main);
 
-    const mkdirRecursively = async (path: string) => {
-        try {
-            await mkdirAsync(path);
-        } catch (err) {
-            if (err.code === 'ENOENT') {
-                await mkdirRecursively(dirname(path));
-                await mkdirAsync(path);
-            } else if (err.code !== 'EEXIST') {
-                throw err; // tslint:disable-line:rxjs-throw-error
-            }
-        }
-    };
-
     const index = join(browserOutputPath, 'index.html');
 
     if (isVerbose) {
@@ -129,7 +116,7 @@ export const prerender = async (
     for (const route of resolvedRoutes) {
         const path = join(browserOutputPath, route);
 
-        await mkdirRecursively(path);
+        await mkdirAsync(path, { recursive: true });
 
         const html = await renderModuleFactory(AppServerModuleNgFactory, {
             document,
