@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@angular-devkit/core": "^8.1.0",
-    "@nguniversal/module-map-ngfactory-loader": "^8.0.0-rc.1",
+    "@nguniversal/module-map-ngfactory-loader": "^8.1.0",
     "chalk": "^2.4.2",
     "core-js": "^3.1.4",
     "guess-parser": "^0.3.7",
