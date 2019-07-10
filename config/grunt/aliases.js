@@ -11,6 +11,7 @@ module.exports = {
     ],
     test: [
         'build',
+        'sh:test-integration',
         'sh:test-unit'
     ]
 };
