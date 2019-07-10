@@ -1,3 +1,5 @@
+const { env } = require('process');
+
 module.exports = {
     build: [
         'clean:build',
@@ -11,7 +13,17 @@ module.exports = {
     ],
     test: [
         'build',
-        'sh:test-integration',
-        'sh:test-unit'
+        ...(env.TYPE === 'integration')
+            ? [
+                'sh:test-integration'
+            ]
+            : (env.TYPE === 'unit')
+                ? [
+                    'sh:test-unit'
+                ]
+                : [
+                    'sh:test-integration',
+                    'sh:test-unit'
+                ]
     ]
 };
