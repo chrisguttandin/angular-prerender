@@ -33,7 +33,7 @@
     "@babel/preset-env": "^7.5.4",
     "@babel/register": "^7.4.4",
     "@commitlint/cli": "^8.1.0",
-    "@commitlint/config-angular": "^8.0.0",
+    "@commitlint/config-angular": "^8.1.0",
     "@types/yargs": "^13.0.0",
     "chai": "^4.2.0",
     "commitizen": "^3.1.1",
