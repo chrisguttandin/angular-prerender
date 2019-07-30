@@ -57,7 +57,7 @@
     "tslint": "^5.18.0",
     "tslint-config-holy-grail": "^44.0.6",
     "typescript": "^3.5.3",
-    "zone.js": "^0.9.1"
+    "zone.js": "~0.9.1"
   },
   "engines": {
     "node": ">=11.14.0"
