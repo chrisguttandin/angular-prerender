@@ -48,7 +48,7 @@
     "grunt-tslint": "^5.0.2",
     "gruntify-eslint": "^5.0.0",
     "husky": "^3.0.2",
-    "load-grunt-config": "^2.0.0",
+    "load-grunt-config": "^2.0.1",
     "mocha": "^6.1.4",
     "rxjs": "^6.5.2",
     "sinon": "^7.3.2",
