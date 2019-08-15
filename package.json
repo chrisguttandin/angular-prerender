@@ -12,7 +12,7 @@
     }
   },
   "dependencies": {
-    "@angular-devkit/core": "^8.2.1",
+    "@angular-devkit/core": "^8.2.2",
     "@nguniversal/module-map-ngfactory-loader": "^8.1.1",
     "chalk": "^2.4.2",
     "core-js": "^3.2.1",
