@@ -18,7 +18,7 @@
     "core-js": "^3.2.1",
     "guess-parser": "^0.3.12",
     "tslib": "^1.10.0",
-    "yargs": "^13.3.0"
+    "yargs": "^14.0.0"
   },
   "description": "An experimental command line tool to prerender an Angular App.",
   "devDependencies": {
