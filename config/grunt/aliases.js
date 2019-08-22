@@ -7,9 +7,9 @@ module.exports = {
         'babel:build'
     ],
     lint: [
-        'eslint',
-        // @todo Use grunt-lint again when it support the type-check option.
-        'sh:lint'
+        'sh:lint-config',
+        'sh:lint-src',
+        'sh:lint-test'
     ],
     test: [
         'build',
