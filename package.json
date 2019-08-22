@@ -46,7 +46,6 @@
     "grunt-contrib-clean": "^2.0.0",
     "grunt-sh": "^0.2.0",
     "grunt-tslint": "^5.0.2",
-    "gruntify-eslint": "^5.0.0",
     "husky": "^3.0.4",
     "load-grunt-config": "^3.0.0",
     "mocha": "^6.2.0",
