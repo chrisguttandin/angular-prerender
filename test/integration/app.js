@@ -61,7 +61,7 @@ describe('angular-prerender', () => {
 
         const content = await readFileAsync(join(projectDirectory, 'dist/universe/index.html'), 'utf8');
 
-        expect(content).to.match(/<h1.*> Welcome to universe! <\/h1>/);
+        expect(content).to.match(/<span.*>universe app is running!<\/span>/);
 
         await rimrafAsync(directory);
     });
