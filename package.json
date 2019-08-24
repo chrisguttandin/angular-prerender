@@ -96,5 +96,5 @@
     "start": "node build/node/app.js",
     "test": "grunt test"
   },
-  "version": "4.1.5"
+  "version": "4.1.6"
 }
