@@ -46,7 +46,7 @@
     "grunt-contrib-clean": "^2.0.0",
     "grunt-sh": "^0.2.0",
     "husky": "^3.0.5",
-    "load-grunt-config": "^3.0.0",
+    "load-grunt-config": "^3.0.1",
     "mocha": "^6.2.0",
     "rxjs": "^6.5.3",
     "sinon": "^7.4.2",
