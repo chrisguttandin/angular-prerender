@@ -13,8 +13,8 @@ matrix:
     - env: TYPE=integration
       node_js: 10
     - env: TYPE=integration
-      node_js: 11
+      node_js: 12
     - env: TYPE=unit
       node_js: 10
     - env: TYPE=unit
-      node_js: 11
+      node_js: 12
