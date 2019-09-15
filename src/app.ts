@@ -67,7 +67,7 @@ if (require.main !== module) {
 
     // @todo Use import() instead of require().
     const { prerender } = require('./functions/prerender'); // tslint:disable-line:no-require-imports
-    const { enableProdMode, renderModuleFactory } = loadPeerDependencies(cwd());
+    const { enableProdMode, provideModuleMap, renderModuleFactory } = loadPeerDependencies(cwd());
 
-    prerender(browserTarget, config, enableProdMode, isVerbose, parameterValuesMap, renderModuleFactory, serverTarget);
+    prerender(browserTarget, config, enableProdMode, isVerbose, parameterValuesMap, provideModuleMap, renderModuleFactory, serverTarget);
 })();

@@ -12,5 +12,11 @@ export const loadPeerDependencies = (cwd: string) => {
     const { enableProdMode } = require(require.resolve('@angular/core', { paths: [ cwd ] }));
     const { renderModuleFactory } = require(require.resolve('@angular/platform-server', { paths: [ cwd ] }));
 
-    return { enableProdMode, renderModuleFactory };
+    /*
+     * @nguniversal/module-map-ngfactory-loader is a regular dependency of this package but it requires @angular/core which is why it needs
+     * to be imported afterwards.
+     */
+    const { provideModuleMap } = require('@nguniversal/module-map-ngfactory-loader'); // tslint:disable-line:no-require-imports
+
+    return { enableProdMode, provideModuleMap, renderModuleFactory };
 };

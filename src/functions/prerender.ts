@@ -1,7 +1,6 @@
 import 'core-js/es/reflect'; // tslint:disable-line:no-submodule-imports
 import { experimental } from '@angular-devkit/core'; // tslint:disable-line:ordered-imports
 import { NgModuleFactory } from '@angular/core';
-import { provideModuleMap } from '@nguniversal/module-map-ngfactory-loader';
 import chalk from 'chalk';
 import { mkdir, readFile, writeFile } from 'fs';
 import { parseAngularRoutes } from 'guess-parser';
@@ -9,7 +8,7 @@ import { dirname, join } from 'path';
 import { cwd } from 'process';
 import { promisify } from 'util';
 import { IModuleMap, IParameterValuesMap } from '../interfaces';
-import { TEnableProdModeFunction, TRenderModuleFactoryFunction } from '../types';
+import { TEnableProdModeFunction, TProvideModuleMapFunction, TRenderModuleFactoryFunction } from '../types';
 import { resolveRoutes } from './resolve-routes';
 
 const mkdirAsync = promisify(mkdir);
@@ -22,6 +21,7 @@ export const prerender = async (
     enableProdMode: TEnableProdModeFunction,
     isVerbose: boolean,
     parameterValuesMap: IParameterValuesMap,
+    provideModuleMap: TProvideModuleMapFunction,
     renderModuleFactory: TRenderModuleFactoryFunction,
     serverTarget: string
 ) => {
