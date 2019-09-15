@@ -16,7 +16,7 @@ export const loadPeerDependencies = (cwd: string) => {
      * @nguniversal/module-map-ngfactory-loader is a regular dependency of this package but it requires @angular/core which is why it needs
      * to be imported afterwards.
      */
-    const { provideModuleMap } = require('@nguniversal/module-map-ngfactory-loader'); // tslint:disable-line:no-require-imports
+    const { provideModuleMap } = require(require.resolve('@nguniversal/module-map-ngfactory-loader', { paths: [ cwd, __dirname ] })); // tslint:disable-line:no-require-imports
 
     return { enableProdMode, provideModuleMap, renderModuleFactory };
 };
