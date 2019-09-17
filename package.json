@@ -1,7 +1,7 @@
 {
   "author": "Christoph Guttandin",
   "bin": {
-    "angular-prerender": "build/node/app.js"
+    "angular-prerender": "./build/node/app.js"
   },
   "bugs": {
     "url": "https://github.com/chrisguttandin/angular-prerender/issues"
