@@ -19,16 +19,12 @@ npm install angular-prerender --save-dev
 In case you used all the default settings of the CLI angular-prerender will be able to pick up all the necessary information on its own and can be executed by simply calling it on the command line.
 
 ```shell
-angular-prerender
-```
-
-It is also possible to skip the explicit installation of angular-prerender and instead run it with npx like this:
-
-```shell
 npx angular-prerender
 ```
 
-This is a complete example which will generate a very basic static Angular app called "universe".
+It is also possible to skip the explicit installation of angular-prerender.
+
+The following is a complete example which will generate a very basic static Angular app called "universe".
 
 ```shell
 npx @angular/cli new universe --routing
@@ -37,7 +33,7 @@ ng generate universal --client-project universe
 npm install angular-prerender --save-dev
 ng build
 ng run universe:server
-angular-prerender
+npx angular-prerender
 ```
 
 ## Arguments
@@ -67,7 +63,7 @@ interface IParameterValuesMap {
 Lets imagine your app has a route with a `:name` parameter in it: `/team/:name`. A call to angular-prerender like this would render two routes by replacing the parameter with the given values:
 
 ```shell
-angular-prerender --parameter-values '{":name":["amelia","oliver"]}'
+npx angular-prerender --parameter-values '{":name":["amelia","oliver"]}'
 ```
 
 ```text
