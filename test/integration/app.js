@@ -14,7 +14,7 @@ const execAsync = promisify(exec);
 const mkdirAsync = promisify(mkdir);
 const mkdtempAsync = promisify(mkdtemp);
 const readFileAsync = promisify(readFile);
-const rimrafAsync = (path) => new Promise((resolve, reject) => rimraf(path, (err) => (err === null) ? resolve() : reject(err)));
+const rimrafAsync = promisify(rimraf);
 const makeFakedTemporaryDirectory = async () => {
     const fakedTemporaryDirectory = join(__dirname, 'temp');
 
