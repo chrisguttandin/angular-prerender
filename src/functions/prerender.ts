@@ -21,7 +21,7 @@ export const prerender = async (
     enableProdMode: TEnableProdModeFunction,
     isVerbose: boolean,
     parameterValuesMap: IParameterValuesMap,
-    provideModuleMap: TProvideModuleMapFunction,
+    provideModuleMap: null | TProvideModuleMapFunction,
     renderModuleFactory: TRenderModuleFactoryFunction,
     serverTarget: string
 ) => {
@@ -120,9 +120,9 @@ export const prerender = async (
 
         const html = await renderModuleFactory(AppServerModuleNgFactory, {
             document,
-            extraProviders: [
-                provideModuleMap(LAZY_MODULE_MAP)
-            ],
+            extraProviders: (provideModuleMap === null)
+                ? [ ]
+                : [ provideModuleMap(LAZY_MODULE_MAP) ],
             url: route
         });
 

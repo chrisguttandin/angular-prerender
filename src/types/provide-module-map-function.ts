@@ -1,3 +1,3 @@
-import { provideModuleMap } from '@nguniversal/module-map-ngfactory-loader';
+import { NgModuleFactory, StaticProvider, Type } from '@angular/core';
 
-export type TProvideModuleMapFunction = typeof provideModuleMap;
+export type TProvideModuleMapFunction = (moduleMap: { [ key: string ]: Type<any> | NgModuleFactory<any> }) => StaticProvider;
