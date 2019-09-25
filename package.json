@@ -30,7 +30,7 @@
     "@angular/platform-server": "^8.2.7",
     "@babel/core": "^7.6.2",
     "@babel/preset-env": "^7.6.2",
-    "@babel/register": "^7.6.0",
+    "@babel/register": "^7.6.2",
     "@commitlint/cli": "^8.2.0",
     "@commitlint/config-angular": "^8.2.0",
     "@types/yargs": "^13.0.2",
