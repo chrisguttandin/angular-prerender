@@ -1,3 +1,5 @@
+![logo](https://repository-images.githubusercontent.com/142886533/bd323700-e8ff-11e9-9645-75bc009ee359)
+
 # angular-prerender
 
 **An experimental command line tool to prerender an Angular App.**
