@@ -11,6 +11,12 @@
       "path": "cz-conventional-changelog"
     }
   },
+  "contributors": [
+    {
+      "email": "sam.vloeberghs@gmail.com",
+      "name": "Sam Vloeberghs"
+    }
+  ],
   "dependencies": {
     "@angular-devkit/core": "^8.3.8",
     "chalk": "^2.4.2",
