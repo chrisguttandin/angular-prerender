@@ -59,7 +59,7 @@
     "tsconfig-holy-grail": "^10.0.20",
     "tslint": "^5.20.0",
     "tslint-config-holy-grail": "^46.1.4",
-    "typescript": "^3.6.3",
+    "typescript": "^3.6.4",
     "zone.js": "^0.10.2"
   },
   "engines": {
