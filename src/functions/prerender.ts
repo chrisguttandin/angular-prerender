@@ -8,7 +8,7 @@ import { dirname, join } from 'path';
 import { cwd } from 'process';
 import { promisify } from 'util';
 import { IModuleMap, IParameterValuesMap } from '../interfaces';
-import { TEnableProdModeFunction, TProvideModuleMapFunction, TRenderModuleFactoryFunction } from '../types';
+import { TEnableProdModeFunction, TProvideModuleMapFunction, TRenderModuleFactoryFunction, TTargetSpecifier } from '../types';
 import { resolveRoutes } from './resolve-routes';
 
 const mkdirAsync = promisify(mkdir);
@@ -16,14 +16,14 @@ const readFileAsync = promisify(readFile);
 const writeFileAsync = promisify(writeFile);
 
 export const prerender = async (
-    browserTarget: string,
+    browserTarget: TTargetSpecifier,
     config: string,
     enableProdMode: TEnableProdModeFunction,
     isVerbose: boolean,
     parameterValuesMap: IParameterValuesMap,
     provideModuleMap: null | TProvideModuleMapFunction,
     renderModuleFactory: TRenderModuleFactoryFunction,
-    serverTarget: string
+    serverTarget: TTargetSpecifier
 ) => {
     enableProdMode();
 
@@ -46,8 +46,8 @@ export const prerender = async (
         throw new Error(`No target was found for the "${ project }" project.`);
     }
 
-    const browserOutputPath = join(dirname(config), targets[browserTarget].options.outputPath);
-    const serverOutputPath = join(dirname(config), targets[serverTarget].options.outputPath);
+    const browserOutputPath = join(dirname(config), targets[browserTarget[1]].options.outputPath);
+    const serverOutputPath = join(dirname(config), targets[serverTarget[1]].options.outputPath);
 
     if (isVerbose) {
         console.log(chalk`{gray The resolved output path of the browser target is "${ browserOutputPath }".}`); // tslint:disable-line:max-line-length no-console
@@ -75,7 +75,7 @@ export const prerender = async (
     }
 
     const document = await readFileAsync(index, 'utf8');
-    const tsConfig = join(cwd(), targets[browserTarget].options.tsConfig);
+    const tsConfig = join(cwd(), targets[browserTarget[1]].options.tsConfig);
 
     if (isVerbose) {
         console.log(chalk`{gray The path of the tsconfig.json file used to retrieve the routes is "${ tsConfig }".}`); // tslint:disable-line:max-line-length no-console

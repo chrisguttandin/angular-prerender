@@ -1,14 +1,15 @@
+import { TTargetSpecifier } from '../types';
 import { IParameterValuesMap } from './parameter-values-map';
 
 export interface ICommandLineArguments {
 
-    browserTarget: string;
+    browserTarget: TTargetSpecifier;
 
     config: string;
 
     parameterValues: IParameterValuesMap;
 
-    serverTarget: string;
+    serverTarget: TTargetSpecifier;
 
     verbose: boolean;
 

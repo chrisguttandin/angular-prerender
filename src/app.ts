@@ -4,6 +4,7 @@ import { join } from 'path';
 import { cwd } from 'process';
 import yargs from 'yargs';
 import { peerDependencies } from './constants';
+import { coerceTargetSpecifier } from './functions/coerce-target-specifier';
 import { loadPeerDependencies } from './functions/load-peer-dependencies';
 import { ICommandLineArguments } from './interfaces';
 
@@ -36,6 +37,7 @@ if (require.main !== module) {
     } = (<yargs.Argv<ICommandLineArguments>> yargs)
         .help()
         .option('browser-target', {
+            coerce: coerceTargetSpecifier,
             default: 'build',
             describe: 'specify the target inside your angular.json file which is used to build the single page app',
             type: 'string'
@@ -52,6 +54,7 @@ if (require.main !== module) {
             type: 'string'
         })
         .option('server-target', {
+            coerce: coerceTargetSpecifier,
             default: 'server',
             describe: 'specify the target inside your angular.json file which is used to build the server side code',
             type: 'string'
