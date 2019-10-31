@@ -58,7 +58,7 @@
     "sinon-chai": "^3.3.0",
     "tsconfig-holy-grail": "^10.0.25",
     "tslint": "^5.20.0",
-    "tslint-config-holy-grail": "^46.1.5",
+    "tslint-config-holy-grail": "^46.1.7",
     "typescript": "^3.6.4",
     "zone.js": "^0.10.2"
   },
