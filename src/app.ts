@@ -70,7 +70,7 @@ if (require.main !== module) {
         .argv;
 
     // @todo Use import() instead of require().
-    const { prerender } = require('./functions/prerender'); // tslint:disable-line:no-require-imports
+    const { prerender }: typeof import('./functions/prerender') = require('./functions/prerender'); // tslint:disable-line:max-line-length no-require-imports
     const { enableProdMode, provideModuleMap, renderModuleFactory } = await loadPeerDependencies(cwd());
 
     prerender(
