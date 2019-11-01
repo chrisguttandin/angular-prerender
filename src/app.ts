@@ -6,6 +6,7 @@ import yargs from 'yargs';
 import { peerDependencies } from './constants';
 import { coerceTargetSpecifier } from './functions/coerce-target-specifier';
 import { loadPeerDependencies } from './functions/load-peer-dependencies';
+import { readProperty } from './functions/read-property';
 import { ICommandLineArguments } from './interfaces';
 
 const missingPeerDependencies = peerDependencies
@@ -72,5 +73,15 @@ if (require.main !== module) {
     const { prerender } = require('./functions/prerender'); // tslint:disable-line:no-require-imports
     const { enableProdMode, provideModuleMap, renderModuleFactory } = await loadPeerDependencies(cwd());
 
-    prerender(browserTarget, config, enableProdMode, isVerbose, parameterValuesMap, provideModuleMap, renderModuleFactory, serverTarget);
+    prerender(
+        browserTarget,
+        config,
+        enableProdMode,
+        isVerbose,
+        parameterValuesMap,
+        provideModuleMap,
+        readProperty,
+        renderModuleFactory,
+        serverTarget
+    );
 })();

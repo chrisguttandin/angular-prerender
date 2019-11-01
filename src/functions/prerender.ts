@@ -8,7 +8,13 @@ import { dirname, join } from 'path';
 import { cwd } from 'process';
 import { promisify } from 'util';
 import { IModuleMap, IParameterValuesMap } from '../interfaces';
-import { TEnableProdModeFunction, TProvideModuleMapFunction, TRenderModuleFactoryFunction, TTargetSpecifier } from '../types';
+import {
+    TEnableProdModeFunction,
+    TProvideModuleMapFunction,
+    TReadPropertyFunction,
+    TRenderModuleFactoryFunction,
+    TTargetSpecifier
+} from '../types';
 import { resolveRoutes } from './resolve-routes';
 
 const mkdirAsync = promisify(mkdir);
@@ -22,6 +28,7 @@ export const prerender = async (
     isVerbose: boolean,
     parameterValuesMap: IParameterValuesMap,
     provideModuleMap: null | TProvideModuleMapFunction,
+    readProperty: TReadPropertyFunction,
     renderModuleFactory: TRenderModuleFactoryFunction,
     serverTarget: TTargetSpecifier
 ) => {
@@ -33,21 +40,8 @@ export const prerender = async (
 
     const { defaultProject, projects } = <experimental.workspace.WorkspaceSchema> require(config);
 
-    const project = (defaultProject === undefined) ? Object.keys(projects)[0] : defaultProject;
-
-    if (isVerbose) {
-        console.log(chalk`{gray The project "${ project }" will be used to prerender your app.}`); // tslint:disable-line:max-line-length no-console
-    }
-
-    // @todo Remove support for the deprecated 'architect' property.
-    const targets = (projects[ project ].targets === undefined) ? projects[ project ].architect : projects[ project ].targets;
-
-    if (targets === undefined) {
-        throw new Error(`No target was found for the "${ project }" project.`);
-    }
-
-    const browserOutputPath = join(dirname(config), targets[browserTarget[1]].options.outputPath);
-    const serverOutputPath = join(dirname(config), targets[serverTarget[1]].options.outputPath);
+    const browserOutputPath = join(dirname(config), readProperty(projects, defaultProject, browserTarget, 'outputPath'));
+    const serverOutputPath = join(dirname(config), readProperty(projects, defaultProject, serverTarget, 'outputPath'));
 
     if (isVerbose) {
         console.log(chalk`{gray The resolved output path of the browser target is "${ browserOutputPath }".}`); // tslint:disable-line:max-line-length no-console
@@ -75,7 +69,7 @@ export const prerender = async (
     }
 
     const document = await readFileAsync(index, 'utf8');
-    const tsConfig = join(cwd(), targets[browserTarget[1]].options.tsConfig);
+    const tsConfig = join(cwd(), readProperty(projects, defaultProject, browserTarget, 'tsConfig'));
 
     if (isVerbose) {
         console.log(chalk`{gray The path of the tsconfig.json file used to retrieve the routes is "${ tsConfig }".}`); // tslint:disable-line:max-line-length no-console
