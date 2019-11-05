@@ -33,7 +33,9 @@ export const readProperty: TReadPropertyFunction = (projects, defaultProject, ta
             throw new Error(`The configuration "${ targetSpecifier[2] }" was not found for the target "${ targetSpecifier[1] }" inside the configuration of the "${ projectSpecifier }" project.`);
         }
 
-        return configuration[property];
+        if (configuration[property] !== undefined) {
+            return configuration[property];
+        }
     }
 
     return target.options[property];

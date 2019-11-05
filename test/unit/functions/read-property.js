@@ -172,12 +172,30 @@ describe('readProperty()', () => {
 
             describe('with an existent configuration', () => {
 
-                beforeEach(() => {
-                    projects.project.targets['browser-target'].configurations = { configuration: { outputPath: 'another/ouput/path' } };
+                describe('with the property defined as part of the options', () => {
+
+                    beforeEach(() => {
+                        projects.project.targets['browser-target'].options = { outputPath: 'the/ouput/path' };
+                        projects.project.targets['browser-target'].configurations = { configuration: { } };
+                    });
+
+                    it('should return the value', () => {
+                        expect(readProperty(projects, defaultProject, [ 'project', 'browser-target', 'configuration' ], 'outputPath')).to.equal('the/ouput/path');
+                    });
+
                 });
 
-                it('should return the value', () => {
-                    expect(readProperty(projects, defaultProject, [ 'project', 'browser-target', 'configuration' ], 'outputPath')).to.equal('another/ouput/path');
+                describe('with the property defined as part of the configuration', () => {
+
+                    beforeEach(() => {
+                        projects.project.targets['browser-target'].options = { outputPath: 'the/ouput/path' };
+                        projects.project.targets['browser-target'].configurations = { configuration: { outputPath: 'another/ouput/path' } };
+                    });
+
+                    it('should return the value', () => {
+                        expect(readProperty(projects, defaultProject, [ 'project', 'browser-target', 'configuration' ], 'outputPath')).to.equal('another/ouput/path');
+                    });
+
                 });
 
             });
