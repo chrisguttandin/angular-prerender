@@ -4,6 +4,7 @@ import { join } from 'path';
 import { cwd } from 'process';
 import yargs from 'yargs';
 import { peerDependencies } from './constants';
+import { coerceParameterValues } from './functions/coerce-parameter-values';
 import { coerceTargetSpecifier } from './functions/coerce-target-specifier';
 import { loadPeerDependencies } from './functions/load-peer-dependencies';
 import { readProperty } from './functions/read-property';
@@ -49,7 +50,7 @@ if (require.main !== module) {
             type: 'string'
         })
         .option('parameter-values', {
-            coerce: JSON.parse,
+            coerce: coerceParameterValues,
             default: '{}',
             describe: 'specify the parameter values which should be replaced with the parameter in the routes',
             type: 'string'
