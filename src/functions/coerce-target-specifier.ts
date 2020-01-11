@@ -15,5 +15,5 @@ export const coerceTargetSpecifier = (target: string): TTargetSpecifier => {
         return <[ string, string, string ]> parts;
     }
 
-    throw new Error('The target is invalid.');
+    throw new Error(`Please specify a valid target. The given value "${ target }" is invalid.`);
 };

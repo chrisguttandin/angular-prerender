@@ -26,4 +26,16 @@ describe('coerceTargetSpecifier()', () => {
 
     });
 
+    describe('with a string that includes too many colons', () => {
+
+        it('should throw an error', () => {
+            const target = 'project:target:configuration:anything-else';
+
+            expect(() => {
+                coerceTargetSpecifier(target);
+            }).to.throw(`Please specify a valid target. The given value "${ target }" is invalid.`);
+        });
+
+    });
+
 });
