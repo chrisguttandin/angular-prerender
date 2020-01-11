@@ -20,7 +20,7 @@
   "dependencies": {
     "@angular-devkit/core": "^8.3.22",
     "chalk": "^3.0.0",
-    "core-js": "^3.6.2",
+    "core-js": "^3.6.3",
     "guess-parser": "^0.4.12",
     "tslib": "^1.10.0",
     "yargs": "^15.1.0"
