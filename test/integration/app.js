@@ -59,7 +59,7 @@ describe('angular-prerender', () => {
             await execAsync('npm pack');
         });
 
-        describe('when installed a peer dependency', () => {
+        describe('when installed as peer dependency', () => {
 
             it('should render the default URL', async function () {
                 this.timeout(600000);
@@ -111,7 +111,7 @@ describe('angular-prerender', () => {
             await execAsync('npm pack');
         });
 
-        describe('when installed a peer dependency', () => {
+        describe('when installed as peer dependency', () => {
 
             it('should render the default URL', async function () {
                 this.timeout(600000);
