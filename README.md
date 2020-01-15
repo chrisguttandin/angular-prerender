@@ -73,6 +73,8 @@ npx angular-prerender --parameter-values '{":name":["amelia","oliver"]}'
 /team/oliver
 ```
 
+Please note that it might be necessary to escape the string differently dependending on the command-line interface you use.
+
 ### --server-target
 
 This lets you specify the name of the target of your server app. The Angular CLI will normally call it "server" and this is also used as a default value. It is also possible to use a full target specifier which does also include the project and an optional configuration separated by colons. This works similar as the target parameter of the [ng run command](https://angular.io/cli/run).
