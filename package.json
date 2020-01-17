@@ -23,6 +23,7 @@
     "core-js": "^3.6.4",
     "guess-parser": "^0.4.13",
     "tslib": "^1.10.0",
+    "typescript": "^3.7.5",
     "yargs": "^15.1.0"
   },
   "description": "An experimental command line tool to prerender an Angular App.",
@@ -59,7 +60,6 @@
     "tsconfig-holy-grail": "^10.0.39",
     "tslint": "^5.20.1",
     "tslint-config-holy-grail": "^47.0.6",
-    "typescript": "^3.7.5",
     "zone.js": "^0.10.2"
   },
   "engines": {
