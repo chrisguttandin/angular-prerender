@@ -50,6 +50,14 @@ This lets you specify the name of the target of your client app. The Angular CLI
 
 The config option expects a path (including the filename) to the angular.json file of your project. By default it will look for it in the current working directory.
 
+### --exclude-routes
+
+This option can be used to tell angular-prerender not to render specified routes.
+
+```shell
+npm angular-prerender --exclude-routes /do-not-render-1 /do-not-render-2
+```
+
 ### --parameter-values
 
 Some URLs of your app might accept parameters. This option can be used to tell angular-prerender about the possible values those parameters could have. It expects a stringified JSON value which can be described with this TypeScript interface:
