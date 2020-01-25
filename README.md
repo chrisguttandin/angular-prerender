@@ -55,7 +55,7 @@ The config option expects a path (including the filename) to the angular.json fi
 This option can be used to tell angular-prerender not to render specified routes.
 
 ```shell
-npm angular-prerender --exclude-routes /do-not-render-1 /do-not-render-2
+npx angular-prerender --exclude-routes /do-not-render-1 /do-not-render-2
 ```
 
 ### --parameter-values
