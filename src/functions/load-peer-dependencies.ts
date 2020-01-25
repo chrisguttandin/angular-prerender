@@ -11,17 +11,22 @@ export const loadPeerDependencies = async (cwd: string) => {
         return require(require.resolve(id, { paths: [ cwd ] }));
     };
 
+    const loadOptionalPeerDependency = (id: string) => {
+        // Optional peer dependencies may not be installed which is why it may fail to load them.
+        try {
+            return loadPeerDependency(id);
+        } catch { /* */ }
+
+        return { };
+    };
+
     loadPeerDependency('zone.js/dist/zone-node');
 
     const { enableProdMode } = loadPeerDependency('@angular/core');
     const { renderModuleFactory } = loadPeerDependency('@angular/platform-server');
+    const { provideModuleMap = null } = loadOptionalPeerDependency('@nguniversal/module-map-ngfactory-loader');
+    const { RESPONSE: expressResponseToken = null } = loadOptionalPeerDependency('@nguniversal/express-engine/tokens');
+    const { RESPONSE: hapiResponseToken = null } = loadOptionalPeerDependency('@nguniversal/hapi-engine/tokens');
 
-    let provideModuleMap = null;
-
-    // @nguniversal/module-map-ngfactory-loader is an optional peer dependency which is why it may fail to load it.
-    try {
-        ({ provideModuleMap } = loadPeerDependency('@nguniversal/module-map-ngfactory-loader'));
-    } catch { /* */ }
-
-    return { enableProdMode, provideModuleMap, renderModuleFactory };
+    return { enableProdMode, expressResponseToken, hapiResponseToken, provideModuleMap, renderModuleFactory };
 };

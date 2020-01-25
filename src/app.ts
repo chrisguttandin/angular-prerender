@@ -34,6 +34,7 @@ if (require.main !== module) {
         browserTarget,
         config,
         excludeRoutes,
+        ignoreStatusCode: shouldIgnoreStatusCode,
         parameterValues: parameterValuesMap,
         serverTarget,
         verbose: isVerbose
@@ -54,6 +55,11 @@ if (require.main !== module) {
             default: [],
             describe: 'specify routes to skip',
             type: 'array'
+        })
+        .option('ignore-status-code', {
+            default: true,
+            describe: 'set this to false if you want to not render routes that return a status code of 300 or above',
+            type: 'boolean'
         })
         .option('parameter-values', {
             coerce: coerceParameterValues,
@@ -78,18 +84,27 @@ if (require.main !== module) {
 
     // @todo Use import() instead of require().
     const { prerender }: typeof import('./functions/prerender') = require('./functions/prerender'); // tslint:disable-line:max-line-length no-require-imports
-    const { enableProdMode, provideModuleMap, renderModuleFactory } = await loadPeerDependencies(cwd());
+    const {
+        enableProdMode,
+        expressResponseToken,
+        hapiResponseToken,
+        provideModuleMap,
+        renderModuleFactory
+    } = await loadPeerDependencies(cwd());
 
     prerender(
         browserTarget,
         config,
         enableProdMode,
         excludeRoutes,
+        expressResponseToken,
+        hapiResponseToken,
         isVerbose,
         parameterValuesMap,
         provideModuleMap,
         readProperty,
         renderModuleFactory,
-        serverTarget
+        serverTarget,
+        shouldIgnoreStatusCode
     );
 })();

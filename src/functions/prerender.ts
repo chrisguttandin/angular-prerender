@@ -7,7 +7,7 @@ import { parseAngularRoutes } from 'guess-parser';
 import { dirname, join } from 'path';
 import { cwd } from 'process';
 import { promisify } from 'util';
-import { IModuleMap, IParameterValuesMap } from '../interfaces';
+import { IModuleMap, IParameterValuesMap, IPartialExpressResponse, IPartialHapiResponse } from '../interfaces';
 import {
     TEnableProdModeFunction,
     TProvideModuleMapFunction,
@@ -26,12 +26,15 @@ export const prerender = async (
     config: string,
     enableProdMode: TEnableProdModeFunction,
     excludeRoutes: string[],
+    expressResponseToken: any,
+    hapiResponseToken: any,
     isVerbose: boolean,
     parameterValuesMap: IParameterValuesMap,
     provideModuleMap: null | TProvideModuleMapFunction,
     readProperty: TReadPropertyFunction,
     renderModuleFactory: TRenderModuleFactoryFunction,
-    serverTarget: TTargetSpecifier
+    serverTarget: TTargetSpecifier,
+    shouldIgnoreStatusCode: boolean
 ) => {
     enableProdMode();
 
@@ -119,16 +122,50 @@ export const prerender = async (
 
         await mkdirAsync(path, { recursive: true });
 
+        let statusCode = 200;
+
+        const expressResponse: IPartialExpressResponse = {
+            status: (value) => {
+                statusCode = value;
+
+                return expressResponse;
+            }
+        };
+
+        const hapiResponse: IPartialHapiResponse = {
+            code: (value) => {
+                statusCode = value;
+
+                return hapiResponse;
+            }
+        };
+
         const html = await renderModuleFactory(AppServerModuleNgFactory, {
             document,
-            extraProviders: (provideModuleMap === null)
-                ? [ ]
-                : [ provideModuleMap(LAZY_MODULE_MAP) ],
+            extraProviders: [
+                (provideModuleMap === null) ? [ ] : provideModuleMap(LAZY_MODULE_MAP),
+                (expressResponseToken === null)
+                    ? [ ]
+                    : {
+                        provide: expressResponseToken,
+                        useValue: expressResponse
+                    },
+                (hapiResponseToken === null)
+                    ? [ ]
+                    : {
+                        provide: hapiResponseToken,
+                        useValue: hapiResponse
+                    }
+            ],
             url: route
         });
 
-        await writeFileAsync(join(path, 'index.html'), html);
+        if (shouldIgnoreStatusCode || statusCode < 300) {
+            await writeFileAsync(join(path, 'index.html'), html);
 
-        console.log(chalk`{green The route at "${ route }" was rendered successfully.}`); // tslint:disable-line:no-console
+            console.log(chalk`{green The route at "${ route }" was rendered successfully.}`); // tslint:disable-line:no-console
+        } else {
+            console.log(chalk`{yellow The route at "${ route }" was skipped because it's status code was ${ statusCode }.}`); // tslint:disable-line:max-line-length no-console
+        }
     }
 };

@@ -9,6 +9,8 @@ export interface ICommandLineArguments {
 
     excludeRoutes: string[];
 
+    ignoreStatusCode: boolean;
+
     parameterValues: IParameterValuesMap;
 
     serverTarget: TTargetSpecifier;

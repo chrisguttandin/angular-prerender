@@ -52,11 +52,36 @@ The config option expects a path (including the filename) to the angular.json fi
 
 ### --exclude-routes
 
-This option can be used to tell angular-prerender not to render specified routes.
+This option can be used to tell angular-prerender not to render specified routes. The given routes can't contain any parameters.
 
 ```shell
 npx angular-prerender --exclude-routes /do-not-render-1 /do-not-render-2
 ```
+
+Alternatively routes can also be excluded when setting the status code as described below.
+
+### --ignore-status-code
+
+When set to false this flag will make sure that status codes set on the response will not be ignored. An example of a component which sets the status code looks as follows:
+
+```typescript
+import { Component, Inject } from '@angular/core';
+import { RESPONSE } from '@nguniversal/express-engine/tokens';
+import { Response } from 'express';
+
+@Component({
+    // ...
+})
+class NotFoundComponent {
+
+    constructor(@Inject(RESPONSE) response: Response) {
+        response.status(404);
+    }
+
+}
+```
+
+If status codes are not ignored any route which sets the status code to 300 or above will be excluded.
 
 ### --parameter-values
 
