@@ -25,6 +25,7 @@ export const prerender = async (
     browserTarget: TTargetSpecifier,
     config: string,
     enableProdMode: TEnableProdModeFunction,
+    excludeRoutes: string[],
     isVerbose: boolean,
     parameterValuesMap: IParameterValuesMap,
     provideModuleMap: null | TProvideModuleMapFunction,
@@ -88,6 +89,12 @@ export const prerender = async (
         .filter((route) => {
             if (route.match(/\*\*/) !== null) {
                 console.log(chalk`{yellow The route at "${ route }" will not be rendered because it contains a wildcard.}`); // tslint:disable-line:max-line-length no-console
+
+                return false;
+            }
+
+            if (excludeRoutes.includes(route)) {
+                console.log(chalk`{yellow The route at "${ route }" was excluded.}`); // tslint:disable-line:max-line-length no-console
 
                 return false;
             }

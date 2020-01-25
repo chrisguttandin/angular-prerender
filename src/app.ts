@@ -33,6 +33,7 @@ if (require.main !== module) {
     const {
         browserTarget,
         config,
+        excludeRoutes,
         parameterValues: parameterValuesMap,
         serverTarget,
         verbose: isVerbose
@@ -48,6 +49,11 @@ if (require.main !== module) {
             default: join(cwd(), 'angular.json'),
             describe: 'specify the path to the angular.json file',
             type: 'string'
+        })
+        .option('exclude-routes', {
+            default: [],
+            describe: 'specify routes to skip',
+            type: 'array'
         })
         .option('parameter-values', {
             coerce: coerceParameterValues,
@@ -78,6 +84,7 @@ if (require.main !== module) {
         browserTarget,
         config,
         enableProdMode,
+        excludeRoutes,
         isVerbose,
         parameterValuesMap,
         provideModuleMap,

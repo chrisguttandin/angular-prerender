@@ -7,6 +7,8 @@ export interface ICommandLineArguments {
 
     config: string;
 
+    excludeRoutes: string[];
+
     parameterValues: IParameterValuesMap;
 
     serverTarget: TTargetSpecifier;
