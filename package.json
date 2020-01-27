@@ -15,6 +15,10 @@
     {
       "email": "sam.vloeberghs@gmail.com",
       "name": "Sam Vloeberghs"
+    },
+    {
+      "email": "ville.harjunen@frantic.com",
+      "name": "Ville Harjunen"
     }
   ],
   "dependencies": {
