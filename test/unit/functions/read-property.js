@@ -61,7 +61,7 @@ describe('readProperty()', () => {
         describe('with an unexistent target', () => {
 
             beforeEach(() => {
-                projects['default-project'].targets = { };
+                projects['default-project'].targets = { };
             });
 
             it('should throw an error', () => {
@@ -75,7 +75,7 @@ describe('readProperty()', () => {
         describe('with an existent target', () => {
 
             beforeEach(() => {
-                projects['default-project'].targets = { 'browser-target': { options: { outputPath: 'the/ouput/path' } } };
+                projects['default-project'].targets = { 'browser-target': { options: { outputPath: 'the/ouput/path' } } };
             });
 
             describe('without any defined configuration', () => {
@@ -131,7 +131,7 @@ describe('readProperty()', () => {
         describe('with an unexistent target', () => {
 
             beforeEach(() => {
-                projects.project.targets = { };
+                projects.project.targets = { };
             });
 
             it('should throw an error', () => {
@@ -145,7 +145,7 @@ describe('readProperty()', () => {
         describe('with an existent target', () => {
 
             beforeEach(() => {
-                projects.project.targets = { 'browser-target': { options: { outputPath: 'the/ouput/path' } } };
+                projects.project.targets = { 'browser-target': { options: { outputPath: 'the/ouput/path' } } };
             });
 
             describe('without any defined configuration', () => {
