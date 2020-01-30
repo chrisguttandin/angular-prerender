@@ -25,7 +25,7 @@
     "@angular-devkit/core": "^8.3.23",
     "chalk": "^3.0.0",
     "core-js": "^3.6.4",
-    "guess-parser": "^0.4.14",
+    "guess-parser": "^0.4.15",
     "tslib": "^1.10.0",
     "typescript": "^3.7.5",
     "yargs": "^15.1.0"
