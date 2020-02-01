@@ -3,7 +3,7 @@ module.exports = (grunt) => {
 
     return {
         'build': {
-            cmd: 'tsc -p src/tsconfig.json'
+            cmd: 'tsc --project src/tsconfig.json'
         },
         'lint-config': {
             cmd: `eslint --config config/eslint/config.json --ext .js ${ (fix) ? '--fix ' : '' }--report-unused-disable-directives *.js config/`
