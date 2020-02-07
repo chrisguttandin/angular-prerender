@@ -22,7 +22,7 @@
     }
   ],
   "dependencies": {
-    "@angular-devkit/core": "^8.3.24",
+    "@angular-devkit/core": "^8.3.25",
     "chalk": "^3.0.0",
     "core-js": "^3.6.4",
     "guess-parser": "^0.4.15",
@@ -32,13 +32,13 @@
   },
   "description": "An experimental command line tool to prerender an Angular App.",
   "devDependencies": {
-    "@angular/animations": "^8.2.14",
-    "@angular/common": "^8.2.14",
-    "@angular/compiler": "^8.2.14",
-    "@angular/core": "^8.2.14",
-    "@angular/platform-browser": "^8.2.14",
-    "@angular/platform-browser-dynamic": "^8.2.14",
-    "@angular/platform-server": "^8.2.14",
+    "@angular/animations": "^9.0.0",
+    "@angular/common": "^9.0.0",
+    "@angular/compiler": "^9.0.0",
+    "@angular/core": "^9.0.0",
+    "@angular/platform-browser": "^9.0.0",
+    "@angular/platform-browser-dynamic": "^9.0.0",
+    "@angular/platform-server": "^9.0.0",
     "@babel/core": "^7.8.4",
     "@babel/preset-env": "^7.8.4",
     "@babel/register": "^7.8.3",
@@ -92,9 +92,9 @@
   "license": "MIT",
   "name": "angular-prerender",
   "peerDependencies": {
-    "@angular/core": "^8.0.0",
-    "@angular/platform-server": "^8.0.0",
-    "zone.js": "~0.9.1"
+    "@angular/core": "^9.0.0",
+    "@angular/platform-server": "^9.0.0",
+    "zone.js": "~0.10.2"
   },
   "repository": {
     "type": "git",
