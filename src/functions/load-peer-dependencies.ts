@@ -23,9 +23,8 @@ export const loadPeerDependencies = async (cwd: string) => {
     loadPeerDependency('zone.js/dist/zone-node');
 
     const { enableProdMode } = loadPeerDependency('@angular/core');
-    const { renderModuleFactory } = loadPeerDependency('@angular/platform-server');
     const { RESPONSE: expressResponseToken = null } = loadOptionalPeerDependency('@nguniversal/express-engine/tokens');
     const { RESPONSE: hapiResponseToken = null } = loadOptionalPeerDependency('@nguniversal/hapi-engine/tokens');
 
-    return { enableProdMode, expressResponseToken, hapiResponseToken, renderModuleFactory };
+    return { enableProdMode, expressResponseToken, hapiResponseToken };
 };

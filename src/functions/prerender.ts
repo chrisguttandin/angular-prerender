@@ -1,6 +1,5 @@
 import 'core-js/es/reflect'; // tslint:disable-line:no-submodule-imports
 import { experimental } from '@angular-devkit/core'; // tslint:disable-line:ordered-imports
-import { NgModuleFactory } from '@angular/core';
 import chalk from 'chalk';
 import { mkdir, readFile, writeFile } from 'fs';
 import { parseAngularRoutes } from 'guess-parser';
@@ -8,8 +7,10 @@ import { dirname, join } from 'path';
 import { cwd } from 'process';
 import { promisify } from 'util';
 import { IParameterValuesMap, IPartialExpressResponse, IPartialHapiResponse } from '../interfaces';
-import { TEnableProdModeFunction, TReadPropertyFunction, TRenderModuleFactoryFunction, TTargetSpecifier } from '../types';
+import { TEnableProdModeFunction, TReadPropertyFunction, TTargetSpecifier } from '../types';
+import { bindRenderFunction } from './bind-render-function';
 import { resolveRoutes } from './resolve-routes';
+import { unbundleTokens } from './unbundle-tokens';
 
 const mkdirAsync = promisify(mkdir);
 const readFileAsync = promisify(readFile);
@@ -25,7 +26,6 @@ export const prerender = async (
     isVerbose: boolean,
     parameterValuesMap: IParameterValuesMap,
     readProperty: TReadPropertyFunction,
-    renderModuleFactory: TRenderModuleFactoryFunction,
     serverTarget: TTargetSpecifier,
     shouldIgnoreStatusCode: boolean
 ) => {
@@ -51,11 +51,13 @@ export const prerender = async (
         console.log(chalk`{gray The path of the main.js file is "${ main }".}`); // tslint:disable-line:max-line-length no-console
     }
 
-    const { AppServerModuleNgFactory } = <{
+    const unbundledMain = await unbundleTokens(main);
 
-        AppServerModuleNgFactory: NgModuleFactory<any>;
+    if (isVerbose && main !== unbundledMain) {
+        console.log(chalk`{gray The main.js contains bundled tokens which have been replaced with classic require statements.}`); // tslint:disable-line:max-line-length no-console
+    }
 
-    }> require(main);
+    const render = bindRenderFunction(unbundledMain);
 
     const index = join(browserOutputPath, 'index.html');
 
@@ -131,7 +133,7 @@ export const prerender = async (
             }
         };
 
-        const html = await renderModuleFactory(AppServerModuleNgFactory, {
+        const html = await render({
             document,
             extraProviders: [
                 (expressResponseToken === null)

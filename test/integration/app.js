@@ -47,317 +47,287 @@ describe('angular-prerender', () => {
         await execAsync('ng generate universal --client-project universe', { cwd: projectDirectory });
     });
 
-    describe('without any peer dependency', () => {
+    for (const renderer of [ 'Ivy', 'ViewEngine' ]) {
 
-        beforeEach(async function () {
-            this.timeout(600000);
+        describe(`with the ${ renderer } renderer`, () => {
 
-            await execAsync('ng build', { cwd: projectDirectory });
-            await execAsync('ng run universe:server', { cwd: projectDirectory });
-            await execAsync('npm pack');
-        });
+            if (renderer === 'ViewEngine') {
 
-        describe('when installed as peer dependency', () => {
+                beforeEach(async () => {
+                    const content = await readFileAsync(join(projectDirectory, 'tsconfig.app.json'), 'utf8');
 
-            it('should render the default URL', async function () {
-                this.timeout(600000);
+                    await writeFileAsync(
+                        join(projectDirectory, 'tsconfig.app.json'),
+                        content
+                            .replace(/]\n}/, '], "angularCompilerOptions": { "enableIvy": false } }')
+                    );
+                });
 
-                await execAsync(`npm install ${ join(cwd(), `angular-prerender-${ version }.tgz`) }`, { cwd: projectDirectory });
-                await execAsync('angular-prerender', { cwd: projectDirectory });
+            }
 
-                const content = await readFileAsync(join(projectDirectory, 'dist/universe/index.html'), 'utf8');
+            describe('without any peer dependency', () => {
 
-                expect(content).to.match(/<span.*>universe app is running!<\/span>/);
-            });
-
-        });
-
-        describe('when invoked with npx', () => {
-
-            it('should render the default URL', async function () {
-                this.timeout(600000);
-
-                await execAsync(`npx ${ join(cwd(), `angular-prerender-${ version }.tgz`) }`, { cwd: projectDirectory });
-
-                const content = await readFileAsync(join(projectDirectory, 'dist/universe/index.html'), 'utf8');
-
-                expect(content).to.match(/<span.*>universe app is running!<\/span>/);
-            });
-
-        });
-
-    });
-
-    describe('with @nguniversal/module-map-ngfactory-loader as peer dependency', () => {
-
-        beforeEach(async function () {
-            this.timeout(600000);
-
-            await execAsync('npm install @nguniversal/module-map-ngfactory-loader', { cwd: projectDirectory });
-
-            const content = await readFileAsync(join(projectDirectory, 'src/app/app.server.module.ts'), 'utf8');
-
-            await writeFileAsync(
-                join(projectDirectory, 'src/app/app.server.module.ts'),
-                content
-                    .replace(/'@angular\/platform-server';/, "'@angular/platform-server'; import { ModuleMapLoaderModule } from '@nguniversal/module-map-ngfactory-loader';")
-                    .replace(/ServerModule,/, 'ServerModule, ModuleMapLoaderModule')
-            );
-
-            await execAsync('ng build', { cwd: projectDirectory });
-            await execAsync('ng run universe:server', { cwd: projectDirectory });
-            await execAsync('npm pack');
-        });
-
-        describe('when installed as peer dependency', () => {
-
-            it('should render the default URL', async function () {
-                this.timeout(600000);
-
-                await execAsync(`npm install ${ join(cwd(), `angular-prerender-${ version }.tgz`) }`, { cwd: projectDirectory });
-                await execAsync('angular-prerender', { cwd: projectDirectory });
-
-                const content = await readFileAsync(join(projectDirectory, 'dist/universe/index.html'), 'utf8');
-
-                expect(content).to.match(/<span.*>universe app is running!<\/span>/);
-            });
-
-        });
-
-        describe('when invoked with npx', () => {
-
-            it('should render the default URL', async function () {
-                this.timeout(600000);
-
-                await execAsync(`npx ${ join(cwd(), `angular-prerender-${ version }.tgz`) }`, { cwd: projectDirectory });
-
-                const content = await readFileAsync(join(projectDirectory, 'dist/universe/index.html'), 'utf8');
-
-                expect(content).to.match(/<span.*>universe app is running!<\/span>/);
-            });
-
-        });
-
-    });
-
-    describe('with @nguniversal/express-engine as peer dependency', () => {
-
-        beforeEach(async function () {
-            this.timeout(600000);
-
-            await execAsync('npm install @nguniversal/express-engine', { cwd: projectDirectory });
-        });
-
-        describe('with a status code below 300', () => {
-
-            beforeEach(async function () {
-                this.timeout(600000);
-
-                const content = await readFileAsync(join(projectDirectory, 'src/app/app.component.ts'), 'utf8');
-
-                await writeFileAsync(
-                    join(projectDirectory, 'src/app/app.component.ts'),
-                    content
-                        .replace(/}\sfrom\s'@angular\/core';/, ", Inject } from '@angular/core'; import { RESPONSE } from '@nguniversal/express-engine/tokens';")
-                        .replace(/title\s=\s'universe';/, "title = 'universe'; constructor(@Inject(RESPONSE) response: any) { response.status(200); }")
-                );
-
-                await execAsync('ng build', { cwd: projectDirectory });
-                await execAsync('ng run universe:server', { cwd: projectDirectory });
-                await execAsync('npm pack');
-            });
-
-            describe('when installed as peer dependency', () => {
-
-                it('should render the default URL', async function () {
+                beforeEach(async function () {
                     this.timeout(600000);
 
-                    await execAsync(`npm install ${ join(cwd(), `angular-prerender-${ version }.tgz`) }`, { cwd: projectDirectory });
-                    await execAsync('angular-prerender  --ignore-status-code false', { cwd: projectDirectory });
+                    await execAsync('ng build', { cwd: projectDirectory });
+                    await execAsync('ng run universe:server', { cwd: projectDirectory });
+                    await execAsync('npm pack');
+                });
 
-                    const content = await readFileAsync(join(projectDirectory, 'dist/universe/index.html'), 'utf8');
+                describe('when installed as peer dependency', () => {
 
-                    expect(content).to.match(/<span.*>universe app is running!<\/span>/);
+                    it('should render the default URL', async function () {
+                        this.timeout(600000);
+
+                        await execAsync(`npm install ${ join(cwd(), `angular-prerender-${ version }.tgz`) }`, { cwd: projectDirectory });
+                        await execAsync('angular-prerender', { cwd: projectDirectory });
+
+                        const content = await readFileAsync(join(projectDirectory, 'dist/universe/browser/index.html'), 'utf8');
+
+                        expect(content).to.match(/<span.*>universe app is running!<\/span>/);
+                    });
+
+                });
+
+                describe('when invoked with npx', () => {
+
+                    it('should render the default URL', async function () {
+                        this.timeout(600000);
+
+                        await execAsync(`npx ${ join(cwd(), `angular-prerender-${ version }.tgz`) }`, { cwd: projectDirectory });
+
+                        const content = await readFileAsync(join(projectDirectory, 'dist/universe/browser/index.html'), 'utf8');
+
+                        expect(content).to.match(/<span.*>universe app is running!<\/span>/);
+                    });
+
                 });
 
             });
 
-            describe('when invoked with npx', () => {
+            describe('with @nguniversal/express-engine as peer dependency', () => {
 
-                it('should render the default URL', async function () {
+                beforeEach(async function () {
                     this.timeout(600000);
 
-                    await execAsync(`npx ${ join(cwd(), `angular-prerender-${ version }.tgz  --ignore-status-code false`) }`, { cwd: projectDirectory });
+                    await execAsync('npm install @nguniversal/express-engine', { cwd: projectDirectory });
+                });
 
-                    const content = await readFileAsync(join(projectDirectory, 'dist/universe/index.html'), 'utf8');
+                describe('with a status code below 300', () => {
 
-                    expect(content).to.match(/<span.*>universe app is running!<\/span>/);
+                    beforeEach(async function () {
+                        this.timeout(600000);
+
+                        const content = await readFileAsync(join(projectDirectory, 'src/app/app.component.ts'), 'utf8');
+
+                        await writeFileAsync(
+                            join(projectDirectory, 'src/app/app.component.ts'),
+                            content
+                                .replace(/}\sfrom\s'@angular\/core';/, ", Inject } from '@angular/core'; import { RESPONSE } from '@nguniversal/express-engine/tokens';")
+                                .replace(/title\s=\s'universe';/, "title = 'universe'; constructor(@Inject(RESPONSE) response: any) { response.status(200); }")
+                        );
+
+                        await execAsync('ng build', { cwd: projectDirectory });
+                        await execAsync('ng run universe:server', { cwd: projectDirectory });
+                        await execAsync('npm pack');
+                    });
+
+                    describe('when installed as peer dependency', () => {
+
+                        it('should render the default URL', async function () {
+                            this.timeout(600000);
+
+                            await execAsync(`npm install ${ join(cwd(), `angular-prerender-${ version }.tgz`) }`, { cwd: projectDirectory });
+                            await execAsync('angular-prerender --ignore-status-code false', { cwd: projectDirectory });
+
+                            const content = await readFileAsync(join(projectDirectory, 'dist/universe/browser/index.html'), 'utf8');
+
+                            expect(content).to.match(/<span.*>universe app is running!<\/span>/);
+                        });
+
+                    });
+
+                    describe('when invoked with npx', () => {
+
+                        it('should render the default URL', async function () {
+                            this.timeout(600000);
+
+                            await execAsync(`npx ${ join(cwd(), `angular-prerender-${ version }.tgz --ignore-status-code false`) }`, { cwd: projectDirectory });
+
+                            const content = await readFileAsync(join(projectDirectory, 'dist/universe/browser/index.html'), 'utf8');
+
+                            expect(content).to.match(/<span.*>universe app is running!<\/span>/);
+                        });
+
+                    });
+
+                });
+
+                describe('with a status code of 300 and above', () => {
+
+                    beforeEach(async function () {
+                        this.timeout(600000);
+
+                        const content = await readFileAsync(join(projectDirectory, 'src/app/app.component.ts'), 'utf8');
+
+                        await writeFileAsync(
+                            join(projectDirectory, 'src/app/app.component.ts'),
+                            content
+                                .replace(/}\sfrom\s'@angular\/core';/, ", Inject } from '@angular/core'; import { RESPONSE } from '@nguniversal/express-engine/tokens';")
+                                .replace(/title\s=\s'universe';/, "title = 'universe'; constructor(@Inject(RESPONSE) response: any) { response.status(404); }")
+                        );
+
+                        await execAsync('ng build', { cwd: projectDirectory });
+                        await execAsync('ng run universe:server', { cwd: projectDirectory });
+                        await execAsync('npm pack');
+                    });
+
+                    describe('when installed as peer dependency', () => {
+
+                        it('should not render the default URL', async function () {
+                            this.timeout(600000);
+
+                            await execAsync(`npm install ${ join(cwd(), `angular-prerender-${ version }.tgz`) }`, { cwd: projectDirectory });
+                            await execAsync('angular-prerender --ignore-status-code false', { cwd: projectDirectory });
+
+                            const content = await readFileAsync(join(projectDirectory, 'dist/universe/browser/index.html'), 'utf8');
+
+                            expect(content).to.not.match(/<span.*>universe app is running!<\/span>/);
+                        });
+
+                    });
+
+                    describe('when invoked with npx', () => {
+
+                        it('should not render the default URL', async function () {
+                            this.timeout(600000);
+
+                            await execAsync(`npx ${ join(cwd(), `angular-prerender-${ version }.tgz`) } --ignore-status-code false`, { cwd: projectDirectory });
+
+                            const content = await readFileAsync(join(projectDirectory, 'dist/universe/browser/index.html'), 'utf8');
+
+                            expect(content).to.not.match(/<span.*>universe app is running!<\/span>/);
+                        });
+
+                    });
+
                 });
 
             });
 
-        });
+            describe('with @nguniversal/hapi-engine as peer dependency', () => {
 
-        describe('with a status code of 300 and above', () => {
-
-            beforeEach(async function () {
-                this.timeout(600000);
-
-                const content = await readFileAsync(join(projectDirectory, 'src/app/app.component.ts'), 'utf8');
-
-                await writeFileAsync(
-                    join(projectDirectory, 'src/app/app.component.ts'),
-                    content
-                        .replace(/}\sfrom\s'@angular\/core';/, ", Inject } from '@angular/core'; import { RESPONSE } from '@nguniversal/express-engine/tokens';")
-                        .replace(/title\s=\s'universe';/, "title = 'universe'; constructor(@Inject(RESPONSE) response: any) { response.status(404); }")
-                );
-
-                await execAsync('ng build', { cwd: projectDirectory });
-                await execAsync('ng run universe:server', { cwd: projectDirectory });
-                await execAsync('npm pack');
-            });
-
-            describe('when installed as peer dependency', () => {
-
-                it('should not render the default URL', async function () {
+                beforeEach(async function () {
                     this.timeout(600000);
 
-                    await execAsync(`npm install ${ join(cwd(), `angular-prerender-${ version }.tgz`) }`, { cwd: projectDirectory });
-                    await execAsync('angular-prerender  --ignore-status-code false', { cwd: projectDirectory });
-
-                    const content = await readFileAsync(join(projectDirectory, 'dist/universe/index.html'), 'utf8');
-
-                    expect(content).to.not.match(/<span.*>universe app is running!<\/span>/);
+                    await execAsync('npm install @nguniversal/hapi-engine @hapi/hapi', { cwd: projectDirectory });
                 });
 
-            });
+                describe('with a status code below 300', () => {
 
-            describe('when invoked with npx', () => {
+                    beforeEach(async function () {
+                        this.timeout(600000);
 
-                it('should not render the default URL', async function () {
-                    this.timeout(600000);
+                        const content = await readFileAsync(join(projectDirectory, 'src/app/app.component.ts'), 'utf8');
 
-                    await execAsync(`npx ${ join(cwd(), `angular-prerender-${ version }.tgz`) } --ignore-status-code false`, { cwd: projectDirectory });
+                        await writeFileAsync(
+                            join(projectDirectory, 'src/app/app.component.ts'),
+                            content
+                                .replace(/}\sfrom\s'@angular\/core';/, ", Inject } from '@angular/core'; import { RESPONSE } from '@nguniversal/hapi-engine/tokens';")
+                                .replace(/title\s=\s'universe';/, "title = 'universe'; constructor(@Inject(RESPONSE) response: any) { response.code(200); }")
+                        );
 
-                    const content = await readFileAsync(join(projectDirectory, 'dist/universe/index.html'), 'utf8');
+                        await execAsync('ng build', { cwd: projectDirectory });
+                        await execAsync('ng run universe:server', { cwd: projectDirectory });
+                        await execAsync('npm pack');
+                    });
 
-                    expect(content).to.not.match(/<span.*>universe app is running!<\/span>/);
+                    describe('when installed as peer dependency', () => {
+
+                        it('should render the default URL', async function () {
+                            this.timeout(600000);
+
+                            await execAsync(`npm install ${ join(cwd(), `angular-prerender-${ version }.tgz`) }`, { cwd: projectDirectory });
+                            await execAsync('angular-prerender --ignore-status-code false', { cwd: projectDirectory });
+
+                            const content = await readFileAsync(join(projectDirectory, 'dist/universe/browser/index.html'), 'utf8');
+
+                            expect(content).to.match(/<span.*>universe app is running!<\/span>/);
+                        });
+
+                    });
+
+                    describe('when invoked with npx', () => {
+
+                        it('should render the default URL', async function () {
+                            this.timeout(600000);
+
+                            await execAsync(`npx ${ join(cwd(), `angular-prerender-${ version }.tgz --ignore-status-code false`) }`, { cwd: projectDirectory });
+
+                            const content = await readFileAsync(join(projectDirectory, 'dist/universe/browser/index.html'), 'utf8');
+
+                            expect(content).to.match(/<span.*>universe app is running!<\/span>/);
+                        });
+
+                    });
+
                 });
 
-            });
+                describe('with a status code of 300 and above', () => {
 
-        });
+                    beforeEach(async function () {
+                        this.timeout(600000);
 
-    });
+                        const content = await readFileAsync(join(projectDirectory, 'src/app/app.component.ts'), 'utf8');
 
-    describe('with @nguniversal/hapi-engine as peer dependency', () => {
+                        await writeFileAsync(
+                            join(projectDirectory, 'src/app/app.component.ts'),
+                            content
+                                .replace(/}\sfrom\s'@angular\/core';/, ", Inject } from '@angular/core'; import { RESPONSE } from '@nguniversal/hapi-engine/tokens';")
+                                .replace(/title\s=\s'universe';/, "title = 'universe'; constructor(@Inject(RESPONSE) response: any) { response.code(404); }")
+                        );
 
-        beforeEach(async function () {
-            this.timeout(600000);
+                        await execAsync('ng build', { cwd: projectDirectory });
+                        await execAsync('ng run universe:server', { cwd: projectDirectory });
+                        await execAsync('npm pack');
+                    });
 
-            await execAsync('npm install @nguniversal/hapi-engine hapi', { cwd: projectDirectory });
-        });
+                    describe('when installed as peer dependency', () => {
 
-        describe('with a status code below 300', () => {
+                        it('should not render the default URL', async function () {
+                            this.timeout(600000);
 
-            beforeEach(async function () {
-                this.timeout(600000);
+                            await execAsync(`npm install ${ join(cwd(), `angular-prerender-${ version }.tgz`) }`, { cwd: projectDirectory });
+                            await execAsync('angular-prerender --ignore-status-code false', { cwd: projectDirectory });
 
-                const content = await readFileAsync(join(projectDirectory, 'src/app/app.component.ts'), 'utf8');
+                            const content = await readFileAsync(join(projectDirectory, 'dist/universe/browser/index.html'), 'utf8');
 
-                await writeFileAsync(
-                    join(projectDirectory, 'src/app/app.component.ts'),
-                    content
-                        .replace(/}\sfrom\s'@angular\/core';/, ", Inject } from '@angular/core'; import { RESPONSE } from '@nguniversal/hapi-engine/tokens';")
-                        .replace(/title\s=\s'universe';/, "title = 'universe'; constructor(@Inject(RESPONSE) response: any) { response.code(200); }")
-                );
+                            expect(content).to.not.match(/<span.*>universe app is running!<\/span>/);
+                        });
 
-                await execAsync('ng build', { cwd: projectDirectory });
-                await execAsync('ng run universe:server', { cwd: projectDirectory });
-                await execAsync('npm pack');
-            });
+                    });
 
-            describe('when installed as peer dependency', () => {
+                    describe('when invoked with npx', () => {
 
-                it('should render the default URL', async function () {
-                    this.timeout(600000);
+                        it('should not render the default URL', async function () {
+                            this.timeout(600000);
 
-                    await execAsync(`npm install ${ join(cwd(), `angular-prerender-${ version }.tgz`) }`, { cwd: projectDirectory });
-                    await execAsync('angular-prerender  --ignore-status-code false', { cwd: projectDirectory });
+                            await execAsync(`npx ${ join(cwd(), `angular-prerender-${ version }.tgz`) } --ignore-status-code false`, { cwd: projectDirectory });
 
-                    const content = await readFileAsync(join(projectDirectory, 'dist/universe/index.html'), 'utf8');
+                            const content = await readFileAsync(join(projectDirectory, 'dist/universe/browser/index.html'), 'utf8');
 
-                    expect(content).to.match(/<span.*>universe app is running!<\/span>/);
-                });
+                            expect(content).to.not.match(/<span.*>universe app is running!<\/span>/);
+                        });
 
-            });
+                    });
 
-            describe('when invoked with npx', () => {
-
-                it('should render the default URL', async function () {
-                    this.timeout(600000);
-
-                    await execAsync(`npx ${ join(cwd(), `angular-prerender-${ version }.tgz  --ignore-status-code false`) }`, { cwd: projectDirectory });
-
-                    const content = await readFileAsync(join(projectDirectory, 'dist/universe/index.html'), 'utf8');
-
-                    expect(content).to.match(/<span.*>universe app is running!<\/span>/);
-                });
-
-            });
-
-        });
-
-        describe('with a status code of 300 and above', () => {
-
-            beforeEach(async function () {
-                this.timeout(600000);
-
-                const content = await readFileAsync(join(projectDirectory, 'src/app/app.component.ts'), 'utf8');
-
-                await writeFileAsync(
-                    join(projectDirectory, 'src/app/app.component.ts'),
-                    content
-                        .replace(/}\sfrom\s'@angular\/core';/, ", Inject } from '@angular/core'; import { RESPONSE } from '@nguniversal/hapi-engine/tokens';")
-                        .replace(/title\s=\s'universe';/, "title = 'universe'; constructor(@Inject(RESPONSE) response: any) { response.code(404); }")
-                );
-
-                await execAsync('ng build', { cwd: projectDirectory });
-                await execAsync('ng run universe:server', { cwd: projectDirectory });
-                await execAsync('npm pack');
-            });
-
-            describe('when installed as peer dependency', () => {
-
-                it('should not render the default URL', async function () {
-                    this.timeout(600000);
-
-                    await execAsync(`npm install ${ join(cwd(), `angular-prerender-${ version }.tgz`) }`, { cwd: projectDirectory });
-                    await execAsync('angular-prerender  --ignore-status-code false', { cwd: projectDirectory });
-
-                    const content = await readFileAsync(join(projectDirectory, 'dist/universe/index.html'), 'utf8');
-
-                    expect(content).to.not.match(/<span.*>universe app is running!<\/span>/);
-                });
-
-            });
-
-            describe('when invoked with npx', () => {
-
-                it('should not render the default URL', async function () {
-                    this.timeout(600000);
-
-                    await execAsync(`npx ${ join(cwd(), `angular-prerender-${ version }.tgz`) } --ignore-status-code false`, { cwd: projectDirectory });
-
-                    const content = await readFileAsync(join(projectDirectory, 'dist/universe/index.html'), 'utf8');
-
-                    expect(content).to.not.match(/<span.*>universe app is running!<\/span>/);
                 });
 
             });
 
         });
 
-    });
+    }
 
 });

@@ -84,7 +84,7 @@ if (require.main !== module) {
 
     // @todo Use import() instead of require() when dropping support for Node v10.
     const { prerender }: typeof import('./functions/prerender') = require('./functions/prerender'); // tslint:disable-line:max-line-length no-require-imports
-    const { enableProdMode, expressResponseToken, hapiResponseToken, renderModuleFactory } = await loadPeerDependencies(cwd());
+    const { enableProdMode, expressResponseToken, hapiResponseToken } = await loadPeerDependencies(cwd());
 
     prerender(
         browserTarget,
@@ -96,7 +96,6 @@ if (require.main !== module) {
         isVerbose,
         parameterValuesMap,
         readProperty,
-        renderModuleFactory,
         serverTarget,
         shouldIgnoreStatusCode
     );
