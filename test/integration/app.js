@@ -7,9 +7,7 @@ const { promisify } = require('util');
 const rimraf = require('rimraf');
 const { version } = require('../../package');
 
-// @todo If the EventEmitter gets patched during the test it will throw an RangeError "Maximum call stack size exceeded".
-global.__Zone_disable_EventEmitter = true; // eslint-disable-line camelcase
-
+// eslint-disable-next-line padding-line-between-statements
 const execAsync = promisify(exec);
 const mkdirAsync = promisify(mkdir);
 const mkdtempAsync = promisify(mkdtemp);
