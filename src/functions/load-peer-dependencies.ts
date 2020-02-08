@@ -7,7 +7,7 @@
  */
 export const loadPeerDependencies = async (cwd: string) => {
     const loadPeerDependency = (id: string) => {
-        // @todo Use import() instead of require().
+        // @todo Use import() instead of require() when dropping support for Node v10.
         return require(require.resolve(id, { paths: [ cwd ] }));
     };
 
