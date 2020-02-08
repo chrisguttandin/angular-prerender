@@ -27,7 +27,7 @@ describe('angular-prerender', () => {
     let directory;
     let projectDirectory;
 
-    afterEach(async function () {
+    after(async function () {
         this.timeout(600000);
 
         await execAsync(`rm angular-prerender-${ version }.tgz`);
@@ -35,7 +35,7 @@ describe('angular-prerender', () => {
         await rimrafAsync(directory);
     });
 
-    beforeEach(async function () {
+    before(async function () {
         this.timeout(600000);
 
         directory = (env.TRAVIS) ? await makeFakedTemporaryDirectory() : await mkdtempAsync(tmpdir());
@@ -45,6 +45,15 @@ describe('angular-prerender', () => {
         projectDirectory = join(directory, 'universe');
 
         await execAsync('ng generate universal --client-project universe', { cwd: projectDirectory });
+        await execAsync('git add --all', { cwd: projectDirectory });
+        await execAsync('git commit --amend --no-edit', { cwd: projectDirectory });
+
+        await execAsync('npm pack');
+    });
+
+    beforeEach(async () => {
+        await execAsync('git checkout .', { cwd: projectDirectory });
+        await execAsync('git clean --force', { cwd: projectDirectory });
     });
 
     for (const renderer of [ 'Ivy', 'ViewEngine' ]) {
@@ -72,7 +81,6 @@ describe('angular-prerender', () => {
 
                     await execAsync('ng build', { cwd: projectDirectory });
                     await execAsync('ng run universe:server', { cwd: projectDirectory });
-                    await execAsync('npm pack');
                 });
 
                 describe('when installed as peer dependency', () => {
@@ -130,7 +138,6 @@ describe('angular-prerender', () => {
 
                         await execAsync('ng build', { cwd: projectDirectory });
                         await execAsync('ng run universe:server', { cwd: projectDirectory });
-                        await execAsync('npm pack');
                     });
 
                     describe('when installed as peer dependency', () => {
@@ -180,7 +187,6 @@ describe('angular-prerender', () => {
 
                         await execAsync('ng build', { cwd: projectDirectory });
                         await execAsync('ng run universe:server', { cwd: projectDirectory });
-                        await execAsync('npm pack');
                     });
 
                     describe('when installed as peer dependency', () => {
@@ -240,7 +246,6 @@ describe('angular-prerender', () => {
 
                         await execAsync('ng build', { cwd: projectDirectory });
                         await execAsync('ng run universe:server', { cwd: projectDirectory });
-                        await execAsync('npm pack');
                     });
 
                     describe('when installed as peer dependency', () => {
@@ -290,7 +295,6 @@ describe('angular-prerender', () => {
 
                         await execAsync('ng build', { cwd: projectDirectory });
                         await execAsync('ng run universe:server', { cwd: projectDirectory });
-                        await execAsync('npm pack');
                     });
 
                     describe('when installed as peer dependency', () => {
