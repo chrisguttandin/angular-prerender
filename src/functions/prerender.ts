@@ -7,14 +7,8 @@ import { parseAngularRoutes } from 'guess-parser';
 import { dirname, join } from 'path';
 import { cwd } from 'process';
 import { promisify } from 'util';
-import { IModuleMap, IParameterValuesMap, IPartialExpressResponse, IPartialHapiResponse } from '../interfaces';
-import {
-    TEnableProdModeFunction,
-    TProvideModuleMapFunction,
-    TReadPropertyFunction,
-    TRenderModuleFactoryFunction,
-    TTargetSpecifier
-} from '../types';
+import { IParameterValuesMap, IPartialExpressResponse, IPartialHapiResponse } from '../interfaces';
+import { TEnableProdModeFunction, TReadPropertyFunction, TRenderModuleFactoryFunction, TTargetSpecifier } from '../types';
 import { resolveRoutes } from './resolve-routes';
 
 const mkdirAsync = promisify(mkdir);
@@ -30,7 +24,6 @@ export const prerender = async (
     hapiResponseToken: any,
     isVerbose: boolean,
     parameterValuesMap: IParameterValuesMap,
-    provideModuleMap: null | TProvideModuleMapFunction,
     readProperty: TReadPropertyFunction,
     renderModuleFactory: TRenderModuleFactoryFunction,
     serverTarget: TTargetSpecifier,
@@ -58,11 +51,9 @@ export const prerender = async (
         console.log(chalk`{gray The path of the main.js file is "${ main }".}`); // tslint:disable-line:max-line-length no-console
     }
 
-    const { AppServerModuleNgFactory, LAZY_MODULE_MAP } = <{
+    const { AppServerModuleNgFactory } = <{
 
         AppServerModuleNgFactory: NgModuleFactory<any>;
-
-        LAZY_MODULE_MAP: IModuleMap;
 
     }> require(main);
 
@@ -143,7 +134,6 @@ export const prerender = async (
         const html = await renderModuleFactory(AppServerModuleNgFactory, {
             document,
             extraProviders: [
-                (provideModuleMap === null) ? [ ] : provideModuleMap(LAZY_MODULE_MAP),
                 (expressResponseToken === null)
                     ? [ ]
                     : {

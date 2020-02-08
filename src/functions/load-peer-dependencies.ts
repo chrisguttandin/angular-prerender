@@ -24,9 +24,8 @@ export const loadPeerDependencies = async (cwd: string) => {
 
     const { enableProdMode } = loadPeerDependency('@angular/core');
     const { renderModuleFactory } = loadPeerDependency('@angular/platform-server');
-    const { provideModuleMap = null } = loadOptionalPeerDependency('@nguniversal/module-map-ngfactory-loader');
     const { RESPONSE: expressResponseToken = null } = loadOptionalPeerDependency('@nguniversal/express-engine/tokens');
     const { RESPONSE: hapiResponseToken = null } = loadOptionalPeerDependency('@nguniversal/hapi-engine/tokens');
 
-    return { enableProdMode, expressResponseToken, hapiResponseToken, provideModuleMap, renderModuleFactory };
+    return { enableProdMode, expressResponseToken, hapiResponseToken, renderModuleFactory };
 };

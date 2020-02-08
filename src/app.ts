@@ -84,13 +84,7 @@ if (require.main !== module) {
 
     // @todo Use import() instead of require().
     const { prerender }: typeof import('./functions/prerender') = require('./functions/prerender'); // tslint:disable-line:max-line-length no-require-imports
-    const {
-        enableProdMode,
-        expressResponseToken,
-        hapiResponseToken,
-        provideModuleMap,
-        renderModuleFactory
-    } = await loadPeerDependencies(cwd());
+    const { enableProdMode, expressResponseToken, hapiResponseToken, renderModuleFactory } = await loadPeerDependencies(cwd());
 
     prerender(
         browserTarget,
@@ -101,7 +95,6 @@ if (require.main !== module) {
         hapiResponseToken,
         isVerbose,
         parameterValuesMap,
-        provideModuleMap,
         readProperty,
         renderModuleFactory,
         serverTarget,
