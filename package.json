@@ -30,7 +30,7 @@
     "typescript": "^3.7.5",
     "yargs": "^15.1.0"
   },
-  "description": "An experimental command line tool to prerender an Angular App.",
+  "description": "A command line tool to prerender Angular Apps.",
   "devDependencies": {
     "@angular/animations": "^9.0.0",
     "@angular/common": "^9.0.0",
