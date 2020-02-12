@@ -2,7 +2,7 @@
 
 # angular-prerender
 
-**An experimental command line tool to prerender an Angular App.**
+**A command line tool to prerender Angular Apps.**
 
 [![tests](https://img.shields.io/travis/com/chrisguttandin/angular-prerender/master.svg?style=flat-square)](https://travis-ci.com/chrisguttandin/angular-prerender)
 [![dependencies](https://img.shields.io/david/chrisguttandin/angular-prerender.svg?style=flat-square)](https://www.npmjs.com/package/angular-prerender)
