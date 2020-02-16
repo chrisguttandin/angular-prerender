@@ -13,6 +13,8 @@ export interface ICommandLineArguments {
 
     parameterValues: IParameterValuesMap;
 
+    preserveIndexHtml: boolean;
+
     serverTarget: TTargetSpecifier;
 
     verbose: boolean;

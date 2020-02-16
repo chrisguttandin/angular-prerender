@@ -27,7 +27,8 @@ export const prerender = async (
     parameterValuesMap: IParameterValuesMap,
     readProperty: TReadPropertyFunction,
     serverTarget: TTargetSpecifier,
-    shouldIgnoreStatusCode: boolean
+    shouldIgnoreStatusCode: boolean,
+    shouldPreserveIndexHtml: boolean
 ) => {
     enableProdMode();
 
@@ -153,6 +154,16 @@ export const prerender = async (
         });
 
         if (shouldIgnoreStatusCode || statusCode < 300) {
+            if (path === browserOutputPath) {
+                if (shouldPreserveIndexHtml) {
+                    console.log(chalk`{green The index.html file will be preserved as start.html because it would otherwise be overwritten.}`); // tslint:disable-line:no-console
+
+                    await writeFileAsync(index, document);
+                } else {
+                    console.log(chalk`{yellow The index.html file will be overwritten by the following route. This can be prevented by using the --preserve-index-html flag.}`); // tslint:disable-line:max-line-length no-console
+                }
+            }
+
             await writeFileAsync(join(path, 'index.html'), html);
 
             console.log(chalk`{green The route at "${ route }" was rendered successfully.}`); // tslint:disable-line:no-console
