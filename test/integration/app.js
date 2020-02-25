@@ -120,6 +120,7 @@ describe('angular-prerender', () => {
                     this.timeout(600000);
 
                     await execAsync('npm install @nguniversal/express-engine', { cwd: projectDirectory });
+                    await execAsync('npm install @types/express-serve-static-core --save-dev', { cwd: projectDirectory });
                 });
 
                 describe('with a status code below 300', () => {
