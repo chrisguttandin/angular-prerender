@@ -27,7 +27,7 @@
     "core-js": "^3.6.4",
     "guess-parser": "^0.4.15",
     "tslib": "^1.11.1",
-    "typescript": "^3.8.2",
+    "typescript": "^3.8.3",
     "yargs": "^15.1.0"
   },
   "description": "A command line tool to prerender Angular Apps.",
