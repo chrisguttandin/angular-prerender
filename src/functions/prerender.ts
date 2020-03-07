@@ -158,7 +158,7 @@ export const prerender = async (
                 if (shouldPreserveIndexHtml) {
                     console.log(chalk`{green The index.html file will be preserved as start.html because it would otherwise be overwritten.}`); // tslint:disable-line:no-console
 
-                    await writeFileAsync(index, document);
+                    await writeFileAsync(join(browserOutputPath, 'start.html'), document);
                 } else {
                     console.log(chalk`{yellow The index.html file will be overwritten by the following route. This can be prevented by using the --preserve-index-html flag.}`); // tslint:disable-line:max-line-length no-console
                 }
