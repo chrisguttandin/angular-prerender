@@ -9,6 +9,7 @@ import { promisify } from 'util';
 import { IParameterValuesMap, IPartialExpressResponse, IPartialHapiResponse } from '../interfaces';
 import { TEnableProdModeFunction, TReadPropertyFunction, TTargetSpecifier } from '../types';
 import { bindRenderFunction } from './bind-render-function';
+import { preserveIndexHtml } from './preserve-index-html';
 import { resolveRoutes } from './resolve-routes';
 import { unbundleTokens } from './unbundle-tokens';
 
@@ -158,7 +159,11 @@ export const prerender = async (
                 if (shouldPreserveIndexHtml) {
                     console.log(chalk`{green The index.html file will be preserved as start.html because it would otherwise be overwritten.}`); // tslint:disable-line:no-console
 
-                    await writeFileAsync(join(browserOutputPath, 'start.html'), document);
+                    const didUpdateNgServiceWorker = await preserveIndexHtml(browserOutputPath, document, readFileAsync, writeFileAsync);
+
+                    if (didUpdateNgServiceWorker) {
+                        console.log(chalk`{green The ngsw.json file was updated to replace index.html with start.html.}`); // tslint:disable-line:max-line-length no-console
+                    }
                 } else {
                     console.log(chalk`{yellow The index.html file will be overwritten by the following route. This can be prevented by using the --preserve-index-html flag.}`); // tslint:disable-line:max-line-length no-console
                 }
