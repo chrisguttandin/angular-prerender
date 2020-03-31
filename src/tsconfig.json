@@ -2,7 +2,7 @@
   "compilerOptions": {
     "lib": [
       "dom",
-      "es2017"
+      "es2019"
     ]
   },
   "extends": "tsconfig-holy-grail/src/tsconfig-node"
