@@ -16,7 +16,7 @@ describe('resolveRoutes()', () => {
 
     });
 
-    describe('without a single parameter', () => {
+    describe('with a single parameter', () => {
 
         let routes;
 
@@ -30,7 +30,7 @@ describe('resolveRoutes()', () => {
 
     });
 
-    describe('without two parameters', () => {
+    describe('with two parameters', () => {
 
         let routes;
 
