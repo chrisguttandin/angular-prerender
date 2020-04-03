@@ -1,5 +1,5 @@
 import { TTargetSpecifier } from '../types';
-import { IParameterValuesMap } from './parameter-values-map';
+import { INestedParameterValuesMap } from './nested-parameter-values-map';
 
 export interface ICommandLineArguments {
 
@@ -11,7 +11,7 @@ export interface ICommandLineArguments {
 
     ignoreStatusCode: boolean;
 
-    parameterValues: IParameterValuesMap;
+    parameterValues: INestedParameterValuesMap | INestedParameterValuesMap[];
 
     preserveIndexHtml: boolean;
 

@@ -1,15 +1,12 @@
-import { isParameterValuesMap } from '../guards';
-import { IParameterValuesMap } from '../interfaces';
+import { isNestedParameterValuesMap, isNestedParameterValuesMapArray } from '../guards';
+import { INestedParameterValuesMap } from '../interfaces';
 
-export const coerceParameterValues = (parameterValues: string): IParameterValuesMap => {
+export const coerceParameterValues = (parameterValues: string): INestedParameterValuesMap | INestedParameterValuesMap[] => {
     try {
-        const parameterValuesMap: unknown = JSON.parse(parameterValues);
+        const json: unknown = JSON.parse(parameterValues);
 
-        if (typeof parameterValuesMap === 'object'
-                && parameterValuesMap !== null
-                && !Array.isArray(parameterValuesMap)
-                && isParameterValuesMap(parameterValuesMap)) {
-            return parameterValuesMap;
+        if (isNestedParameterValuesMapArray(json) || isNestedParameterValuesMap(json)) {
+            return json;
         }
     } catch { } // tslint:disable-line:no-empty
 

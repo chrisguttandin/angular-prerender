@@ -1,30 +1,25 @@
 import { IParameterValuesMap } from '../interfaces';
 
-export const resolveRoutes = (routes: string[], parameterValuesMap: IParameterValuesMap) => {
-    return routes
-        .map((route) => {
-            const parameters = route
-                .split(/\//)
-                .filter((segment) => segment.startsWith(':'));
-
-            if (parameters.length === 0) {
+export const resolveRoutes = (routesWithParameters: { parameterValueMaps: IParameterValuesMap[]; route: string }[]) => {
+    return routesWithParameters
+        .map(({ route, parameterValueMaps }) => {
+            if (parameterValueMaps.length === 0) {
                 return [ route ];
             }
 
-            const numberOfPermutations = parameters
-                .reduce((sum, parameter) => (sum * parameterValuesMap[parameter].length), 1);
             const resolvedRoutes: string[] = [ ];
 
-            for (let i = 0; i < numberOfPermutations; i += 1) {
-                resolvedRoutes.push(parameters
-                    .map((parameter, index) => {
-                        const parameterValues = parameterValuesMap[parameter];
+            for (const parameterValueMap of parameterValueMaps) {
+                const numberOfPermutations = Object
+                    .values(parameterValueMap)
+                    .reduce((sum, values) => sum * values.length, 1);
 
-                        return parameterValues[Math.floor(i / (index + 1)) % parameterValues.length];
-                    })
-                    .reduce((resolvedRoute, value, index) => {
-                        return resolvedRoute.replace(parameters[index], value);
-                    }, route));
+                for (let i = 0; i < numberOfPermutations; i += 1) {
+                    resolvedRoutes.push(Object
+                        .entries(parameterValueMap)
+                        .map(([ parameter, values ], index) => [ parameter, values[Math.floor(i / (index + 1)) % values.length] ])
+                        .reduce((resolvedRoute, [ parameter, value ]) => resolvedRoute.replace(parameter, value), route));
+                }
             }
 
             return resolvedRoutes;

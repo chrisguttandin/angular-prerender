@@ -1,5 +1,6 @@
 export * from './command-line-arguments';
 export * from './main-exports';
+export * from './nested-parameter-values-map';
 export * from './ng-service-worker';
 export * from './parameter-values-map';
 export * from './partial-express-response';

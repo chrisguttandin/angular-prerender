@@ -1,5 +1,5 @@
 export interface IParameterValuesMap {
 
-    [ segment: string ]: string[];
+    [ parameter: string ]: string[];
 
 }

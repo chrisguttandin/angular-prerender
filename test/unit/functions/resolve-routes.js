@@ -4,67 +4,73 @@ describe('resolveRoutes()', () => {
 
     describe('without any parameters', () => {
 
-        let routes;
+        let routesWithParameters;
 
         beforeEach(() => {
-            routes = [ '/a/route/without/any/parameter' ];
+            routesWithParameters = [ { parameterValueMaps: [ ], route: '/a/route/without/any/parameter' } ];
         });
 
         it('should return the given routes', () => {
-            expect(resolveRoutes(routes, [ ])).to.deep.equal(routes);
+            expect(resolveRoutes(routesWithParameters)).to.deep.equal([ '/a/route/without/any/parameter' ]);
         });
 
     });
 
     describe('with a single parameter', () => {
 
-        let routes;
+        let routesWithParameters;
 
         beforeEach(() => {
-            routes = [ '/a/route/with/one/:parameter' ];
+            routesWithParameters = [ { parameterValueMaps: [ { ':parameter': [ 'value' ] } ], route: '/a/route/with/one/:parameter' } ];
         });
 
         it('should resolve the given routes with the given parameter', () => {
-            expect(resolveRoutes(routes, { ':parameter': [ 'value' ] })).to.deep.equal([ '/a/route/with/one/value' ]);
+            expect(resolveRoutes(routesWithParameters)).to.deep.equal([ '/a/route/with/one/value' ]);
         });
 
     });
 
     describe('with two parameters', () => {
 
-        let routes;
-
-        beforeEach(() => {
-            routes = [ '/a/route/with/:aParameter/and/:anotherParameter' ];
-        });
-
         describe('with a single value per parameter', () => {
 
-            let parameterValuesMap;
+            let routesWithParameters;
 
             beforeEach(() => {
-                parameterValuesMap = { ':aParameter': [ 'aValue' ], ':anotherParameter': [ 'anotherValue' ] };
+                routesWithParameters = [
+                    {
+                        parameterValueMaps: [ { ':aParameter': [ 'aValue' ], ':anotherParameter': [ 'anotherValue' ] } ],
+                        route: '/a/route/with/:aParameter/and/:anotherParameter'
+                    }
+                ];
             });
 
             it('should resolve the given routes with the given parameters', () => {
-                expect(resolveRoutes(routes, parameterValuesMap)).to.deep.equal([ '/a/route/with/aValue/and/anotherValue' ]);
+                expect(resolveRoutes(routesWithParameters)).to.deep.equal([ '/a/route/with/aValue/and/anotherValue' ]);
             });
 
         });
 
         describe('with multiple values per parameter', () => {
 
-            let parameterValuesMap;
+            let routesWithParameters;
 
             beforeEach(() => {
-                parameterValuesMap = {
-                    ':aParameter': [ 'aValue', 'aSecondValue', 'aThirdValue' ],
-                    ':anotherParameter': [ 'anotherValue', 'yetAnotherValue' ]
-                };
+                routesWithParameters = [
+                    {
+                        parameterValueMaps: [
+                            {
+                                ':aParameter': [ 'aValue', 'aSecondValue', 'aThirdValue' ],
+                                ':anotherParameter': [ 'anotherValue', 'yetAnotherValue' ]
+                            }
+                        ],
+                        route: '/a/route/with/:aParameter/and/:anotherParameter'
+                    }
+                ];
             });
 
             it('should resolve the given routes with the given parameters', () => {
-                expect(resolveRoutes(routes, parameterValuesMap)).to.deep.equal([
+                expect(resolveRoutes(routesWithParameters)).to.deep.equal([
                     '/a/route/with/aValue/and/anotherValue',
                     '/a/route/with/aSecondValue/and/anotherValue',
                     '/a/route/with/aThirdValue/and/yetAnotherValue',

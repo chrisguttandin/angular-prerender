@@ -6,9 +6,10 @@ import { parseAngularRoutes } from 'guess-parser';
 import { dirname, join } from 'path';
 import { cwd } from 'process';
 import { promisify } from 'util';
-import { IParameterValuesMap, IPartialExpressResponse, IPartialHapiResponse } from '../interfaces';
+import { INestedParameterValuesMap, IPartialExpressResponse, IPartialHapiResponse } from '../interfaces';
 import { TEnableProdModeFunction, TReadPropertyFunction, TTargetSpecifier } from '../types';
 import { bindRenderFunction } from './bind-render-function';
+import { mapRoutes } from './map-routes';
 import { preserveIndexHtml } from './preserve-index-html';
 import { resolveRoutes } from './resolve-routes';
 import { unbundleTokens } from './unbundle-tokens';
@@ -25,7 +26,7 @@ export const prerender = async (
     expressResponseToken: any,
     hapiResponseToken: any,
     isVerbose: boolean,
-    parameterValuesMap: IParameterValuesMap,
+    nestedParameterValues: INestedParameterValuesMap | INestedParameterValuesMap[],
     readProperty: TReadPropertyFunction,
     serverTarget: TTargetSpecifier,
     shouldIgnoreStatusCode: boolean,
@@ -74,17 +75,18 @@ export const prerender = async (
         console.log(chalk`{gray The path of the tsconfig.json file used to retrieve the routes is "${ tsConfig }".}`); // tslint:disable-line:max-line-length no-console
     }
 
-    const routes: { path: string }[] = parseAngularRoutes(tsConfig);
+    const routes: string[] = parseAngularRoutes(tsConfig)
+        .map(({ path }) => path);
 
     if (routes.length === 0) {
         console.log(chalk`{yellow No routes could be retrieved thus the default route at "/" will be added.}`); // tslint:disable-line:max-line-length no-console
 
-        routes.push({ path: '/' });
+        routes.push('/');
     }
 
-    const renderableRoutes = routes
-        .map(({ path }) => path)
-        .filter((route) => {
+    const mappedRoutes = mapRoutes(routes, nestedParameterValues);
+    const renderableRoutesWithParameters = mappedRoutes
+        .filter(({ parameterValueMaps, route }) => {
             if (route.match(/\*\*/) !== null) {
                 console.log(chalk`{yellow The route at "${ route }" will not be rendered because it contains a wildcard.}`); // tslint:disable-line:max-line-length no-console
 
@@ -97,20 +99,21 @@ export const prerender = async (
                 return false;
             }
 
-            return route
-                .split(/\//)
-                .every((segment) => {
-                    if (segment.startsWith(':') && parameterValuesMap[segment] === undefined) {
-                        console.log(chalk`{yellow The route at "${ route }" will not be rendered because it contains a segement with an unspecified parameter "${ segment }".}`); // tslint:disable-line:max-line-length no-console
+            return parameterValueMaps.length === 0 || parameterValueMaps
+                .every((parameterValueMap) => Object
+                    .entries(parameterValueMap)
+                    .every(([ parameter, values ]) => {
+                        if (values.length === 0) {
+                            console.log(chalk`{yellow The route at "${ route }" will not be rendered because it contains a segement with an unspecified parameter "${ parameter }".}`); // tslint:disable-line:max-line-length no-console
 
-                        return false;
-                    }
+                            return false;
+                        }
 
-                    return true;
-                });
+                        return true;
+                    }));
         });
 
-    const resolvedRoutes = resolveRoutes(renderableRoutes, parameterValuesMap);
+    const resolvedRoutes = resolveRoutes(renderableRoutesWithParameters);
 
     for (const route of resolvedRoutes) {
         const path = join(browserOutputPath, route);

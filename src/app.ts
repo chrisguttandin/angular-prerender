@@ -35,7 +35,7 @@ if (require.main !== module) {
         config,
         excludeRoutes,
         ignoreStatusCode: shouldIgnoreStatusCode,
-        parameterValues: parameterValuesMap,
+        parameterValues: nestedParameterValuesMap,
         preserveIndexHtml: shouldPreserveIndexHtml,
         serverTarget,
         verbose: isVerbose
@@ -100,7 +100,7 @@ if (require.main !== module) {
         expressResponseToken,
         hapiResponseToken,
         isVerbose,
-        parameterValuesMap,
+        nestedParameterValuesMap,
         readProperty,
         serverTarget,
         shouldIgnoreStatusCode,
