@@ -21,7 +21,12 @@ export const mapRoutes = (
 
             const parameterValueMaps = nestedParameterValuesMapAsArray
                 .map((nestedParameterValuesMap) => {
-                    const parameterValueMap: IParameterValuesMap = Object.fromEntries(parameters.map((parameter) => [ parameter, [ ] ]));
+                    const parameterValueMap: IParameterValuesMap = parameters
+                        .reduce<IParameterValuesMap>((partialParameterValueMap, parameter) => {
+                            partialParameterValueMap[parameter] = [ ];
+
+                            return partialParameterValueMap;
+                        }, { });
 
                     mapRoute(route, parameters, parameterValueMap, nestedParameterValuesMap);
 
