@@ -90,7 +90,7 @@ Some URLs of your app might accept parameters. This option can be used to tell a
 ```typescript
 interface IParameterValuesMap {
 
-    [ segment: string ]: string[];
+    [ segment: string ]: string | string[] | IParameterValuesMap | IParameterValuesMap[];
 
 }
 ```
@@ -104,6 +104,45 @@ npx angular-prerender --parameter-values '{":name":["amelia","oliver"]}'
 ```text
 /team/amelia
 /team/oliver
+```
+
+By default all possible combinations of all given parameter values will be rendered. If there is a route like this `/blog/:slug/comments/:id` and we render it with two values for each parameter angular-prerender will render four routes.
+
+```shell
+npx angular-prerender --parameter-values '{":id":["comment-a","comment-b"],":slug":["story-a","story-b"]}'
+```
+
+```text
+/blog/story-a/comments/comment-a
+/blog/story-a/comments/comment-b
+/blog/story-b/comments/comment-a
+/blog/story-b/comments/comment-b
+```
+
+If this is not intended and `comment-a` exclusively belongs to `story-a` and `comment-b` belongs to `story-b` respectively the parameter values can be grouped.
+
+```shell
+npx angular-prerender --parameter-values '[{":id":"comment-a",":slug":"story-a"},{":id":"comment-b",":slug":"story-b"}]'
+```
+
+In this case angular-prerender will only renderer two routes.
+
+```text
+/blog/story-a/comments/comment-a
+/blog/story-b/comments/comment-b
+```
+
+It's although possible to scope parameter values by routes. This comes in handy if the same name is used for different parameters in different routes. If your app has two routes (`/shirts/:id` and `/shoes/:id`) and they both use the same parameter (`:id`) it is possible to nest the parameter values to specify a different set of values for each route.
+
+```shell
+npx angular-prerender --parameter-values '[{"/shirts":{":id":"shirt-a"},"/shoes":{":id":"shirt-b"}}]'
+```
+
+The command above will render two routes.
+
+```text
+/shirts/shirt-a
+/shoes/shirt-b
 ```
 
 Please note that it might be necessary to escape the string differently dependending on the command-line interface you use.
