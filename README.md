@@ -132,7 +132,7 @@ In this case angular-prerender will only renderer two routes.
 /blog/story-b/comments/comment-b
 ```
 
-It's also possible to scope parameter values by routes. This comes in handy if the same name is used for different parameters in different routes. If your app has two routes (`/shirts/:id/:size` and `/shoes/:id/:size`) and they both use the same parameter (`:id`) it is possible to nest the parameter values to specify a different set of values for each route.
+It's also possible to scope parameter values by routes. This comes in handy if the same name is used for different parameters in different routes. If your app has two routes (`/shirts/:id/:size` and `/shoes/:id/:size`) and they both use the same parameters (`:id` and `:size`) it is possible to nest the parameter values to specify a different set of values for each route.
 
 ```shell
 npx angular-prerender --parameter-values '{"/shirts":[{":id":"polo-shirt",":size":"m"},{":id":"t-shirt",":size":"xl"}],"/shoes":{":id":"slipper",":size":["10","12"]}}'
