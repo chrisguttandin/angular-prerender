@@ -2,7 +2,6 @@ import 'core-js/es/reflect'; // tslint:disable-line:no-submodule-imports
 import { experimental } from '@angular-devkit/core'; // tslint:disable-line:ordered-imports
 import chalk from 'chalk';
 import { mkdir, readFile, writeFile } from 'fs';
-import { parseAngularRoutes } from 'guess-parser';
 import { dirname, join } from 'path';
 import { cwd } from 'process';
 import { promisify } from 'util';
@@ -12,6 +11,7 @@ import { bindRenderFunction } from './bind-render-function';
 import { mapRoutes } from './map-routes';
 import { preserveIndexHtml } from './preserve-index-html';
 import { resolveRoutes } from './resolve-routes';
+import { retrieveRoutes } from './retrieve-routes';
 import { unbundleTokens } from './unbundle-tokens';
 
 const mkdirAsync = promisify(mkdir);
@@ -25,6 +25,7 @@ export const prerender = async (
     excludeRoutes: string[],
     expressResponseToken: any,
     hapiResponseToken: any,
+    includeRoutes: string[],
     isVerbose: boolean,
     nestedParameterValues: INestedParameterValuesMap | INestedParameterValuesMap[],
     readProperty: TReadPropertyFunction,
@@ -75,16 +76,18 @@ export const prerender = async (
         console.log(chalk`{gray The path of the tsconfig.json file used to retrieve the routes is "${ tsConfig }".}`); // tslint:disable-line:max-line-length no-console
     }
 
-    const routes: string[] = parseAngularRoutes(tsConfig)
-        .map(({ path }) => path);
+    const retrievedRoutes = retrieveRoutes(
+        tsConfig,
+        (err) => console.log(chalk`{yellow Retrieving the routes statically threw an error with the following message "${ err.message }".}`) // tslint:disable-line:max-line-length no-console
+    );
 
-    if (routes.length === 0) {
-        console.log(chalk`{yellow No routes could be retrieved thus the default route at "/" will be added.}`); // tslint:disable-line:max-line-length no-console
+    if (includeRoutes.length === 0 && retrievedRoutes.length === 0) {
+        console.log(chalk`{yellow No routes could be retrieved and no routes are included manually thus the default route at "/" will be added.}`); // tslint:disable-line:max-line-length no-console
 
-        routes.push('/');
+        retrievedRoutes.push('/');
     }
 
-    const mappedRoutes = mapRoutes(routes, nestedParameterValues);
+    const mappedRoutes = mapRoutes([ ...includeRoutes, ...retrievedRoutes ], nestedParameterValues);
     const renderableRoutesWithParameters = mappedRoutes
         .filter(({ parameterValueMaps, route }) => {
             if (route.match(/\*\*/) !== null) {

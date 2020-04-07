@@ -11,6 +11,8 @@ export interface ICommandLineArguments {
 
     ignoreStatusCode: boolean;
 
+    includeRoutes: string[];
+
     parameterValues: INestedParameterValuesMap | INestedParameterValuesMap[];
 
     preserveIndexHtml: boolean;

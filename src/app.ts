@@ -35,6 +35,7 @@ if (require.main !== module) {
         config,
         excludeRoutes,
         ignoreStatusCode: shouldIgnoreStatusCode,
+        includeRoutes,
         parameterValues: nestedParameterValuesMap,
         preserveIndexHtml: shouldPreserveIndexHtml,
         serverTarget,
@@ -61,6 +62,11 @@ if (require.main !== module) {
             default: true,
             describe: 'set this to false if you want to not render routes that return a status code of 300 or above',
             type: 'boolean'
+        })
+        .option('include-routes', {
+            default: [],
+            describe: 'specify routes to include',
+            type: 'array'
         })
         .option('parameter-values', {
             coerce: coerceParameterValues,
@@ -99,6 +105,7 @@ if (require.main !== module) {
         excludeRoutes,
         expressResponseToken,
         hapiResponseToken,
+        includeRoutes,
         isVerbose,
         nestedParameterValuesMap,
         readProperty,

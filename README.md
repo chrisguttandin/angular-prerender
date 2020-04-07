@@ -83,6 +83,14 @@ class NotFoundComponent {
 
 If status codes are not ignored any route which sets the status code to 300 or above will be excluded.
 
+### --include-routes
+
+This option can be used to tell angular-prerender to explicitly render the given routes even though they could not be detected automatically.
+
+```shell
+npx angular-prerender --include-routes /render-even-if-not-detected
+```
+
 ### --parameter-values
 
 Some URLs of your app might accept parameters. This option can be used to tell angular-prerender about the possible values those parameters could have. It expects a stringified JSON value which can be described with this TypeScript interface:
