@@ -2,7 +2,7 @@ import 'core-js/es/reflect'; // tslint:disable-line:no-submodule-imports
 import { experimental } from '@angular-devkit/core'; // tslint:disable-line:ordered-imports
 import chalk from 'chalk';
 import { mkdir, readFile, writeFile } from 'fs';
-import { dirname, join } from 'path';
+import { dirname, join, sep } from 'path';
 import { cwd } from 'process';
 import { promisify } from 'util';
 import { INestedParameterValuesMap, IPartialExpressResponse, IPartialHapiResponse } from '../interfaces';
@@ -41,8 +41,8 @@ export const prerender = async (
 
     const { defaultProject, projects } = <experimental.workspace.WorkspaceSchema> require(config);
 
-    const browserOutputPath = join(dirname(config), readProperty(projects, defaultProject, browserTarget, 'outputPath'));
-    const serverOutputPath = join(dirname(config), readProperty(projects, defaultProject, serverTarget, 'outputPath'));
+    const browserOutputPath = join(dirname(config), readProperty(projects, defaultProject, browserTarget, 'outputPath'), sep);
+    const serverOutputPath = join(dirname(config), readProperty(projects, defaultProject, serverTarget, 'outputPath'), sep);
 
     if (isVerbose) {
         console.log(chalk`{gray The resolved output path of the browser target is "${ browserOutputPath }".}`); // tslint:disable-line:max-line-length no-console
@@ -119,7 +119,7 @@ export const prerender = async (
     const resolvedRoutes = resolveRoutes(renderableRoutesWithParameters);
 
     for (const route of resolvedRoutes) {
-        const path = join(browserOutputPath, route);
+        const path = join(browserOutputPath, route, sep);
 
         await mkdirAsync(path, { recursive: true });
 
