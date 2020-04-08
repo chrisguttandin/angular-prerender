@@ -22,7 +22,7 @@
     }
   ],
   "dependencies": {
-    "@angular-devkit/core": "^9.1.0",
+    "@angular-devkit/core": "^9.1.1",
     "chalk": "^4.0.0",
     "core-js": "^3.6.4",
     "guess-parser": "^0.4.17",
