@@ -91,13 +91,13 @@ export const prerender = async (
     const renderableRoutesWithParameters = mappedRoutes
         .filter(({ parameterValueMaps, route }) => {
             if (route.match(/\*\*/) !== null) {
-                console.log(chalk`{yellow The route at "${ route }" will not be rendered because it contains a wildcard.}`); // tslint:disable-line:max-line-length no-console
+                console.log(chalk`{yellow The route at "${ route }" will not be rendered because it contains a wildcard.}`); // tslint:disable-line:max-line-length no-console rxjs-no-unsafe-takewhile
 
                 return false;
             }
 
             if (excludeRoutes.includes(route)) {
-                console.log(chalk`{yellow The route at "${ route }" was excluded.}`); // tslint:disable-line:max-line-length no-console
+                console.log(chalk`{yellow The route at "${ route }" was excluded.}`); // tslint:disable-line:max-line-length no-console rxjs-no-unsafe-takewhile
 
                 return false;
             }
@@ -107,7 +107,7 @@ export const prerender = async (
                     .entries(parameterValueMap)
                     .every(([ parameter, values ]) => {
                         if (values.length === 0) {
-                            console.log(chalk`{yellow The route at "${ route }" will not be rendered because it contains a segement with an unspecified parameter "${ parameter }".}`); // tslint:disable-line:max-line-length no-console
+                            console.log(chalk`{yellow The route at "${ route }" will not be rendered because it contains a segement with an unspecified parameter "${ parameter }".}`); // tslint:disable-line:max-line-length no-console rxjs-no-unsafe-takewhile
 
                             return false;
                         }

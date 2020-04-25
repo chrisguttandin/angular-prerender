@@ -5,6 +5,10 @@ export const mapRoutes = (
     routes: string[],
     nestedParameterValues: INestedParameterValuesMap | INestedParameterValuesMap[]
 ): { parameterValueMaps: IParameterValuesMap[]; route: string }[] => {
+    const nestedParameterValuesMapAsArray = Array.isArray(nestedParameterValues)
+        ? nestedParameterValues
+        : [ nestedParameterValues ];
+
     return routes
         .map((route) => {
             const parameters = route
@@ -14,10 +18,6 @@ export const mapRoutes = (
             if (parameters.length === 0) {
                 return { parameterValueMaps: [ ], route };
             }
-
-            const nestedParameterValuesMapAsArray = Array.isArray(nestedParameterValues)
-                ? nestedParameterValues
-                : [ nestedParameterValues ];
 
             const parameterValueMaps = nestedParameterValuesMapAsArray
                 .map((nestedParameterValuesMap) => {
