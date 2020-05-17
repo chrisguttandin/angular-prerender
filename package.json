@@ -61,7 +61,7 @@
     "rxjs": "^6.5.5",
     "sinon": "^9.0.2",
     "sinon-chai": "^3.5.0",
-    "tsconfig-holy-grail": "^11.0.10",
+    "tsconfig-holy-grail": "^11.0.11",
     "tslint": "^6.1.2",
     "tslint-config-holy-grail": "^49.0.4",
     "zone.js": "^0.10.3"
