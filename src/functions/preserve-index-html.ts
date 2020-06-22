@@ -22,17 +22,15 @@ export const preserveIndexHtml = async (
         }
 
         if (ngswObject.assetGroups !== undefined) {
-            ngswObject.assetGroups
-                .forEach((assetGroup) => {
-                    assetGroup.urls = assetGroup.urls
-                        .map((url) => {
-                            if (url === INDEX_HTML_PATH) {
-                                return START_HTML_PATH;
-                            }
+            ngswObject.assetGroups.forEach((assetGroup) => {
+                assetGroup.urls = assetGroup.urls.map((url) => {
+                    if (url === INDEX_HTML_PATH) {
+                        return START_HTML_PATH;
+                    }
 
-                            return url;
-                        });
+                    return url;
                 });
+            });
         }
 
         if (ngswObject.hashTable !== undefined && ngswObject.hashTable[INDEX_HTML_PATH] !== undefined) {

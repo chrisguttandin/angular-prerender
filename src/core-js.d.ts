@@ -1,3 +1,1 @@
-declare module 'core-js/es/reflect' {
-
-}
+declare module 'core-js/es/reflect' {}

@@ -1,111 +1,111 @@
 {
-  "author": "Christoph Guttandin",
-  "bin": {
-    "angular-prerender": "./build/node/app.js"
-  },
-  "bugs": {
-    "url": "https://github.com/chrisguttandin/angular-prerender/issues"
-  },
-  "config": {
-    "commitizen": {
-      "path": "cz-conventional-changelog"
-    }
-  },
-  "contributors": [
-    {
-      "email": "sam.vloeberghs@gmail.com",
-      "name": "Sam Vloeberghs"
+    "author": "Christoph Guttandin",
+    "bin": {
+        "angular-prerender": "./build/node/app.js"
     },
-    {
-      "email": "ville.harjunen@frantic.com",
-      "name": "Ville Harjunen"
-    }
-  ],
-  "dependencies": {
-    "@angular-devkit/core": "^9.1.8",
-    "chalk": "^4.1.0",
-    "core-js": "^3.6.5",
-    "guess-parser": "^0.4.18",
-    "tslib": "^2.0.0",
-    "typescript": "^3.9.5",
-    "yargs": "^15.3.1"
-  },
-  "description": "A command line tool to prerender Angular Apps.",
-  "devDependencies": {
-    "@angular/animations": "^9.1.11",
-    "@angular/common": "^9.1.11",
-    "@angular/compiler": "^9.1.11",
-    "@angular/core": "^9.1.11",
-    "@angular/platform-browser": "^9.1.11",
-    "@angular/platform-browser-dynamic": "^9.1.11",
-    "@angular/platform-server": "^9.1.11",
-    "@babel/core": "^7.10.2",
-    "@babel/preset-env": "^7.10.2",
-    "@babel/register": "^7.10.1",
-    "@commitlint/cli": "^8.3.5",
-    "@commitlint/config-angular": "^8.3.4",
-    "@types/yargs": "^15.0.5",
-    "chai": "^4.2.0",
-    "commitizen": "^4.1.2",
-    "cz-conventional-changelog": "^3.2.0",
-    "eslint": "^7.2.0",
-    "eslint-config-holy-grail": "^47.0.5",
-    "grunt": "^1.1.0",
-    "grunt-babel": "^8.0.0",
-    "grunt-cli": "^1.3.2",
-    "grunt-contrib-clean": "^2.0.0",
-    "grunt-sh": "^0.2.0",
-    "husky": "^4.2.5",
-    "load-grunt-config": "^3.0.1",
-    "mocha": "^8.0.1",
-    "prettier": "^2.0.5",
-    "pretty-quick": "^2.0.1",
-    "rxjs": "^6.5.5",
-    "sinon": "^9.0.2",
-    "sinon-chai": "^3.5.0",
-    "tsconfig-holy-grail": "^11.0.15",
-    "tslint": "^6.1.2",
-    "tslint-config-holy-grail": "^50.0.4",
-    "zone.js": "^0.10.3"
-  },
-  "engines": {
-    "node": ">=10.15.3"
-  },
-  "files": [
-    "build/es2019/",
-    "build/node/",
-    "src/"
-  ],
-  "homepage": "https://github.com/chrisguttandin/angular-prerender",
-  "husky": {
-    "hooks": {
-      "commit-msg": "commitlint --edit --extends @commitlint/config-angular",
-      "pre-commit": "grunt lint"
-    }
-  },
-  "keywords": [
-    "Angular",
-    "cli",
-    "command line",
-    "ngx",
-    "server side rendering",
-    "static site generator"
-  ],
-  "license": "MIT",
-  "name": "angular-prerender",
-  "peerDependencies": {
-    "@angular/core": "^9.0.0",
-    "@angular/platform-server": "^9.0.0",
-    "zone.js": "~0.10.2"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/chrisguttandin/angular-prerender.git"
-  },
-  "scripts": {
-    "prepublishOnly": "grunt build",
-    "start": "node build/node/app.js",
-    "test": "grunt test"
-  },
-  "version": "5.4.14"
+    "bugs": {
+        "url": "https://github.com/chrisguttandin/angular-prerender/issues"
+    },
+    "config": {
+        "commitizen": {
+            "path": "cz-conventional-changelog"
+        }
+    },
+    "contributors": [
+        {
+            "email": "sam.vloeberghs@gmail.com",
+            "name": "Sam Vloeberghs"
+        },
+        {
+            "email": "ville.harjunen@frantic.com",
+            "name": "Ville Harjunen"
+        }
+    ],
+    "dependencies": {
+        "@angular-devkit/core": "^9.1.8",
+        "chalk": "^4.1.0",
+        "core-js": "^3.6.5",
+        "guess-parser": "^0.4.18",
+        "tslib": "^2.0.0",
+        "typescript": "^3.9.5",
+        "yargs": "^15.3.1"
+    },
+    "description": "A command line tool to prerender Angular Apps.",
+    "devDependencies": {
+        "@angular/animations": "^9.1.11",
+        "@angular/common": "^9.1.11",
+        "@angular/compiler": "^9.1.11",
+        "@angular/core": "^9.1.11",
+        "@angular/platform-browser": "^9.1.11",
+        "@angular/platform-browser-dynamic": "^9.1.11",
+        "@angular/platform-server": "^9.1.11",
+        "@babel/core": "^7.10.2",
+        "@babel/preset-env": "^7.10.2",
+        "@babel/register": "^7.10.1",
+        "@commitlint/cli": "^8.3.5",
+        "@commitlint/config-angular": "^8.3.4",
+        "@types/yargs": "^15.0.5",
+        "chai": "^4.2.0",
+        "commitizen": "^4.1.2",
+        "cz-conventional-changelog": "^3.2.0",
+        "eslint": "^7.2.0",
+        "eslint-config-holy-grail": "^47.0.5",
+        "grunt": "^1.1.0",
+        "grunt-babel": "^8.0.0",
+        "grunt-cli": "^1.3.2",
+        "grunt-contrib-clean": "^2.0.0",
+        "grunt-sh": "^0.2.0",
+        "husky": "^4.2.5",
+        "load-grunt-config": "^3.0.1",
+        "mocha": "^8.0.1",
+        "prettier": "^2.0.5",
+        "pretty-quick": "^2.0.1",
+        "rxjs": "^6.5.5",
+        "sinon": "^9.0.2",
+        "sinon-chai": "^3.5.0",
+        "tsconfig-holy-grail": "^11.0.15",
+        "tslint": "^6.1.2",
+        "tslint-config-holy-grail": "^50.0.4",
+        "zone.js": "^0.10.3"
+    },
+    "engines": {
+        "node": ">=10.15.3"
+    },
+    "files": [
+        "build/es2019/",
+        "build/node/",
+        "src/"
+    ],
+    "homepage": "https://github.com/chrisguttandin/angular-prerender",
+    "husky": {
+        "hooks": {
+            "commit-msg": "commitlint --edit --extends @commitlint/config-angular",
+            "pre-commit": "grunt lint"
+        }
+    },
+    "keywords": [
+        "Angular",
+        "cli",
+        "command line",
+        "ngx",
+        "server side rendering",
+        "static site generator"
+    ],
+    "license": "MIT",
+    "name": "angular-prerender",
+    "peerDependencies": {
+        "@angular/core": "^9.0.0",
+        "@angular/platform-server": "^9.0.0",
+        "zone.js": "~0.10.2"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/chrisguttandin/angular-prerender.git"
+    },
+    "scripts": {
+        "prepublishOnly": "grunt build",
+        "start": "node build/node/app.js",
+        "test": "grunt test"
+    },
+    "version": "5.4.14"
 }

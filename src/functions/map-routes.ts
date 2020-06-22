@@ -5,34 +5,27 @@ export const mapRoutes = (
     routes: string[],
     nestedParameterValues: INestedParameterValuesMap | INestedParameterValuesMap[]
 ): { parameterValueMaps: IParameterValuesMap[]; route: string }[] => {
-    const nestedParameterValuesMapAsArray = Array.isArray(nestedParameterValues)
-        ? nestedParameterValues
-        : [ nestedParameterValues ];
+    const nestedParameterValuesMapAsArray = Array.isArray(nestedParameterValues) ? nestedParameterValues : [nestedParameterValues];
 
-    return routes
-        .map((route) => {
-            const parameters = route
-                .split(/\//)
-                .filter((segment) => segment.startsWith(':'));
+    return routes.map((route) => {
+        const parameters = route.split(/\//).filter((segment) => segment.startsWith(':'));
 
-            if (parameters.length === 0) {
-                return { parameterValueMaps: [ ], route };
-            }
+        if (parameters.length === 0) {
+            return { parameterValueMaps: [], route };
+        }
 
-            const parameterValueMaps = nestedParameterValuesMapAsArray
-                .map((nestedParameterValuesMap) => {
-                    const parameterValueMap: IParameterValuesMap = parameters
-                        .reduce<IParameterValuesMap>((partialParameterValueMap, parameter) => {
-                            partialParameterValueMap[parameter] = [ ];
+        const parameterValueMaps = nestedParameterValuesMapAsArray.map((nestedParameterValuesMap) => {
+            const parameterValueMap: IParameterValuesMap = parameters.reduce<IParameterValuesMap>((partialParameterValueMap, parameter) => {
+                partialParameterValueMap[parameter] = [];
 
-                            return partialParameterValueMap;
-                        }, { });
+                return partialParameterValueMap;
+            }, {});
 
-                    mapRoute(route, parameters, parameterValueMap, nestedParameterValuesMap);
+            mapRoute(route, parameters, parameterValueMap, nestedParameterValuesMap);
 
-                    return parameterValueMap;
-                });
-
-            return { parameterValueMaps, route };
+            return parameterValueMap;
         });
+
+        return { parameterValueMaps, route };
+    });
 };

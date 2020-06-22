@@ -1,5 +1,3 @@
 export interface IParameterValuesMap {
-
-    [ parameter: string ]: string[];
-
+    [parameter: string]: string[];
 }

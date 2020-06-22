@@ -1,22 +1,23 @@
 const { mapRoutes } = require('../../../src/functions/map-routes');
 
-const TEST_CASES = [ // eslint-disable-line padding-line-between-statements
+// eslint-disable-next-line padding-line-between-statements
+const TEST_CASES = [
     {
         mappedRoutes: [
             {
-                parameterValueMaps: [ ],
+                parameterValueMaps: [],
                 route: '/a/route'
             }
         ],
-        parameters: { },
-        routes: [ '/a/route' ]
+        parameters: {},
+        routes: ['/a/route']
     },
     {
         mappedRoutes: [
             {
                 parameterValueMaps: [
                     {
-                        ':parameter': [ 'value' ]
+                        ':parameter': ['value']
                     }
                 ],
                 route: '/a/route/with/one/:parameter'
@@ -25,37 +26,37 @@ const TEST_CASES = [ // eslint-disable-line padding-line-between-statements
         parameters: {
             ':parameter': 'value'
         },
-        routes: [ '/a/route/with/one/:parameter' ]
+        routes: ['/a/route/with/one/:parameter']
     },
     {
         mappedRoutes: [
             {
                 parameterValueMaps: [
                     {
-                        ':aParameter': [ 'value' ],
-                        ':anotherParameter': [ 'anotherValue' ]
+                        ':aParameter': ['value'],
+                        ':anotherParameter': ['anotherValue']
                     }
                 ],
                 route: '/a/route/with/:aParameter/and/:anotherParameter'
             }
         ],
         parameters: {
-            ':aParameter': [ 'value' ],
-            ':anotherParameter': [ 'anotherValue' ]
+            ':aParameter': ['value'],
+            ':anotherParameter': ['anotherValue']
         },
-        routes: [ '/a/route/with/:aParameter/and/:anotherParameter' ]
+        routes: ['/a/route/with/:aParameter/and/:anotherParameter']
     },
     {
         mappedRoutes: [
             {
                 parameterValueMaps: [
                     {
-                        ':aParameter': [ 'value' ],
-                        ':anotherParameter': [ 'anotherValue' ]
+                        ':aParameter': ['value'],
+                        ':anotherParameter': ['anotherValue']
                     },
                     {
-                        ':aParameter': [ 'value' ],
-                        ':anotherParameter': [ 'yetAnotherValue' ]
+                        ':aParameter': ['value'],
+                        ':anotherParameter': ['yetAnotherValue']
                     }
                 ],
                 route: '/a/route/with/:aParameter/and/:anotherParameter'
@@ -63,23 +64,23 @@ const TEST_CASES = [ // eslint-disable-line padding-line-between-statements
         ],
         parameters: [
             {
-                ':aParameter': [ 'value' ],
-                ':anotherParameter': [ 'anotherValue' ]
+                ':aParameter': ['value'],
+                ':anotherParameter': ['anotherValue']
             },
             {
-                ':aParameter': [ 'value' ],
-                ':anotherParameter': [ 'yetAnotherValue' ]
+                ':aParameter': ['value'],
+                ':anotherParameter': ['yetAnotherValue']
             }
         ],
-        routes: [ '/a/route/with/:aParameter/and/:anotherParameter' ]
+        routes: ['/a/route/with/:aParameter/and/:anotherParameter']
     },
     {
         mappedRoutes: [
             {
                 parameterValueMaps: [
                     {
-                        ':aParameter': [ 'value' ],
-                        ':anotherParameter': [ 'anotherValue' ]
+                        ':aParameter': ['value'],
+                        ':anotherParameter': ['anotherValue']
                     }
                 ],
                 route: '/a/route/with/:aParameter/and/:anotherParameter'
@@ -87,8 +88,8 @@ const TEST_CASES = [ // eslint-disable-line padding-line-between-statements
             {
                 parameterValueMaps: [
                     {
-                        ':aParameter': [ 'anAdditionalValue', 'value' ],
-                        ':anotherParameter': [ 'yetAnotherValue' ]
+                        ':aParameter': ['anAdditionalValue', 'value'],
+                        ':anotherParameter': ['yetAnotherValue']
                     }
                 ],
                 route: '/another/route/with/:aParameter/and/:anotherParameter'
@@ -96,29 +97,22 @@ const TEST_CASES = [ // eslint-disable-line padding-line-between-statements
         ],
         parameters: {
             '/a/route/with': {
-                ':anotherParameter': [ 'anotherValue' ]
+                ':anotherParameter': ['anotherValue']
             },
             '/another/route/with': {
-                ':aParameter': [ 'anAdditionalValue' ],
-                ':anotherParameter': [ 'yetAnotherValue' ]
+                ':aParameter': ['anAdditionalValue'],
+                ':anotherParameter': ['yetAnotherValue']
             },
-            ':aParameter': [ 'value' ]
+            ':aParameter': ['value']
         },
-        routes: [
-            '/a/route/with/:aParameter/and/:anotherParameter',
-            '/another/route/with/:aParameter/and/:anotherParameter'
-        ]
+        routes: ['/a/route/with/:aParameter/and/:anotherParameter', '/another/route/with/:aParameter/and/:anotherParameter']
     }
 ];
 
 describe('mapRoutes()', () => {
-
     for (const { mappedRoutes, parameters, routes } of TEST_CASES) {
-
         it('should return the mapped routes', () => {
             expect(mapRoutes(routes, parameters)).to.deep.equal(mappedRoutes);
         });
-
     }
-
 });

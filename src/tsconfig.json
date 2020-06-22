@@ -1,9 +1,6 @@
 {
-  "compilerOptions": {
-    "lib": [
-      "dom",
-      "es2019"
-    ]
-  },
-  "extends": "tsconfig-holy-grail/src/tsconfig-node"
+    "compilerOptions": {
+        "lib": ["dom", "es2019"]
+    },
+    "extends": "tsconfig-holy-grail/src/tsconfig-node"
 }

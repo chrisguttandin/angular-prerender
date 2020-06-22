@@ -10,19 +10,18 @@ import { loadPeerDependencies } from './functions/load-peer-dependencies';
 import { readProperty } from './functions/read-property';
 import { ICommandLineArguments } from './interfaces';
 
-const missingPeerDependencies = peerDependencies
-    .filter((peerDependency) => {
-        try {
-            require.resolve(peerDependency, { paths: [ cwd() ]});
-        } catch {
-            return true;
-        }
+const missingPeerDependencies = peerDependencies.filter((peerDependency) => {
+    try {
+        require.resolve(peerDependency, { paths: [cwd()] });
+    } catch {
+        return true;
+    }
 
-        return false;
-    });
+    return false;
+});
 
 if (missingPeerDependencies.length > 0) {
-    throw new Error(`Some of the required peer dependencies could not be found. (${ missingPeerDependencies.join(', ') })`);
+    throw new Error(`Some of the required peer dependencies could not be found. (${missingPeerDependencies.join(', ')})`);
 }
 
 if (require.main !== module) {
@@ -40,7 +39,7 @@ if (require.main !== module) {
         preserveIndexHtml: shouldPreserveIndexHtml,
         serverTarget,
         verbose: isVerbose
-    } = (<yargs.Argv<ICommandLineArguments>> yargs)
+    } = (<yargs.Argv<ICommandLineArguments>>yargs)
         .help()
         .option('browser-target', {
             coerce: coerceTargetSpecifier,
@@ -91,8 +90,7 @@ if (require.main !== module) {
             describe: 'set this flag if you prefer more detailed log messages',
             type: 'boolean'
         })
-        .strict()
-        .argv;
+        .strict().argv;
 
     // @todo Use import() instead of require() when dropping support for Node v10.
     const { prerender }: typeof import('./functions/prerender') = require('./functions/prerender'); // tslint:disable-line:max-line-length no-require-imports

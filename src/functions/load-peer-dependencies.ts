@@ -8,16 +8,18 @@
 export const loadPeerDependencies = async (cwd: string) => {
     const loadPeerDependency = (id: string) => {
         // @todo Use import() instead of require() when dropping support for Node v10.
-        return require(require.resolve(id, { paths: [ cwd ] }));
+        return require(require.resolve(id, { paths: [cwd] }));
     };
 
     const loadOptionalPeerDependency = (id: string) => {
         // Optional peer dependencies may not be installed which is why it may fail to load them.
         try {
             return loadPeerDependency(id);
-        } catch { /* */ }
+        } catch {
+            /* */
+        }
 
-        return { };
+        return {};
     };
 
     loadPeerDependency('zone.js/dist/zone-node');

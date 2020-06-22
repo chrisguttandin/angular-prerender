@@ -1,1 +1,1 @@
-export type TTargetSpecifier = [ null, string, null ] | [ string, string, null ] | [ string, string, string ];
+export type TTargetSpecifier = [null, string, null] | [string, string, null] | [string, string, string];

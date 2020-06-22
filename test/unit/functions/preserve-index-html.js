@@ -2,7 +2,6 @@ const { preserveIndexHtml } = require('../../../src/functions/preserve-index-htm
 const { stub } = require('sinon');
 
 describe('preserveIndexHtml()', () => {
-
     let browserOutputPath;
     let document;
     let readFileAsync;
@@ -16,7 +15,6 @@ describe('preserveIndexHtml()', () => {
     });
 
     describe('with a missing ngsw.json file', () => {
-
         beforeEach(() => {
             const err = new Error('a fake error');
 
@@ -28,44 +26,39 @@ describe('preserveIndexHtml()', () => {
         it('should save the document as start.html', async () => {
             await preserveIndexHtml(browserOutputPath, document, readFileAsync, writeFileAsync);
 
-            expect(writeFileAsync).to.have.been.calledOnce.and.calledWithExactly(`${ browserOutputPath }/start.html`, document);
+            expect(writeFileAsync).to.have.been.calledOnce.and.calledWithExactly(`${browserOutputPath}/start.html`, document);
         });
 
         it('should read the file at ngsw.json', async () => {
             await preserveIndexHtml(browserOutputPath, document, readFileAsync, writeFileAsync);
 
-            expect(readFileAsync).to.have.been.calledOnce.and.calledWithExactly(`${ browserOutputPath }/ngsw.json`, 'utf8');
+            expect(readFileAsync).to.have.been.calledOnce.and.calledWithExactly(`${browserOutputPath}/ngsw.json`, 'utf8');
         });
 
         it('should return false', async () => {
             expect(await preserveIndexHtml(browserOutputPath, document, readFileAsync, writeFileAsync)).to.equal(false);
         });
-
     });
 
     describe('with an unparsable ngsw.json file', () => {
-
         beforeEach(() => {
             readFileAsync.resolves('an/unparsable[json]document');
         });
 
         it('should throw an error', (done) => {
-            preserveIndexHtml(browserOutputPath, document, readFileAsync, writeFileAsync)
-                .catch((err) => {
-                    expect(err).to.be.an.instanceOf(SyntaxError);
+            preserveIndexHtml(browserOutputPath, document, readFileAsync, writeFileAsync).catch((err) => {
+                expect(err).to.be.an.instanceOf(SyntaxError);
 
-                    done();
-                });
+                done();
+            });
         });
-
     });
 
     describe('with a parsable ngsw.json file', () => {
-
         let ngswObject;
 
         beforeEach(() => {
-            ngswObject = { };
+            ngswObject = {};
 
             readFileAsync.callsFake(() => Promise.resolve(JSON.stringify(ngswObject)));
         });
@@ -73,7 +66,10 @@ describe('preserveIndexHtml()', () => {
         it('should write the unchanged ngswObject', async () => {
             await preserveIndexHtml(browserOutputPath, document, readFileAsync, writeFileAsync);
 
-            expect(writeFileAsync).to.have.been.calledTwice.and.calledWithExactly(`${ browserOutputPath }/ngsw.json`, JSON.stringify(ngswObject));
+            expect(writeFileAsync).to.have.been.calledTwice.and.calledWithExactly(
+                `${browserOutputPath}/ngsw.json`,
+                JSON.stringify(ngswObject)
+            );
         });
 
         it('should return true', async () => {
@@ -81,41 +77,42 @@ describe('preserveIndexHtml()', () => {
         });
 
         describe('with the index.html as index', () => {
-
-            beforeEach(() => ngswObject.index = '/index.html');
+            beforeEach(() => (ngswObject.index = '/index.html'));
 
             it('should replace the index before writing the ngswObject', async () => {
                 await preserveIndexHtml(browserOutputPath, document, readFileAsync, writeFileAsync);
 
-                expect(writeFileAsync).to.have.been.calledTwice.and.calledWithExactly(`${ browserOutputPath }/ngsw.json`, JSON.stringify({ index: '/start.html' }));
+                expect(writeFileAsync).to.have.been.calledTwice.and.calledWithExactly(
+                    `${browserOutputPath}/ngsw.json`,
+                    JSON.stringify({ index: '/start.html' })
+                );
             });
-
         });
 
         describe('with assetGroups that contain the index.html file as url', () => {
-
-            beforeEach(() => ngswObject.assetGroups = [ { urls: [ '/index.html' ] } ]);
+            beforeEach(() => (ngswObject.assetGroups = [{ urls: ['/index.html'] }]));
 
             it('should replace the url inside of assetGroups before writing the ngswObject', async () => {
                 await preserveIndexHtml(browserOutputPath, document, readFileAsync, writeFileAsync);
 
-                expect(writeFileAsync).to.have.been.calledTwice.and.calledWithExactly(`${ browserOutputPath }/ngsw.json`, JSON.stringify({ assetGroups: [ { urls: [ '/start.html' ] } ] }));
+                expect(writeFileAsync).to.have.been.calledTwice.and.calledWithExactly(
+                    `${browserOutputPath}/ngsw.json`,
+                    JSON.stringify({ assetGroups: [{ urls: ['/start.html'] }] })
+                );
             });
-
         });
 
         describe('with a hashTable that contains the index.html with its hash', () => {
-
-            beforeEach(() => ngswObject.hashTable = { '/index.html': 'a-fake-hash-value' });
+            beforeEach(() => (ngswObject.hashTable = { '/index.html': 'a-fake-hash-value' }));
 
             it('should replace the url inside of the hashTable before writing the ngswObject', async () => {
                 await preserveIndexHtml(browserOutputPath, document, readFileAsync, writeFileAsync);
 
-                expect(writeFileAsync).to.have.been.calledTwice.and.calledWithExactly(`${ browserOutputPath }/ngsw.json`, JSON.stringify({ hashTable: { '/start.html': 'a-fake-hash-value' } }));
+                expect(writeFileAsync).to.have.been.calledTwice.and.calledWithExactly(
+                    `${browserOutputPath}/ngsw.json`,
+                    JSON.stringify({ hashTable: { '/start.html': 'a-fake-hash-value' } })
+                );
             });
-
         });
-
     });
-
 });

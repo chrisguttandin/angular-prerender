@@ -36,23 +36,23 @@ export const prerender = async (
     enableProdMode();
 
     if (isVerbose) {
-        console.log(chalk`{gray The path of the angular.json config file is "${ config }".}`); // tslint:disable-line:max-line-length no-console
+        console.log(chalk`{gray The path of the angular.json config file is "${config}".}`); // tslint:disable-line:max-line-length no-console
     }
 
-    const { defaultProject, projects } = <experimental.workspace.WorkspaceSchema> require(config);
+    const { defaultProject, projects } = <experimental.workspace.WorkspaceSchema>require(config);
 
     const browserOutputPath = join(dirname(config), readProperty(projects, defaultProject, browserTarget, 'outputPath'), sep);
     const serverOutputPath = join(dirname(config), readProperty(projects, defaultProject, serverTarget, 'outputPath'), sep);
 
     if (isVerbose) {
-        console.log(chalk`{gray The resolved output path of the browser target is "${ browserOutputPath }".}`); // tslint:disable-line:max-line-length no-console
-        console.log(chalk`{gray The resolved output path of the server target is "${ serverOutputPath }".}`); // tslint:disable-line:max-line-length no-console
+        console.log(chalk`{gray The resolved output path of the browser target is "${browserOutputPath}".}`); // tslint:disable-line:max-line-length no-console
+        console.log(chalk`{gray The resolved output path of the server target is "${serverOutputPath}".}`); // tslint:disable-line:max-line-length no-console
     }
 
     const main = join(serverOutputPath, 'main');
 
     if (isVerbose) {
-        console.log(chalk`{gray The path of the main.js file is "${ main }".}`); // tslint:disable-line:max-line-length no-console
+        console.log(chalk`{gray The path of the main.js file is "${main}".}`); // tslint:disable-line:max-line-length no-console
     }
 
     const unbundledMain = await unbundleTokens(main);
@@ -66,55 +66,63 @@ export const prerender = async (
     const index = join(browserOutputPath, 'index.html');
 
     if (isVerbose) {
-        console.log(chalk`{gray The path of the index.html file is "${ index }".}`); // tslint:disable-line:max-line-length no-console
+        console.log(chalk`{gray The path of the index.html file is "${index}".}`); // tslint:disable-line:max-line-length no-console
     }
 
     const document = await readFileAsync(index, 'utf8');
     const tsConfig = join(cwd(), readProperty(projects, defaultProject, browserTarget, 'tsConfig'));
 
     if (isVerbose) {
-        console.log(chalk`{gray The path of the tsconfig.json file used to retrieve the routes is "${ tsConfig }".}`); // tslint:disable-line:max-line-length no-console
+        console.log(chalk`{gray The path of the tsconfig.json file used to retrieve the routes is "${tsConfig}".}`); // tslint:disable-line:max-line-length no-console
     }
 
     const retrievedRoutes = retrieveRoutes(
         tsConfig,
-        (err) => console.log(chalk`{yellow Retrieving the routes statically threw an error with the following message "${ err.message }".}`) // tslint:disable-line:max-line-length no-console
+        // tslint:disable-next-line no-console
+        (err) => console.log(chalk`{yellow Retrieving the routes statically threw an error with the following message "${err.message}".}`)
     );
 
     if (includeRoutes.length === 0 && retrievedRoutes.length === 0) {
-        console.log(chalk`{yellow No routes could be retrieved and no routes are included manually thus the default route at "/" will be added.}`); // tslint:disable-line:max-line-length no-console
+        // tslint:disable-next-line no-console
+        console.log(
+            chalk`{yellow No routes could be retrieved and no routes are included manually thus the default route at "/" will be added.}`
+        );
 
         retrievedRoutes.push('/');
     }
 
-    const mappedRoutes = mapRoutes([ ...includeRoutes, ...retrievedRoutes ], nestedParameterValues);
-    const renderableRoutesWithParameters = mappedRoutes
-        .filter(({ parameterValueMaps, route }) => {
-            if (route.match(/\*\*/) !== null) {
-                console.log(chalk`{yellow The route at "${ route }" will not be rendered because it contains a wildcard.}`); // tslint:disable-line:max-line-length no-console
+    const mappedRoutes = mapRoutes([...includeRoutes, ...retrievedRoutes], nestedParameterValues);
+    const renderableRoutesWithParameters = mappedRoutes.filter(({ parameterValueMaps, route }) => {
+        if (route.match(/\*\*/) !== null) {
+            console.log(chalk`{yellow The route at "${route}" will not be rendered because it contains a wildcard.}`); // tslint:disable-line:max-line-length no-console
 
-                return false;
-            }
+            return false;
+        }
 
-            if (excludeRoutes.includes(route)) {
-                console.log(chalk`{yellow The route at "${ route }" was excluded.}`); // tslint:disable-line:max-line-length no-console
+        if (excludeRoutes.includes(route)) {
+            console.log(chalk`{yellow The route at "${route}" was excluded.}`); // tslint:disable-line:max-line-length no-console
 
-                return false;
-            }
+            return false;
+        }
 
-            return parameterValueMaps.length === 0 || parameterValueMaps
-                .every((parameterValueMap) => Object
-                    .entries(parameterValueMap)
-                    .every(([ parameter, values ]) => {
-                        if (values.length === 0) {
-                            console.log(chalk`{yellow The route at "${ route }" will not be rendered because it contains a segement with an unspecified parameter "${ parameter }".}`); // tslint:disable-line:max-line-length no-console
+        return (
+            parameterValueMaps.length === 0 ||
+            parameterValueMaps.every((parameterValueMap) =>
+                Object.entries(parameterValueMap).every(([parameter, values]) => {
+                    if (values.length === 0) {
+                        // tslint:disable-next-line no-console
+                        console.log(
+                            chalk`{yellow The route at "${route}" will not be rendered because it contains a segement with an unspecified parameter "${parameter}".}`
+                        );
 
-                            return false;
-                        }
+                        return false;
+                    }
 
-                        return true;
-                    }));
-        });
+                    return true;
+                })
+            )
+        );
+    });
 
     const resolvedRoutes = resolveRoutes(renderableRoutesWithParameters);
 
@@ -144,18 +152,18 @@ export const prerender = async (
         const html = await render({
             document,
             extraProviders: [
-                (expressResponseToken === null)
-                    ? [ ]
+                expressResponseToken === null
+                    ? []
                     : {
-                        provide: expressResponseToken,
-                        useValue: expressResponse
-                    },
-                (hapiResponseToken === null)
-                    ? [ ]
+                          provide: expressResponseToken,
+                          useValue: expressResponse
+                      },
+                hapiResponseToken === null
+                    ? []
                     : {
-                        provide: hapiResponseToken,
-                        useValue: hapiResponse
-                    }
+                          provide: hapiResponseToken,
+                          useValue: hapiResponse
+                      }
             ],
             url: route
         });
@@ -163,7 +171,10 @@ export const prerender = async (
         if (shouldIgnoreStatusCode || statusCode < 300) {
             if (path === browserOutputPath) {
                 if (shouldPreserveIndexHtml) {
-                    console.log(chalk`{green The index.html file will be preserved as start.html because it would otherwise be overwritten.}`); // tslint:disable-line:no-console
+                    // tslint:disable-next-line no-console
+                    console.log(
+                        chalk`{green The index.html file will be preserved as start.html because it would otherwise be overwritten.}`
+                    );
 
                     const didUpdateNgServiceWorker = await preserveIndexHtml(browserOutputPath, document, readFileAsync, writeFileAsync);
 
@@ -171,15 +182,18 @@ export const prerender = async (
                         console.log(chalk`{green The ngsw.json file was updated to replace index.html with start.html.}`); // tslint:disable-line:max-line-length no-console
                     }
                 } else {
-                    console.log(chalk`{yellow The index.html file will be overwritten by the following route. This can be prevented by using the --preserve-index-html flag.}`); // tslint:disable-line:max-line-length no-console
+                    // tslint:disable-next-line no-console
+                    console.log(
+                        chalk`{yellow The index.html file will be overwritten by the following route. This can be prevented by using the --preserve-index-html flag.}`
+                    );
                 }
             }
 
             await writeFileAsync(join(path, 'index.html'), html);
 
-            console.log(chalk`{green The route at "${ route }" was rendered successfully.}`); // tslint:disable-line:no-console
+            console.log(chalk`{green The route at "${route}" was rendered successfully.}`); // tslint:disable-line:no-console
         } else {
-            console.log(chalk`{yellow The route at "${ route }" was skipped because it's status code was ${ statusCode }.}`); // tslint:disable-line:max-line-length no-console
+            console.log(chalk`{yellow The route at "${route}" was skipped because it's status code was ${statusCode}.}`); // tslint:disable-line:max-line-length no-console
         }
     }
 };

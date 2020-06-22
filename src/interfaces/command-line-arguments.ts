@@ -2,7 +2,6 @@ import { TTargetSpecifier } from '../types';
 import { INestedParameterValuesMap } from './nested-parameter-values-map';
 
 export interface ICommandLineArguments {
-
     browserTarget: TTargetSpecifier;
 
     config: string;
@@ -20,5 +19,4 @@ export interface ICommandLineArguments {
     serverTarget: TTargetSpecifier;
 
     verbose: boolean;
-
 }
