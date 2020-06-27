@@ -16,7 +16,7 @@ export const loadPeerDependencies = async (cwd: string) => {
         try {
             return loadPeerDependency(id);
         } catch {
-            /* */
+            // Ignore errors.
         }
 
         return {};
