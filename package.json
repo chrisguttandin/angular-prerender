@@ -41,7 +41,7 @@
         "@angular/platform-server": "^10.0.3",
         "@babel/core": "^7.10.5",
         "@babel/preset-env": "^7.10.4",
-        "@babel/register": "^7.10.4",
+        "@babel/register": "^7.10.5",
         "@commitlint/cli": "^9.1.1",
         "@commitlint/config-angular": "^9.1.1",
         "@types/yargs": "^15.0.5",
