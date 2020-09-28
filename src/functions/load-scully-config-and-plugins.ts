@@ -17,6 +17,34 @@ const createGetMyConfig = (pluginConfig: Map<TPluginName, JsonValue>, pluginFunc
     };
 };
 
+const createRegisterPlugin = (
+    pluginFunctionStore: WeakMap<TRenderPluginFunction, TPluginName>,
+    plugins: TPlugins,
+    scullyConfig: IScullyConfig
+) => {
+    return (type: 'render', name: TPluginName, plugin: TRenderPluginFunction) => {
+        let pluginsOfType = plugins.get(type);
+
+        if (pluginsOfType === undefined) {
+            pluginsOfType = new Map();
+
+            plugins.set(type, pluginsOfType);
+        }
+
+        pluginsOfType.set(
+            name,
+            (
+                ...[partialConfig, html, route]: Parameters<TWrappedPlugin<TRenderPluginFunction>>
+            ): ReturnType<TWrappedPlugin<TRenderPluginFunction>> => {
+                Object.assign(scullyConfig, partialConfig);
+
+                return plugin(html, route);
+            }
+        );
+        pluginFunctionStore.set(plugin, name);
+    };
+};
+
 const createSetPluginConfig = (pluginConfig: Map<TPluginName, JsonValue>) => {
     return (name: TPluginName, config: JsonValue) => pluginConfig.set(name, config);
 };
@@ -45,6 +73,7 @@ export const loadScullyConfigAndPlugins = async (
     const originalCache = require.cache[filename];
     const pluginConfigStore = new Map<TPluginName, JsonValue>();
     const pluginFunctionStore = new WeakMap<TRenderPluginFunction, TPluginName>();
+    const plugins = new Map<'render', Map<TPluginName, TWrappedPlugin<TRenderPluginFunction>>>();
     const scullyConfig = { defaultPostRenderers: [], distFolder: '', outDir: '' };
 
     require.cache[filename] = {
@@ -53,27 +82,7 @@ export const loadScullyConfigAndPlugins = async (
             createFolderFor,
             getMyConfig: createGetMyConfig(pluginConfigStore, pluginFunctionStore),
             logWarn,
-            registerPlugin: (type: 'render', name: TPluginName, plugin: TRenderPluginFunction) => {
-                let pluginsOfType = plugins.get(type);
-
-                if (pluginsOfType === undefined) {
-                    pluginsOfType = new Map();
-
-                    plugins.set(type, pluginsOfType);
-                }
-
-                pluginsOfType.set(
-                    name,
-                    (
-                        ...[partialConfig, html, route]: Parameters<TWrappedPlugin<TRenderPluginFunction>>
-                    ): ReturnType<TWrappedPlugin<TRenderPluginFunction>> => {
-                        Object.assign(scullyConfig, partialConfig);
-
-                        return plugin(html, route);
-                    }
-                );
-                pluginFunctionStore.set(plugin, name);
-            },
+            registerPlugin: createRegisterPlugin(pluginFunctionStore, plugins, scullyConfig),
             scullyConfig,
             setPluginConfig: createSetPluginConfig(pluginConfigStore)
         },
@@ -86,7 +95,6 @@ export const loadScullyConfigAndPlugins = async (
         require
     };
 
-    const plugins = new Map<'render', Map<TPluginName, TWrappedPlugin<TRenderPluginFunction>>>();
     const { config } = <{ config: IScullyConfig }>require(resolve(scullyConfigFile));
 
     if (originalCache === undefined) {
