@@ -1,6 +1,7 @@
 import { yellow } from 'chalk';
 import { mkdirSync } from 'fs';
 import { dirname, join, resolve, sep } from 'path';
+import { JsonValue } from 'type-fest';
 import { IScullyConfig } from '../interfaces';
 import { TPluginName, TPlugins, TRenderPluginFunction, TWrappedPlugin } from '../types';
 
@@ -8,7 +9,13 @@ const createFolderFor = (filename: string) => mkdirSync(dirname(filename), { rec
 
 const logWarn = (...text: unknown[]) => console.log(yellow(...text)); // tslint:disable-line:max-line-length no-console
 
-const getMyConfig = () => {}; // tslint:disable-line:no-empty
+const createGetMyConfig = (pluginConfig: Map<TPluginName, JsonValue>) => {
+    return (name: TPluginName): JsonValue => pluginConfig.get(name) ?? {};
+};
+
+const createSetPluginConfig = (pluginConfig: Map<TPluginName, JsonValue>) => {
+    return (name: TPluginName, config: JsonValue) => pluginConfig.set(name, config);
+};
 
 export const loadScullyConfigAndPlugins = async (
     cwd: string,
@@ -32,13 +39,14 @@ export const loadScullyConfigAndPlugins = async (
     paths.push(join(path, 'node_modules'));
 
     const originalCache = require.cache[filename];
+    const pluginConfigStore = new Map<TPluginName, JsonValue>();
     const scullyConfig = { defaultPostRenderers: [], distFolder: '', outDir: '' };
 
     require.cache[filename] = {
         children: [],
         exports: {
             createFolderFor,
-            getMyConfig,
+            getMyConfig: createGetMyConfig(pluginConfigStore),
             logWarn,
             registerPlugin: (type: 'render', name: TPluginName, plugin: TRenderPluginFunction) => {
                 let pluginsOfType = plugins.get(type);
@@ -60,7 +68,8 @@ export const loadScullyConfigAndPlugins = async (
                     }
                 );
             },
-            scullyConfig
+            scullyConfig,
+            setPluginConfig: createSetPluginConfig(pluginConfigStore)
         },
         filename,
         id: filename,
