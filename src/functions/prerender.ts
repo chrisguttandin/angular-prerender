@@ -5,8 +5,8 @@ import { mkdir, readFile, writeFile } from 'fs';
 import { dirname, join, sep } from 'path';
 import { cwd } from 'process';
 import { promisify } from 'util';
-import { INestedParameterValuesMap, IPartialExpressResponse, IPartialHapiResponse } from '../interfaces';
-import { TEnableProdModeFunction, TReadPropertyFunction, TTargetSpecifier } from '../types';
+import { INestedParameterValuesMap, IPartialExpressResponse, IPartialHapiResponse, IScullyConfig } from '../interfaces';
+import { TEnableProdModeFunction, TPlugins, TReadPropertyFunction, TTargetSpecifier } from '../types';
 import { bindRenderFunction } from './bind-render-function';
 import { mapRoutes } from './map-routes';
 import { preserveIndexHtml } from './preserve-index-html';
@@ -29,6 +29,8 @@ export const prerender = async (
     isVerbose: boolean,
     nestedParameterValues: INestedParameterValuesMap | INestedParameterValuesMap[],
     readProperty: TReadPropertyFunction,
+    scullyConfig: null | IScullyConfig,
+    scullyPlugins: null | TPlugins,
     serverTarget: TTargetSpecifier,
     shouldIgnoreStatusCode: boolean,
     shouldPreserveIndexHtml: boolean
@@ -168,6 +170,27 @@ export const prerender = async (
             url: route
         });
 
+        const transformedHtml =
+            scullyConfig !== null && scullyPlugins !== null
+                ? await scullyConfig.defaultPostRenderers.reduce<Promise<string>>((promisedHtml, pluginName) => {
+                      const renderPlugins = scullyPlugins.get('render');
+
+                      if (renderPlugins === undefined) {
+                          return promisedHtml;
+                      }
+
+                      const renderPlugin = renderPlugins.get(pluginName);
+
+                      if (renderPlugin === undefined) {
+                          return promisedHtml;
+                      }
+
+                      return promisedHtml.then((partiallyTransformedHtml) =>
+                          renderPlugin({ outDir: browserOutputPath, distFolder: browserOutputPath }, partiallyTransformedHtml, { route })
+                      );
+                  }, Promise.resolve(html))
+                : html;
+
         if (shouldIgnoreStatusCode || statusCode < 300) {
             if (path === browserOutputPath) {
                 if (shouldPreserveIndexHtml) {
@@ -189,7 +212,7 @@ export const prerender = async (
                 }
             }
 
-            await writeFileAsync(join(path, 'index.html'), html);
+            await writeFileAsync(join(path, 'index.html'), transformedHtml);
 
             console.log(chalk`{green The route at "${route}" was rendered successfully.}`); // tslint:disable-line:no-console
         } else {

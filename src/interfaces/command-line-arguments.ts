@@ -16,6 +16,8 @@ export interface ICommandLineArguments {
 
     preserveIndexHtml: boolean;
 
+    scullyConfig?: string;
+
     serverTarget: TTargetSpecifier;
 
     verbose: boolean;
