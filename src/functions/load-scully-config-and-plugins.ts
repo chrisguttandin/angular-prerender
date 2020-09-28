@@ -9,8 +9,12 @@ const createFolderFor = (filename: string) => mkdirSync(dirname(filename), { rec
 
 const logWarn = (...text: unknown[]) => console.log(yellow(...text)); // tslint:disable-line:max-line-length no-console
 
-const createGetMyConfig = (pluginConfig: Map<TPluginName, JsonValue>) => {
-    return (name: TPluginName): JsonValue => pluginConfig.get(name) ?? {};
+const createGetMyConfig = (pluginConfig: Map<TPluginName, JsonValue>, pluginFunctionStore: WeakMap<TRenderPluginFunction, TPluginName>) => {
+    return (plugin: TRenderPluginFunction): JsonValue => {
+        const name = pluginFunctionStore.get(plugin);
+
+        return name === undefined ? {} : pluginConfig.get(name) ?? {};
+    };
 };
 
 const createSetPluginConfig = (pluginConfig: Map<TPluginName, JsonValue>) => {
@@ -40,13 +44,14 @@ export const loadScullyConfigAndPlugins = async (
 
     const originalCache = require.cache[filename];
     const pluginConfigStore = new Map<TPluginName, JsonValue>();
+    const pluginFunctionStore = new WeakMap<TRenderPluginFunction, TPluginName>();
     const scullyConfig = { defaultPostRenderers: [], distFolder: '', outDir: '' };
 
     require.cache[filename] = {
         children: [],
         exports: {
             createFolderFor,
-            getMyConfig: createGetMyConfig(pluginConfigStore),
+            getMyConfig: createGetMyConfig(pluginConfigStore, pluginFunctionStore),
             logWarn,
             registerPlugin: (type: 'render', name: TPluginName, plugin: TRenderPluginFunction) => {
                 let pluginsOfType = plugins.get(type);
@@ -67,6 +72,7 @@ export const loadScullyConfigAndPlugins = async (
                         return plugin(html, route);
                     }
                 );
+                pluginFunctionStore.set(plugin, name);
             },
             scullyConfig,
             setPluginConfig: createSetPluginConfig(pluginConfigStore)
