@@ -1,7 +1,7 @@
 const { exec } = require('child_process');
 const { mkdir, mkdtemp, readFile, writeFile } = require('fs');
 const { tmpdir } = require('os');
-const { join } = require('path');
+const { join, sep } = require('path');
 const { cwd, env } = require('process');
 const { promisify } = require('util');
 const rimraf = require('rimraf');
@@ -37,7 +37,7 @@ describe('angular-prerender', () => {
     before(async function () {
         this.timeout(600000);
 
-        directory = env.TRAVIS ? await makeFakedTemporaryDirectory() : await mkdtempAsync(tmpdir());
+        directory = env.TRAVIS ? await makeFakedTemporaryDirectory() : await mkdtempAsync(`${tmpdir()}${sep}`);
 
         await execAsync('npx @angular/cli new universe --no-interactive --routing', { cwd: directory });
 
