@@ -1,5 +1,5 @@
 import 'core-js/es/reflect'; // tslint:disable-line:no-submodule-imports
-import { experimental } from '@angular-devkit/core'; // tslint:disable-line:ordered-imports
+import { WorkspaceSchema } from '@schematics/angular/utility/workspace-models'; // tslint:disable-line:no-submodule-imports ordered-imports
 import chalk from 'chalk';
 import { mkdir, readFile, writeFile } from 'fs';
 import { dirname, join, sep } from 'path';
@@ -41,7 +41,7 @@ export const prerender = async (
         console.log(chalk`{gray The path of the angular.json config file is "${config}".}`); // tslint:disable-line:max-line-length no-console
     }
 
-    const { defaultProject, projects } = <experimental.workspace.WorkspaceSchema>require(config);
+    const { defaultProject, projects } = <WorkspaceSchema>require(config);
 
     const browserOutputPath = join(dirname(config), readProperty(projects, defaultProject, browserTarget, 'outputPath'), sep);
     const serverOutputPath = join(dirname(config), readProperty(projects, defaultProject, serverTarget, 'outputPath'), sep);
