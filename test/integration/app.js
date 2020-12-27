@@ -39,11 +39,11 @@ describe('angular-prerender', () => {
 
         directory = env.CI ? await makeFakedTemporaryDirectory() : await mkdtempAsync(`${tmpdir()}${sep}`);
 
-        await execAsync('npx @angular/cli new universe --no-interactive --routing', { cwd: directory });
+        await execAsync('npx --package @angular/cli --call "ng new universe --no-interactive --routing"', { cwd: directory });
 
         projectDirectory = join(directory, 'universe');
 
-        await execAsync('ng generate universal --client-project universe', { cwd: projectDirectory });
+        await execAsync('npx --package @angular/cli --call "ng generate universal --client-project universe"', { cwd: projectDirectory });
         await execAsync('git add --all', { cwd: projectDirectory });
         await execAsync('git commit --amend --no-edit', { cwd: projectDirectory });
 
@@ -72,8 +72,8 @@ describe('angular-prerender', () => {
                 beforeEach(async function () {
                     this.timeout(600000);
 
-                    await execAsync('ng build', { cwd: projectDirectory });
-                    await execAsync('ng run universe:server', { cwd: projectDirectory });
+                    await execAsync('npx --package @angular/cli --call "ng build"', { cwd: projectDirectory });
+                    await execAsync('npx --package @angular/cli --call "ng run universe:server"', { cwd: projectDirectory });
                 });
 
                 describe('when installed as peer dependency', () => {
@@ -129,8 +129,8 @@ describe('angular-prerender', () => {
                                 )
                         );
 
-                        await execAsync('ng build', { cwd: projectDirectory });
-                        await execAsync('ng run universe:server', { cwd: projectDirectory });
+                        await execAsync('npx --package @angular/cli --call "ng build"', { cwd: projectDirectory });
+                        await execAsync('npx --package @angular/cli --call "ng run universe:server"', { cwd: projectDirectory });
                     });
 
                     describe('when installed as peer dependency', () => {
@@ -180,8 +180,8 @@ describe('angular-prerender', () => {
                                 )
                         );
 
-                        await execAsync('ng build', { cwd: projectDirectory });
-                        await execAsync('ng run universe:server', { cwd: projectDirectory });
+                        await execAsync('npx --package @angular/cli --call "ng build"', { cwd: projectDirectory });
+                        await execAsync('npx --package @angular/cli --call "ng run universe:server"', { cwd: projectDirectory });
                     });
 
                     describe('when installed as peer dependency', () => {
@@ -239,8 +239,8 @@ describe('angular-prerender', () => {
                                 )
                         );
 
-                        await execAsync('ng build', { cwd: projectDirectory });
-                        await execAsync('ng run universe:server', { cwd: projectDirectory });
+                        await execAsync('npx --package @angular/cli --call "ng build"', { cwd: projectDirectory });
+                        await execAsync('npx --package @angular/cli --call "ng run universe:server"', { cwd: projectDirectory });
                     });
 
                     describe('when installed as peer dependency', () => {
@@ -290,8 +290,8 @@ describe('angular-prerender', () => {
                                 )
                         );
 
-                        await execAsync('ng build', { cwd: projectDirectory });
-                        await execAsync('ng run universe:server', { cwd: projectDirectory });
+                        await execAsync('npx --package @angular/cli --call "ng build"', { cwd: projectDirectory });
+                        await execAsync('npx --package @angular/cli --call "ng run universe:server"', { cwd: projectDirectory });
                     });
 
                     describe('when installed as peer dependency', () => {
