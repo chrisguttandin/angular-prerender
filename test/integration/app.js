@@ -37,7 +37,7 @@ describe('angular-prerender', () => {
     before(async function () {
         this.timeout(600000);
 
-        directory = env.TRAVIS ? await makeFakedTemporaryDirectory() : await mkdtempAsync(`${tmpdir()}${sep}`);
+        directory = env.CI ? await makeFakedTemporaryDirectory() : await mkdtempAsync(`${tmpdir()}${sep}`);
 
         await execAsync('npx @angular/cli new universe --no-interactive --routing', { cwd: directory });
 
