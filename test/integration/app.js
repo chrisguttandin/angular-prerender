@@ -39,6 +39,11 @@ describe('angular-prerender', () => {
 
         directory = env.CI ? await makeFakedTemporaryDirectory() : await mkdtempAsync(`${tmpdir()}${sep}`);
 
+        if (env.CI) {
+            await execAsync('git config --global user.email "user@example.com"');
+            await execAsync('git config --global user.name "user"');
+        }
+
         await execAsync('npx --package @angular/cli --call "ng new universe --no-interactive --routing"', { cwd: directory });
 
         projectDirectory = join(directory, 'universe');
