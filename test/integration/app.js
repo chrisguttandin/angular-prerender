@@ -222,7 +222,7 @@ describe('angular-prerender', () => {
                 beforeEach(async function () {
                     this.timeout(600000);
 
-                    await execAsync('npm install @nguniversal/hapi-engine @hapi/hapi', { cwd: projectDirectory });
+                    await execAsync('npm install --legacy-peer-deps @nguniversal/hapi-engine @hapi/hapi', { cwd: projectDirectory });
                 });
 
                 describe('with a status code below 300', () => {
