@@ -62,7 +62,7 @@
         "prettier": "^2.2.1",
         "pretty-quick": "^3.1.0",
         "rxjs": "^6.6.3",
-        "sinon": "^9.2.3",
+        "sinon": "^9.2.4",
         "sinon-chai": "^3.5.0",
         "tsconfig-holy-grail": "^11.0.41",
         "tslint": "^6.1.3",
