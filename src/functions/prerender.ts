@@ -173,20 +173,22 @@ export const prerender = async (
         const transformedHtml =
             scullyConfig !== null && scullyPlugins !== null
                 ? await scullyConfig.defaultPostRenderers.reduce<Promise<string>>((promisedHtml, pluginName) => {
-                      const renderPlugins = scullyPlugins.get('render');
+                      const postProcessPlugins = scullyPlugins.get('postProcessByHtml');
 
-                      if (renderPlugins === undefined) {
+                      if (postProcessPlugins === undefined) {
                           return promisedHtml;
                       }
 
-                      const renderPlugin = renderPlugins.get(pluginName);
+                      const postProcessPlugin = postProcessPlugins.get(pluginName);
 
-                      if (renderPlugin === undefined) {
+                      if (postProcessPlugin === undefined) {
                           return promisedHtml;
                       }
 
                       return promisedHtml.then((partiallyTransformedHtml) =>
-                          renderPlugin({ outDir: browserOutputPath, distFolder: browserOutputPath }, partiallyTransformedHtml, { route })
+                          postProcessPlugin({ outDir: browserOutputPath, distFolder: browserOutputPath }, partiallyTransformedHtml, {
+                              route
+                          })
                       );
                   }, Promise.resolve(html))
                 : html;

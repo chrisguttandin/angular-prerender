@@ -1,16 +1,19 @@
 import { yellow } from 'chalk';
 import { mkdirSync } from 'fs';
 import { dirname, join, resolve, sep } from 'path';
-import { JsonValue } from 'type-fest';
+import { Entry, JsonValue } from 'type-fest';
 import { IScullyConfig } from '../interfaces';
-import { TPluginName, TPlugins, TRenderPluginFunction, TWrappedPlugin } from '../types';
+import { TPluginName, TPluginType, TPlugins, TPostProcessByHtmlPluginFunction, TWrappedPlugin } from '../types';
 
 const createFolderFor = (filename: string) => mkdirSync(dirname(filename), { recursive: true });
 
 const logWarn = (...text: unknown[]) => console.log(yellow(...text)); // tslint:disable-line:max-line-length no-console
 
-const createGetMyConfig = (pluginConfig: Map<TPluginName, JsonValue>, pluginFunctionStore: WeakMap<TRenderPluginFunction, TPluginName>) => {
-    return (plugin: TRenderPluginFunction): JsonValue => {
+const createGetMyConfig = (
+    pluginConfig: Map<TPluginName, JsonValue>,
+    pluginFunctionStore: WeakMap<TPostProcessByHtmlPluginFunction, TPluginName>
+) => {
+    return (plugin: TPostProcessByHtmlPluginFunction): JsonValue => {
         const name = pluginFunctionStore.get(plugin);
 
         return name === undefined ? {} : pluginConfig.get(name) ?? {};
@@ -18,24 +21,26 @@ const createGetMyConfig = (pluginConfig: Map<TPluginName, JsonValue>, pluginFunc
 };
 
 const createRegisterPlugin = (
-    pluginFunctionStore: WeakMap<TRenderPluginFunction, TPluginName>,
+    pluginFunctionStore: WeakMap<TPostProcessByHtmlPluginFunction, TPluginName>,
     plugins: TPlugins,
     scullyConfig: IScullyConfig
 ) => {
-    return (type: 'render', name: TPluginName, plugin: TRenderPluginFunction) => {
-        let pluginsOfType = plugins.get(type);
+    return (type: TPluginType, name: TPluginName, plugin: TPostProcessByHtmlPluginFunction) => {
+        const sanitizedType = type === 'render' ? 'postProcessByHtml' : type;
+
+        let pluginsOfType = plugins.get(sanitizedType);
 
         if (pluginsOfType === undefined) {
             pluginsOfType = new Map();
 
-            plugins.set(type, pluginsOfType);
+            plugins.set(sanitizedType, pluginsOfType);
         }
 
         pluginsOfType.set(
             name,
             (
-                ...[partialConfig, html, route]: Parameters<TWrappedPlugin<TRenderPluginFunction>>
-            ): ReturnType<TWrappedPlugin<TRenderPluginFunction>> => {
+                ...[partialConfig, html, route]: Parameters<TWrappedPlugin<TPostProcessByHtmlPluginFunction>>
+            ): ReturnType<TWrappedPlugin<TPostProcessByHtmlPluginFunction>> => {
                 Object.assign(scullyConfig, partialConfig);
 
                 return plugin(html, route);
@@ -72,8 +77,9 @@ export const loadScullyConfigAndPlugins = async (
 
     const originalCache = require.cache[filename];
     const pluginConfigStore = new Map<TPluginName, JsonValue>();
-    const pluginFunctionStore = new WeakMap<TRenderPluginFunction, TPluginName>();
-    const plugins = new Map<'render', Map<TPluginName, TWrappedPlugin<TRenderPluginFunction>>>();
+    const pluginFunctionStore = new WeakMap<TPostProcessByHtmlPluginFunction, TPluginName>();
+    const plugins = new Map<Entry<TPlugins>[0], Entry<TPlugins>[1]>();
+
     const scullyConfig = { defaultPostRenderers: [], distFolder: '', outDir: '' };
 
     require.cache[filename] = {

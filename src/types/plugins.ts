@@ -1,5 +1,6 @@
 import { TPluginName } from './plugin-name';
-import { TRenderPluginFunction } from './render-plugin-function';
+import { TPluginType } from './plugin-type';
+import { TPostProcessByHtmlPluginFunction } from './post-process-by-html-plugin-function';
 import { TWrappedPlugin } from './wrapped-plugin-function';
 
-export type TPlugins = Map<'render', Map<TPluginName, TWrappedPlugin<TRenderPluginFunction>>>;
+export type TPlugins = Map<Exclude<TPluginType, 'render'>, Map<TPluginName, TWrappedPlugin<TPostProcessByHtmlPluginFunction>>>;
