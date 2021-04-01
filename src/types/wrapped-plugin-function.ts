@@ -1,3 +1,3 @@
 import { IScullyConfig } from '../interfaces';
 
-export type TWrappedPlugin<T extends (...args: any) => any> = (config: Partial<IScullyConfig>, ...args: Parameters<T>) => ReturnType<T>;
+export type TWrappedPlugin<T> = T extends (...args: infer U) => infer V ? (config: Partial<IScullyConfig>, ...args: U) => V : never;

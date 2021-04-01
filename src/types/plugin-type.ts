@@ -1,1 +1,1 @@
-export type TPluginType = 'postProcessByHtml' | 'render';
+export type TPluginType = 'postProcessByHtml' | 'render' | 'routeProcess';

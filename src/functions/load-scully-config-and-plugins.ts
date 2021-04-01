@@ -1,9 +1,17 @@
 import { yellow } from 'chalk';
 import { mkdirSync } from 'fs';
 import { dirname, join, resolve, sep } from 'path';
-import { Entry, JsonValue } from 'type-fest';
+import { JsonValue } from 'type-fest';
 import { IScullyConfig } from '../interfaces';
-import { TPluginName, TPluginType, TPlugins, TPostProcessByHtmlPluginFunction, TWrappedPlugin } from '../types';
+import {
+    TPluginFunction,
+    TPluginName,
+    TPluginType,
+    TPlugins,
+    TPostProcessByHtmlPluginFunction,
+    TRouteProcessPluginFunction
+} from '../types';
+import { TRegisterPluginFunction } from '../types/register-plugin-function';
 
 const createFolderFor = (filename: string) => mkdirSync(dirname(filename), { recursive: true });
 
@@ -21,31 +29,71 @@ const createGetMyConfig = (
 };
 
 const createRegisterPlugin = (
-    pluginFunctionStore: WeakMap<TPostProcessByHtmlPluginFunction, TPluginName>,
+    pluginFunctionStore: WeakMap<TPluginFunction, TPluginName>,
     plugins: TPlugins,
     scullyConfig: IScullyConfig
-) => {
-    return (type: TPluginType, name: TPluginName, plugin: TPostProcessByHtmlPluginFunction) => {
+): TRegisterPluginFunction => {
+    return (type: TPluginType, name: TPluginName, plugin: TPluginFunction, priority = 100) => {
         const sanitizedType = type === 'render' ? 'postProcessByHtml' : type;
 
-        let pluginsOfType = plugins.get(sanitizedType);
+        if (sanitizedType === 'postProcessByHtml') {
+            let pluginsOfType = plugins.get(sanitizedType);
 
-        if (pluginsOfType === undefined) {
-            pluginsOfType = new Map();
+            if (pluginsOfType === undefined) {
+                pluginsOfType = new Map();
 
-            plugins.set(sanitizedType, pluginsOfType);
+                plugins.set(sanitizedType, pluginsOfType);
+            }
+
+            let pluginsWithSamePriority = pluginsOfType.get(priority);
+
+            if (pluginsWithSamePriority === undefined) {
+                pluginsWithSamePriority = [];
+
+                pluginsOfType.set(priority, pluginsWithSamePriority);
+            }
+
+            pluginsWithSamePriority.push([
+                name,
+                (
+                    partialConfig: Partial<IScullyConfig>,
+                    ...args: Parameters<TPostProcessByHtmlPluginFunction>
+                ): ReturnType<TPostProcessByHtmlPluginFunction> => {
+                    Object.assign(scullyConfig, partialConfig);
+
+                    return (<TPostProcessByHtmlPluginFunction>plugin)(...args);
+                }
+            ]);
+        } else {
+            let pluginsOfType = plugins.get(sanitizedType);
+
+            if (pluginsOfType === undefined) {
+                pluginsOfType = new Map();
+
+                plugins.set(sanitizedType, pluginsOfType);
+            }
+
+            let pluginsWithSamePriority = pluginsOfType.get(priority);
+
+            if (pluginsWithSamePriority === undefined) {
+                pluginsWithSamePriority = [];
+
+                pluginsOfType.set(priority, pluginsWithSamePriority);
+            }
+
+            pluginsWithSamePriority.push([
+                name,
+                (
+                    partialConfig: Partial<IScullyConfig>,
+                    ...args: Parameters<TRouteProcessPluginFunction>
+                ): ReturnType<TRouteProcessPluginFunction> => {
+                    Object.assign(scullyConfig, partialConfig);
+
+                    return (<TRouteProcessPluginFunction>plugin)(...args);
+                }
+            ]);
         }
 
-        pluginsOfType.set(
-            name,
-            (
-                ...[partialConfig, html, route]: Parameters<TWrappedPlugin<TPostProcessByHtmlPluginFunction>>
-            ): ReturnType<TWrappedPlugin<TPostProcessByHtmlPluginFunction>> => {
-                Object.assign(scullyConfig, partialConfig);
-
-                return plugin(html, route);
-            }
-        );
         pluginFunctionStore.set(plugin, name);
     };
 };
@@ -77,8 +125,8 @@ export const loadScullyConfigAndPlugins = async (
 
     const originalCache = require.cache[filename];
     const pluginConfigStore = new Map<TPluginName, JsonValue>();
-    const pluginFunctionStore = new WeakMap<TPostProcessByHtmlPluginFunction, TPluginName>();
-    const plugins = new Map<Entry<TPlugins>[0], Entry<TPlugins>[1]>();
+    const pluginFunctionStore = new WeakMap<TPluginFunction, TPluginName>();
+    const plugins: TPlugins = new Map();
 
     const scullyConfig = { defaultPostRenderers: [], distFolder: '', outDir: '' };
 

@@ -127,8 +127,30 @@ export const prerender = async (
     });
 
     const resolvedRoutes = resolveRoutes(renderableRoutesWithParameters);
+    const routeProcessPlugins = scullyPlugins === null ? [] : scullyPlugins.get('routeProcess') ?? [];
+    const routeProcessPluginEntries = Array.from(routeProcessPlugins.entries());
 
-    for (const route of resolvedRoutes) {
+    routeProcessPluginEntries.sort(([a], [b]) => a - b);
+
+    const processedRoutes = await routeProcessPluginEntries
+        .map(([, nameAndPlugin]) => nameAndPlugin.map(([, plugin]) => plugin))
+        .reduce(
+            (allRouteProcessPlugins, routeProcessPluginsForOnePriority) => [
+                ...allRouteProcessPlugins,
+                ...routeProcessPluginsForOnePriority
+            ],
+            []
+        )
+        .reduce(
+            (promisedRoutes, routeProcessPlugin) =>
+                promisedRoutes.then((partiallyProcessedRoutes) =>
+                    routeProcessPlugin({ outDir: browserOutputPath, distFolder: browserOutputPath }, partiallyProcessedRoutes)
+                ),
+            Promise.resolve(resolvedRoutes.map((route) => ({ route })))
+        )
+        .then((handledRoutes) => handledRoutes.map(({ route }) => route));
+
+    for (const route of processedRoutes) {
         const path = join(browserOutputPath, route, sep);
 
         await mkdirAsync(path, { recursive: true });
@@ -179,7 +201,13 @@ export const prerender = async (
                           return promisedHtml;
                       }
 
-                      const postProcessPlugin = postProcessPlugins.get(pluginName);
+                      const postProcessPluginsWithADefaultPriority = postProcessPlugins.get(100);
+
+                      if (postProcessPluginsWithADefaultPriority === undefined) {
+                          return promisedHtml;
+                      }
+
+                      const [, postProcessPlugin] = postProcessPluginsWithADefaultPriority.find(([name]) => name === pluginName) ?? [];
 
                       if (postProcessPlugin === undefined) {
                           return promisedHtml;
