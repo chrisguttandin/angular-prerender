@@ -127,7 +127,6 @@ export const loadScullyConfigAndPlugins = async (
     const pluginConfigStore = new Map<TPluginName, JsonValue>();
     const pluginFunctionStore = new WeakMap<TPluginFunction, TPluginName>();
     const plugins: TPlugins = new Map();
-
     const scullyConfig = { defaultPostRenderers: [], distFolder: '', outDir: '' };
 
     require.cache[filename] = {
@@ -149,7 +148,7 @@ export const loadScullyConfigAndPlugins = async (
         require
     };
 
-    const { config } = <{ config: IScullyConfig }>require(resolve(scullyConfigFile));
+    const { config } = <{ config: Partial<IScullyConfig> }>require(resolve(scullyConfigFile));
 
     if (originalCache === undefined) {
         delete require.cache[filename]; // tslint:disable-line:no-dynamic-delete
@@ -157,5 +156,5 @@ export const loadScullyConfigAndPlugins = async (
         require.cache[filename] = originalCache;
     }
 
-    return { config, plugins };
+    return { config: { ...scullyConfig, ...config }, plugins };
 };
