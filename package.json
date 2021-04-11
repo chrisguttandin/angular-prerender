@@ -24,7 +24,7 @@
     "dependencies": {
         "@schematics/angular": "^11.2.8",
         "chalk": "^4.1.0",
-        "core-js": "^3.10.0",
+        "core-js": "^3.10.1",
         "guess-parser": "^0.4.22",
         "tslib": "^2.2.0",
         "type-fest": "^1.0.1",
