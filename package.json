@@ -27,7 +27,7 @@
         "core-js": "^3.12.0",
         "guess-parser": "^0.4.22",
         "tslib": "^2.2.0",
-        "type-fest": "^1.1.0",
+        "type-fest": "^1.1.1",
         "typescript": "^4.2.4",
         "yargs": "^17.0.1"
     },
