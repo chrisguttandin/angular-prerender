@@ -113,6 +113,13 @@ describe('angular-prerender', () => {
 
                     await execAsync('npm install @nguniversal/express-engine express', { cwd: projectDirectory });
                     await execAsync('npm install @types/express --save-dev', { cwd: projectDirectory });
+
+                    const content = await readFileAsync(join(projectDirectory, 'tsconfig.server.json'), 'utf8');
+
+                    await writeFileAsync(
+                        join(projectDirectory, 'tsconfig.server.json'),
+                        content.replace(/"node"\n/, '"express",\n      "node"')
+                    );
                 });
 
                 describe('with a status code below 300', () => {
@@ -224,6 +231,13 @@ describe('angular-prerender', () => {
 
                     await execAsync('npm install @hapi/hapi @nguniversal/hapi-engine', { cwd: projectDirectory });
                     await execAsync('npm install @types/hapi__hapi --save-dev', { cwd: projectDirectory });
+
+                    const content = await readFileAsync(join(projectDirectory, 'tsconfig.server.json'), 'utf8');
+
+                    await writeFileAsync(
+                        join(projectDirectory, 'tsconfig.server.json'),
+                        content.replace(/"node"\n/, '"hapi__hapi",\n      "node"')
+                    );
                 });
 
                 describe('with a status code below 300', () => {
