@@ -134,13 +134,7 @@ export const prerender = async (
 
     const processedRoutes = await routeProcessPluginEntries
         .map(([, nameAndPlugin]) => nameAndPlugin.map(([, plugin]) => plugin))
-        .reduce(
-            (allRouteProcessPlugins, routeProcessPluginsForOnePriority) => [
-                ...allRouteProcessPlugins,
-                ...routeProcessPluginsForOnePriority
-            ],
-            []
-        )
+        .flat()
         .reduce(
             (promisedRoutes, routeProcessPlugin) =>
                 promisedRoutes.then((partiallyProcessedRoutes) =>

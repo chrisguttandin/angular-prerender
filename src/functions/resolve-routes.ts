@@ -23,5 +23,5 @@ export const resolveRoutes = (routesWithParameters: { parameterValueMaps: IParam
 
             return resolvedRoutes;
         })
-        .reduce((allResolvedRoutes, resolvedRoutesOfOneRoute) => [...allResolvedRoutes, ...resolvedRoutesOfOneRoute], []);
+        .flat();
 };
