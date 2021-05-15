@@ -57,7 +57,7 @@ export const prerender = async (
         console.log(chalk`{gray The path of the main.js file is "${main}".}`); // tslint:disable-line:max-line-length no-console
     }
 
-    const unbundledMain = await unbundleTokens(main);
+    const unbundledMain = await unbundleTokens(expressResponseToken, hapiResponseToken, main);
 
     if (isVerbose && main !== unbundledMain) {
         console.log(chalk`{gray The main.js contains bundled tokens which have been replaced with classic require statements.}`); // tslint:disable-line:max-line-length no-console
