@@ -111,8 +111,8 @@ describe('angular-prerender', () => {
                 beforeEach(async function () {
                     this.timeout(600000);
 
-                    await execAsync('npm install @nguniversal/express-engine', { cwd: projectDirectory });
-                    await execAsync('npm install @types/express-serve-static-core --save-dev', { cwd: projectDirectory });
+                    await execAsync('npm install @nguniversal/express-engine express', { cwd: projectDirectory });
+                    await execAsync('npm install @types/express --save-dev', { cwd: projectDirectory });
                 });
 
                 describe('with a status code below 300', () => {
@@ -222,7 +222,8 @@ describe('angular-prerender', () => {
                 beforeEach(async function () {
                     this.timeout(600000);
 
-                    await execAsync('npm install --legacy-peer-deps @nguniversal/hapi-engine @hapi/hapi', { cwd: projectDirectory });
+                    await execAsync('npm install @hapi/hapi @nguniversal/hapi-engine', { cwd: projectDirectory });
+                    await execAsync('npm install @types/hapi__hapi --save-dev', { cwd: projectDirectory });
                 });
 
                 describe('with a status code below 300', () => {
