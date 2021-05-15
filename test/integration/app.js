@@ -125,7 +125,7 @@ describe('angular-prerender', () => {
                             join(projectDirectory, 'src/app/app.component.ts'),
                             content
                                 .replace(
-                                    /}\sfrom\s'@angular\/core';/,
+                                    /\s*}\sfrom\s'@angular\/core';/,
                                     ", Inject } from '@angular/core'; import { RESPONSE } from '@nguniversal/express-engine/tokens';"
                                 )
                                 .replace(
@@ -176,7 +176,7 @@ describe('angular-prerender', () => {
                             join(projectDirectory, 'src/app/app.component.ts'),
                             content
                                 .replace(
-                                    /}\sfrom\s'@angular\/core';/,
+                                    /\s*}\sfrom\s'@angular\/core';/,
                                     ", Inject } from '@angular/core'; import { RESPONSE } from '@nguniversal/express-engine/tokens';"
                                 )
                                 .replace(
@@ -235,7 +235,7 @@ describe('angular-prerender', () => {
                             join(projectDirectory, 'src/app/app.component.ts'),
                             content
                                 .replace(
-                                    /}\sfrom\s'@angular\/core';/,
+                                    /\s*}\sfrom\s'@angular\/core';/,
                                     ", Inject } from '@angular/core'; import { RESPONSE } from '@nguniversal/hapi-engine/tokens';"
                                 )
                                 .replace(
@@ -286,7 +286,7 @@ describe('angular-prerender', () => {
                             join(projectDirectory, 'src/app/app.component.ts'),
                             content
                                 .replace(
-                                    /}\sfrom\s'@angular\/core';/,
+                                    /\s*}\sfrom\s'@angular\/core';/,
                                     ", Inject } from '@angular/core'; import { RESPONSE } from '@nguniversal/hapi-engine/tokens';"
                                 )
                                 .replace(
