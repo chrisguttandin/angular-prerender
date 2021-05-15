@@ -30,7 +30,7 @@ The following is a complete example which will generate a very basic static Angu
 ```shell
 npx @angular/cli new universe --routing
 cd universe
-ng generate universal --client-project universe
+ng generate universal --project universe
 npm install angular-prerender --save-dev
 ng build
 ng run universe:server
