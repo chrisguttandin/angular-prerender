@@ -30,18 +30,7 @@ if (require.main !== module) {
 }
 
 (async () => {
-    const {
-        browserTarget,
-        config,
-        excludeRoutes,
-        ignoreStatusCode: shouldIgnoreStatusCode,
-        includeRoutes,
-        parameterValues: nestedParameterValuesMap,
-        preserveIndexHtml: shouldPreserveIndexHtml,
-        scullyConfig: scullyConfigFile,
-        serverTarget,
-        verbose: isVerbose
-    } = (<yargs.Argv<ICommandLineArguments>>yargs)
+    const commandLineArguments = (<yargs.Argv<ICommandLineArguments>>yargs)
         .help()
         .option('browser-target', {
             coerce: coerceTargetSpecifier,
@@ -98,6 +87,22 @@ if (require.main !== module) {
         })
         .strict().argv;
 
+    if (commandLineArguments instanceof Promise) {
+        throw new Error('The command line arguments are expected to get parsed synchronously.');
+    }
+
+    const {
+        browserTarget,
+        config,
+        excludeRoutes,
+        ignoreStatusCode: shouldIgnoreStatusCode,
+        includeRoutes,
+        parameterValues: nestedParameterValuesMap,
+        preserveIndexHtml: shouldPreserveIndexHtml,
+        scullyConfig: scullyConfigFile,
+        serverTarget,
+        verbose: isVerbose
+    } = commandLineArguments;
     // @todo Use import() instead of require() when dropping support for Node v10.
     const { prerender }: typeof import('./functions/prerender') = require('./functions/prerender'); // tslint:disable-line:max-line-length no-require-imports
     const { enableProdMode, expressResponseToken, hapiResponseToken } = await loadPeerDependencies(cwd());
