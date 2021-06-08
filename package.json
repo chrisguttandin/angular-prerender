@@ -22,7 +22,7 @@
         }
     ],
     "dependencies": {
-        "@schematics/angular": "^12.0.2",
+        "@schematics/angular": "^12.0.3",
         "chalk": "^4.1.1",
         "core-js": "^3.13.0",
         "guess-parser": "^0.4.22",
