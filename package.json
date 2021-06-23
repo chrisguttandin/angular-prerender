@@ -78,12 +78,6 @@
         "src/"
     ],
     "homepage": "https://github.com/chrisguttandin/angular-prerender",
-    "husky": {
-        "hooks": {
-            "commit-msg": "commitlint --edit --extends @commitlint/config-angular",
-            "pre-commit": "pretty-quick --config config/prettier/config.json --staged && grunt lint"
-        }
-    },
     "keywords": [
         "Angular",
         "cli",
@@ -104,6 +98,7 @@
         "url": "https://github.com/chrisguttandin/angular-prerender.git"
     },
     "scripts": {
+        "prepare": "husky install",
         "prepublishOnly": "grunt build",
         "start": "node build/node/app.js",
         "test": "grunt test"
