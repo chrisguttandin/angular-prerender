@@ -50,7 +50,7 @@ describe('angular-prerender', () => {
 
         await execAsync('npx --package @angular/cli --call "ng generate universal --project universe"', { cwd: projectDirectory });
         await execAsync('git add --all', { cwd: projectDirectory });
-        await execAsync('git commit --amend --no-edit', { cwd: projectDirectory });
+        await execAsync('git commit --amend --no-edit --no-verify', { cwd: projectDirectory });
 
         await execAsync('npm pack');
     });
