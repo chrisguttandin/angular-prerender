@@ -1,7 +1,7 @@
 const { exec } = require('child_process');
 const { mkdir, mkdtemp, readFile, writeFile } = require('fs');
 const { tmpdir } = require('os');
-const { join, sep } = require('path');
+const { join, relative, sep } = require('path');
 const { cwd, env } = require('process');
 const { promisify } = require('util');
 const rimraf = require('rimraf');
@@ -15,7 +15,7 @@ const readFileAsync = promisify(readFile);
 const rimrafAsync = promisify(rimraf);
 const writeFileAsync = promisify(writeFile);
 const makeFakedTemporaryDirectory = async () => {
-    const fakedTemporaryDirectory = join(__dirname, 'temp');
+    const fakedTemporaryDirectory = join(cwd(), '..', 'temp');
 
     await mkdirAsync(fakedTemporaryDirectory);
 
@@ -29,7 +29,7 @@ describe('angular-prerender', () => {
     after(async function () {
         this.timeout(600000);
 
-        await execAsync(`rm angular-prerender-${version}.tgz`);
+        await execAsync(`rm ${join(directory, `angular-prerender-${version}.tgz`)}`);
 
         await rimrafAsync(directory);
     });
@@ -53,6 +53,7 @@ describe('angular-prerender', () => {
         await execAsync('git commit --amend --no-edit --no-verify', { cwd: projectDirectory });
 
         await execAsync('npm pack');
+        await execAsync(`mv ${join(cwd(), `angular-prerender-${version}.tgz`)} ${directory}`);
     });
 
     beforeEach(async () => {
@@ -85,7 +86,7 @@ describe('angular-prerender', () => {
                     it('should render the default URL', async function () {
                         this.timeout(600000);
 
-                        await execAsync(`npm install ${join(cwd(), `angular-prerender-${version}.tgz`)}`, { cwd: projectDirectory });
+                        await execAsync(`npm install ${join(directory, `angular-prerender-${version}.tgz`)}`, { cwd: projectDirectory });
                         await execAsync('npx angular-prerender', { cwd: projectDirectory });
 
                         const content = await readFileAsync(join(projectDirectory, 'dist/universe/browser/index.html'), 'utf8');
@@ -98,7 +99,9 @@ describe('angular-prerender', () => {
                     it('should render the default URL', async function () {
                         this.timeout(600000);
 
-                        await execAsync(`npx ${join(cwd(), `angular-prerender-${version}.tgz`)}`, { cwd: projectDirectory });
+                        await execAsync(`npx ${relative(projectDirectory, join(directory, `angular-prerender-${version}.tgz`))}`, {
+                            cwd: projectDirectory
+                        });
 
                         const content = await readFileAsync(join(projectDirectory, 'dist/universe/browser/index.html'), 'utf8');
 
@@ -149,7 +152,9 @@ describe('angular-prerender', () => {
                         it('should render the default URL', async function () {
                             this.timeout(600000);
 
-                            await execAsync(`npm install ${join(cwd(), `angular-prerender-${version}.tgz`)}`, { cwd: projectDirectory });
+                            await execAsync(`npm install ${join(directory, `angular-prerender-${version}.tgz`)}`, {
+                                cwd: projectDirectory
+                            });
                             await execAsync('npx angular-prerender --ignore-status-code false', { cwd: projectDirectory });
 
                             const content = await readFileAsync(join(projectDirectory, 'dist/universe/browser/index.html'), 'utf8');
@@ -162,9 +167,15 @@ describe('angular-prerender', () => {
                         it('should render the default URL', async function () {
                             this.timeout(600000);
 
-                            await execAsync(`npx ${join(cwd(), `angular-prerender-${version}.tgz --ignore-status-code false`)}`, {
-                                cwd: projectDirectory
-                            });
+                            await execAsync(
+                                `npx ${relative(
+                                    projectDirectory,
+                                    join(directory, `angular-prerender-${version}.tgz`)
+                                )} --ignore-status-code false`,
+                                {
+                                    cwd: projectDirectory
+                                }
+                            );
 
                             const content = await readFileAsync(join(projectDirectory, 'dist/universe/browser/index.html'), 'utf8');
 
@@ -200,7 +211,9 @@ describe('angular-prerender', () => {
                         it('should not render the default URL', async function () {
                             this.timeout(600000);
 
-                            await execAsync(`npm install ${join(cwd(), `angular-prerender-${version}.tgz`)}`, { cwd: projectDirectory });
+                            await execAsync(`npm install ${join(directory, `angular-prerender-${version}.tgz`)}`, {
+                                cwd: projectDirectory
+                            });
                             await execAsync('npx angular-prerender --ignore-status-code false', { cwd: projectDirectory });
 
                             const content = await readFileAsync(join(projectDirectory, 'dist/universe/browser/index.html'), 'utf8');
@@ -213,9 +226,15 @@ describe('angular-prerender', () => {
                         it('should not render the default URL', async function () {
                             this.timeout(600000);
 
-                            await execAsync(`npx ${join(cwd(), `angular-prerender-${version}.tgz`)} --ignore-status-code false`, {
-                                cwd: projectDirectory
-                            });
+                            await execAsync(
+                                `npx ${relative(
+                                    projectDirectory,
+                                    join(directory, `angular-prerender-${version}.tgz`)
+                                )} --ignore-status-code false`,
+                                {
+                                    cwd: projectDirectory
+                                }
+                            );
 
                             const content = await readFileAsync(join(projectDirectory, 'dist/universe/browser/index.html'), 'utf8');
 
@@ -267,7 +286,9 @@ describe('angular-prerender', () => {
                         it('should render the default URL', async function () {
                             this.timeout(600000);
 
-                            await execAsync(`npm install ${join(cwd(), `angular-prerender-${version}.tgz`)}`, { cwd: projectDirectory });
+                            await execAsync(`npm install ${join(directory, `angular-prerender-${version}.tgz`)}`, {
+                                cwd: projectDirectory
+                            });
                             await execAsync('npx angular-prerender --ignore-status-code false', { cwd: projectDirectory });
 
                             const content = await readFileAsync(join(projectDirectory, 'dist/universe/browser/index.html'), 'utf8');
@@ -280,9 +301,15 @@ describe('angular-prerender', () => {
                         it('should render the default URL', async function () {
                             this.timeout(600000);
 
-                            await execAsync(`npx ${join(cwd(), `angular-prerender-${version}.tgz --ignore-status-code false`)}`, {
-                                cwd: projectDirectory
-                            });
+                            await execAsync(
+                                `npx ${relative(
+                                    projectDirectory,
+                                    join(directory, `angular-prerender-${version}.tgz`)
+                                )} --ignore-status-code false`,
+                                {
+                                    cwd: projectDirectory
+                                }
+                            );
 
                             const content = await readFileAsync(join(projectDirectory, 'dist/universe/browser/index.html'), 'utf8');
 
@@ -318,7 +345,9 @@ describe('angular-prerender', () => {
                         it('should not render the default URL', async function () {
                             this.timeout(600000);
 
-                            await execAsync(`npm install ${join(cwd(), `angular-prerender-${version}.tgz`)}`, { cwd: projectDirectory });
+                            await execAsync(`npm install ${join(directory, `angular-prerender-${version}.tgz`)}`, {
+                                cwd: projectDirectory
+                            });
                             await execAsync('npx angular-prerender --ignore-status-code false', { cwd: projectDirectory });
 
                             const content = await readFileAsync(join(projectDirectory, 'dist/universe/browser/index.html'), 'utf8');
@@ -331,9 +360,15 @@ describe('angular-prerender', () => {
                         it('should not render the default URL', async function () {
                             this.timeout(600000);
 
-                            await execAsync(`npx ${join(cwd(), `angular-prerender-${version}.tgz`)} --ignore-status-code false`, {
-                                cwd: projectDirectory
-                            });
+                            await execAsync(
+                                `npx ${relative(
+                                    projectDirectory,
+                                    join(directory, `angular-prerender-${version}.tgz`)
+                                )} --ignore-status-code false`,
+                                {
+                                    cwd: projectDirectory
+                                }
+                            );
 
                             const content = await readFileAsync(join(projectDirectory, 'dist/universe/browser/index.html'), 'utf8');
 
