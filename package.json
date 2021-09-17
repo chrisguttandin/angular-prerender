@@ -59,7 +59,7 @@
         "husky": "^7.0.2",
         "load-grunt-config": "^4.0.1",
         "mocha": "^9.1.1",
-        "prettier": "^2.4.0",
+        "prettier": "^2.4.1",
         "pretty-quick": "^3.1.1",
         "rxjs": "^6.6.7",
         "sinon": "^11.1.2",
