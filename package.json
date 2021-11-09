@@ -53,7 +53,6 @@
         "eslint": "^7.32.0",
         "eslint-config-holy-grail": "^50.1.15",
         "grunt": "^1.4.1",
-        "grunt-cli": "^1.4.3",
         "husky": "^7.0.2",
         "load-grunt-config": "^4.0.1",
         "mocha": "^9.1.2",
