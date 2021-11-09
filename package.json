@@ -40,6 +40,7 @@
         "@angular/platform-browser": "^12.2.10",
         "@angular/platform-browser-dynamic": "^12.2.10",
         "@angular/platform-server": "^12.2.10",
+        "@babel/cli": "^7.15.7",
         "@babel/core": "^7.15.8",
         "@babel/preset-env": "^7.15.8",
         "@babel/register": "^7.15.3",
