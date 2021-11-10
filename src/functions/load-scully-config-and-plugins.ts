@@ -9,9 +9,9 @@ import {
     TPluginType,
     TPlugins,
     TPostProcessByHtmlPluginFunction,
+    TRegisterPluginFunction,
     TRouteProcessPluginFunction
 } from '../types';
-import { TRegisterPluginFunction } from '../types/register-plugin-function';
 
 const createFolderFor = (filename: string) => mkdirSync(dirname(filename), { recursive: true });
 
