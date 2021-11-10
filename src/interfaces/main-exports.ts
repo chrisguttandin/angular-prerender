@@ -1,12 +1,8 @@
-import { NgModuleFactory, Type } from '@angular/core';
-import { TRenderModuleFactoryFunction, TRenderModuleFunction } from '../types';
+import { Type } from '@angular/core';
+import { TRenderModuleFunction } from '../types';
 
 export interface IMainExports {
     AppServerModule: Type<any>;
 
-    AppServerModuleNgFactory?: NgModuleFactory<any>;
-
     renderModule: TRenderModuleFunction;
-
-    renderModuleFactory: TRenderModuleFactoryFunction;
 }

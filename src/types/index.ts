@@ -5,7 +5,6 @@ export * from './plugin-type';
 export * from './plugins';
 export * from './post-process-by-html-plugin-function';
 export * from './read-property-function';
-export * from './render-module-factory-function';
 export * from './render-module-function';
 export * from './register-plugin-function';
 export * from './route-process-plugin-function';
