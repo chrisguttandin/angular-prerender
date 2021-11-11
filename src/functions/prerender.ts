@@ -1,4 +1,3 @@
-import 'core-js/es/reflect'; // tslint:disable-line:no-submodule-imports
 import { WorkspaceSchema } from '@schematics/angular/utility/workspace-models'; // tslint:disable-line:no-submodule-imports ordered-imports
 import chalk from 'chalk';
 import { mkdir, readFile, writeFile } from 'fs';
