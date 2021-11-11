@@ -6,12 +6,12 @@ import { cwd } from 'process';
 import { promisify } from 'util';
 import { INestedParameterValuesMap, IPartialExpressResponse, IPartialHapiResponse, IScullyConfig } from '../interfaces';
 import { TEnableProdModeFunction, TPlugins, TReadPropertyFunction, TTargetSpecifier } from '../types';
-import { bindRenderFunction } from './bind-render-function';
-import { mapRoutes } from './map-routes';
-import { preserveIndexHtml } from './preserve-index-html';
-import { resolveRoutes } from './resolve-routes';
-import { retrieveRoutes } from './retrieve-routes';
-import { unbundleTokens } from './unbundle-tokens';
+import { bindRenderFunction } from './bind-render-function.js';
+import { mapRoutes } from './map-routes.js';
+import { preserveIndexHtml } from './preserve-index-html.js';
+import { resolveRoutes } from './resolve-routes.js';
+import { retrieveRoutes } from './retrieve-routes.js';
+import { unbundleTokens } from './unbundle-tokens.js';
 
 const mkdirAsync = promisify(mkdir);
 const readFileAsync = promisify(readFile);
@@ -40,7 +40,7 @@ export const prerender = async (
         console.log(chalk`{gray The path of the angular.json config file is "${config}".}`); // tslint:disable-line:max-line-length no-console
     }
 
-    const { defaultProject, projects } = <WorkspaceSchema>require(config);
+    const { defaultProject, projects } = <WorkspaceSchema>JSON.parse(await readFileAsync(config, 'utf8'));
 
     const browserOutputPath = join(dirname(config), readProperty(projects, defaultProject, browserTarget, 'outputPath'), sep);
     const serverOutputPath = join(dirname(config), readProperty(projects, defaultProject, serverTarget, 'outputPath'), sep);
@@ -50,7 +50,7 @@ export const prerender = async (
         console.log(chalk`{gray The resolved output path of the server target is "${serverOutputPath}".}`); // tslint:disable-line:max-line-length no-console
     }
 
-    const main = join(serverOutputPath, 'main');
+    const main = join(serverOutputPath, 'main.js');
 
     if (isVerbose) {
         console.log(chalk`{gray The path of the main.js file is "${main}".}`); // tslint:disable-line:max-line-length no-console
@@ -62,7 +62,7 @@ export const prerender = async (
         console.log(chalk`{gray The main.js contains bundled tokens which have been replaced with classic require statements.}`); // tslint:disable-line:max-line-length no-console
     }
 
-    const render = bindRenderFunction(unbundledMain);
+    const render = await bindRenderFunction(unbundledMain);
 
     const index = join(browserOutputPath, 'index.html');
 
@@ -172,13 +172,13 @@ export const prerender = async (
                 expressResponseToken === null
                     ? []
                     : {
-                          provide: expressResponseToken,
+                          provide: '_A_HOPEFULLY_UNIQUE_EXPRESS_RESPONSE_TOKEN_',
                           useValue: expressResponse
                       },
                 hapiResponseToken === null
                     ? []
                     : {
-                          provide: hapiResponseToken,
+                          provide: '_A_HOPEFULLY_UNIQUE_HAPI_RESPONSE_TOKEN_',
                           useValue: hapiResponse
                       }
             ],

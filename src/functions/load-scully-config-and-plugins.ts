@@ -1,4 +1,4 @@
-import { yellow } from 'chalk';
+import chalk from 'chalk';
 import { mkdirSync } from 'fs';
 import { dirname, join, resolve, sep } from 'path';
 import { JsonValue } from 'type-fest';
@@ -15,7 +15,7 @@ import {
 
 const createFolderFor = (filename: string) => mkdirSync(dirname(filename), { recursive: true });
 
-const logWarn = (...text: unknown[]) => console.log(yellow(...text)); // tslint:disable-line:max-line-length no-console
+const logWarn = (...text: unknown[]) => console.log(chalk.yellow(...text)); // tslint:disable-line:max-line-length no-console
 
 const createGetMyConfig = (
     pluginConfig: Map<TPluginName, JsonValue>,
@@ -104,6 +104,7 @@ const createSetPluginConfig = (pluginConfig: Map<TPluginName, JsonValue>) => {
 
 export const loadScullyConfigAndPlugins = async (
     cwd: string,
+    require: NodeRequire,
     scullyConfigFile?: string
 ): Promise<{ config: null; plugins: null } | { config: IScullyConfig; plugins: TPlugins }> => {
     if (scullyConfigFile === undefined) {
@@ -148,7 +149,7 @@ export const loadScullyConfigAndPlugins = async (
         require
     };
 
-    const { config } = <{ config: Partial<IScullyConfig> }>require(resolve(scullyConfigFile));
+    const { config } = <{ config: Partial<IScullyConfig> }>await import(resolve(scullyConfigFile));
 
     if (originalCache === undefined) {
         delete require.cache[filename]; // tslint:disable-line:no-dynamic-delete

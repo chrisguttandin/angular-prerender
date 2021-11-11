@@ -1,4 +1,4 @@
-const { coerceParameterValues } = require('../../../src/functions/coerce-parameter-values');
+import { coerceParameterValues } from '../../../build/node/functions/coerce-parameter-values.js';
 
 describe('coerceParameterValues()', () => {
     describe('with an unparsable string', () => {

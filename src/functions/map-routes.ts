@@ -1,5 +1,5 @@
 import { INestedParameterValuesMap, IParameterValuesMap } from '../interfaces';
-import { mapRoute } from './map-route';
+import { mapRoute } from './map-route.js';
 
 export const mapRoutes = (
     routes: string[],

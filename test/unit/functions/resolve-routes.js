@@ -1,4 +1,4 @@
-const { resolveRoutes } = require('../../../src/functions/resolve-routes');
+import { resolveRoutes } from '../../../build/node/functions/resolve-routes.js';
 
 describe('resolveRoutes()', () => {
     describe('without any parameters', () => {

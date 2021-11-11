@@ -1,13 +1,11 @@
-const { exec } = require('child_process');
-const { mkdir, mkdtemp, readFile, writeFile } = require('fs');
-const { tmpdir } = require('os');
-const { join, relative, sep } = require('path');
-const { cwd, env } = require('process');
-const { promisify } = require('util');
-const rimraf = require('rimraf');
-const { version } = require('../../package');
+import { cwd, env } from 'process';
+import { join, relative, sep } from 'path';
+import { mkdir, mkdtemp, readFile, readFileSync, writeFile } from 'fs';
+import { exec } from 'child_process';
+import { promisify } from 'util';
+import rimraf from 'rimraf';
+import { tmpdir } from 'os';
 
-// eslint-disable-next-line padding-line-between-statements
 const execAsync = promisify(exec);
 const mkdirAsync = promisify(mkdir);
 const mkdtempAsync = promisify(mkdtemp);
@@ -25,9 +23,12 @@ const makeFakedTemporaryDirectory = async () => {
 describe('angular-prerender', () => {
     let directory;
     let projectDirectory;
+    let version;
 
     after(async function () {
         this.timeout(600000);
+
+        ({ version } = JSON.parse(readFileSync(new URL('../../package.json', import.meta.url), 'utf8')));
 
         await execAsync(`rm ${join(directory, `angular-prerender-${version}.tgz`)}`);
 

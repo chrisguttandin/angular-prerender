@@ -1,6 +1,5 @@
-const { mapRoutes } = require('../../../src/functions/map-routes');
+import { mapRoutes } from '../../../build/node/functions/map-routes.js';
 
-// eslint-disable-next-line padding-line-between-statements
 const TEST_CASES = [
     {
         mappedRoutes: [

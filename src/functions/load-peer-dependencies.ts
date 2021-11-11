@@ -5,16 +5,13 @@
  * the current working directory. It has to be pointed at those packages
  * explicitly.
  */
-export const loadPeerDependencies = async (cwd: string) => {
-    const loadPeerDependency = (id: string) => {
-        // @todo Use import() instead of require() when dropping support for Node v10.
-        return require(require.resolve(id, { paths: [cwd] }));
-    };
+export const loadPeerDependencies = async (cwd: string, require: NodeRequire) => {
+    const loadPeerDependency = (id: string) => import(require.resolve(id, { paths: [cwd] }));
 
-    const loadOptionalPeerDependency = (id: string) => {
+    const loadOptionalPeerDependency = async (id: string) => {
         // Optional peer dependencies may not be installed which is why it may fail to load them.
         try {
-            return loadPeerDependency(id);
+            return await loadPeerDependency(id);
         } catch {
             // Ignore errors.
         }
@@ -22,11 +19,11 @@ export const loadPeerDependencies = async (cwd: string) => {
         return {};
     };
 
-    loadPeerDependency('zone.js/dist/zone-node');
+    await loadPeerDependency('zone.js/dist/zone-node');
 
-    const { enableProdMode } = loadPeerDependency('@angular/core');
-    const { RESPONSE: expressResponseToken = null } = loadOptionalPeerDependency('@nguniversal/express-engine/tokens');
-    const { RESPONSE: hapiResponseToken = null } = loadOptionalPeerDependency('@nguniversal/hapi-engine/tokens');
+    const { enableProdMode } = await loadPeerDependency('@angular/core');
+    const { RESPONSE: expressResponseToken = null } = await loadOptionalPeerDependency('@nguniversal/express-engine/tokens');
+    const { RESPONSE: hapiResponseToken = null } = await loadOptionalPeerDependency('@nguniversal/hapi-engine/tokens');
 
     return { enableProdMode, expressResponseToken, hapiResponseToken };
 };

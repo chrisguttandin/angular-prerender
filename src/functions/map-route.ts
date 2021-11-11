@@ -1,4 +1,5 @@
-import { isValue, isValueArray } from '../guards';
+import { isValueArray } from '../guards/value-array.js';
+import { isValue } from '../guards/value.js';
 import { INestedParameterValuesMap, IParameterValuesMap } from '../interfaces';
 
 export const mapRoute = (

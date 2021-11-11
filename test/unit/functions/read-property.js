@@ -1,4 +1,4 @@
-const { readProperty } = require('../../../src/functions/read-property');
+import { readProperty } from '../../../build/node/functions/read-property.js';
 
 describe('readProperty()', () => {
     describe('without any defined project', () => {

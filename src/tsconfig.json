@@ -1,6 +1,9 @@
 {
     "compilerOptions": {
-        "lib": ["dom", "es2019"]
+        "lib": ["dom", "es2020"],
+        "module": "es2020",
+        "outDir": "../build/es2020",
+        "target": "es2020"
     },
     "extends": "tsconfig-holy-grail/src/tsconfig-node"
 }

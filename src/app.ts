@@ -1,16 +1,18 @@
 #!/usr/bin/env node
 
+import module from 'module';
 import { join } from 'path';
-import { cwd } from 'process';
+import { argv, cwd } from 'process';
 import yargs from 'yargs';
-import { peerDependencies } from './constants';
-import { coerceParameterValues } from './functions/coerce-parameter-values';
-import { coerceTargetSpecifier } from './functions/coerce-target-specifier';
-import { loadPeerDependencies } from './functions/load-peer-dependencies';
-import { loadScullyConfigAndPlugins } from './functions/load-scully-config-and-plugins';
-import { readProperty } from './functions/read-property';
+import { peerDependencies } from './constants.js';
+import { coerceParameterValues } from './functions/coerce-parameter-values.js';
+import { coerceTargetSpecifier } from './functions/coerce-target-specifier.js';
+import { loadPeerDependencies } from './functions/load-peer-dependencies.js';
+import { loadScullyConfigAndPlugins } from './functions/load-scully-config-and-plugins.js';
+import { readProperty } from './functions/read-property.js';
 import { ICommandLineArguments } from './interfaces';
 
+const require = module.createRequire(import.meta.url);
 const missingPeerDependencies = peerDependencies.filter((peerDependency) => {
     try {
         require.resolve(peerDependency, { paths: [cwd()] });
@@ -25,12 +27,8 @@ if (missingPeerDependencies.length > 0) {
     throw new Error(`Some of the required peer dependencies could not be found. (${missingPeerDependencies.join(', ')})`);
 }
 
-if (require.main !== module) {
-    throw new Error('This script is meant to be executed from the command line.');
-}
-
 (async () => {
-    const commandLineArguments = (<yargs.Argv<ICommandLineArguments>>yargs)
+    const commandLineArguments = (<yargs.Argv<ICommandLineArguments>>yargs(argv.slice(2)))
         .help()
         .option('browser-target', {
             coerce: coerceTargetSpecifier,
@@ -103,10 +101,9 @@ if (require.main !== module) {
         serverTarget,
         verbose: isVerbose
     } = commandLineArguments;
-    // @todo Use import() instead of require() when dropping support for Node v10.
-    const { prerender }: typeof import('./functions/prerender') = require('./functions/prerender'); // tslint:disable-line:max-line-length no-require-imports
-    const { enableProdMode, expressResponseToken, hapiResponseToken } = await loadPeerDependencies(cwd());
-    const { config: scullyConfig, plugins: scullyPlugins } = await loadScullyConfigAndPlugins(cwd(), scullyConfigFile);
+    const { prerender } = await import('./functions/prerender.js');
+    const { enableProdMode, expressResponseToken, hapiResponseToken } = await loadPeerDependencies(cwd(), require);
+    const { config: scullyConfig, plugins: scullyPlugins } = await loadScullyConfigAndPlugins(cwd(), require, scullyConfigFile);
 
     prerender(
         browserTarget,

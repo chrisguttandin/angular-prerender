@@ -1,4 +1,5 @@
-import { isNestedParameterValuesMap, isNestedParameterValuesMapArray } from '../guards';
+import { isNestedParameterValuesMapArray } from '../guards/nested-parameter-values-map-array.js';
+import { isNestedParameterValuesMap } from '../guards/nested-parameter-values-map.js';
 import { INestedParameterValuesMap } from '../interfaces';
 
 export const coerceParameterValues = (parameterValues: string): INestedParameterValuesMap | INestedParameterValuesMap[] => {

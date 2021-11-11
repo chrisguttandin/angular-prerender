@@ -1,4 +1,4 @@
-const { coerceTargetSpecifier } = require('../../../src/functions/coerce-target-specifier');
+import { coerceTargetSpecifier } from '../../../build/node/functions/coerce-target-specifier.js';
 
 describe('coerceTargetSpecifier()', () => {
     describe('with a string that only includes a target', () => {

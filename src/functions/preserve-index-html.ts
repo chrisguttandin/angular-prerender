@@ -14,8 +14,7 @@ export const preserveIndexHtml = async (
 
     try {
         const ngswPath = join(browserOutputPath, 'ngsw.json');
-        const ngswString = await readFileAsync(ngswPath, 'utf8');
-        const ngswObject: INgServiceWorker = JSON.parse(ngswString);
+        const ngswObject: INgServiceWorker = JSON.parse(await readFileAsync(ngswPath, 'utf8'));
 
         if (ngswObject.index === INDEX_HTML_PATH) {
             ngswObject.index = START_HTML_PATH;

@@ -9,7 +9,7 @@ const ANGULAR_IMPORT_REGEX = /require\("@angular\/core"\)/;
 const INJECTION_TOKEN_REGEX = /const\sRESPONSE=new\sInjectionToken\("RESPONSE"\);/;
 
 export const unbundleTokens = async (expressResponseToken: any, hapiResponseToken: any, main: string) => {
-    const mainContent = await readFileAsync(`${main}.js`, 'utf8');
+    const mainContent = await readFileAsync(main, 'utf8');
 
     if (!ANGULAR_IMPORT_REGEX.test(mainContent)) {
         if (INJECTION_TOKEN_REGEX.test(mainContent)) {
@@ -21,15 +21,17 @@ export const unbundleTokens = async (expressResponseToken: any, hapiResponseToke
                 console.log(chalk`{yellow Both engines were found.}`); // tslint:disable-line:no-console
             }
 
-            const engine = expressResponseToken !== null ? 'express' : hapiResponseToken !== null ? 'hapi' : null;
+            const engine = expressResponseToken !== null ? 'EXPRESS' : hapiResponseToken !== null ? 'HAPI' : null;
 
             if (engine !== null) {
+                const unbundledMain = `${main}.unbundled.cjs`;
+
                 await writeFileAsync(
-                    `${main}.unbundled.js`,
-                    mainContent.replace(INJECTION_TOKEN_REGEX, `const {RESPONSE}=require("@nguniversal/${engine}-engine/tokens");`)
+                    unbundledMain,
+                    mainContent.replace(INJECTION_TOKEN_REGEX, `const RESPONSE="_A_HOPEFULLY_UNIQUE_${engine}_RESPONSE_TOKEN_";`)
                 );
 
-                return `${main}.unbundled`;
+                return unbundledMain;
             }
         }
     }

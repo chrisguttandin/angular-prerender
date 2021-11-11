@@ -1,5 +1,5 @@
 import { IParameterValuesMap } from '../interfaces';
-import { isNestedParameterValuesMap } from './nested-parameter-values-map';
+import { isNestedParameterValuesMap } from './nested-parameter-values-map.js';
 
 export const isNestedParameterValuesMapArray = (
     nestedParameterValuesMapArray: unknown
