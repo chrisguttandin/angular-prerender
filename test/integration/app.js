@@ -28,8 +28,6 @@ describe('angular-prerender', () => {
     after(async function () {
         this.timeout(600000);
 
-        ({ version } = JSON.parse(readFileSync(new URL('../../package.json', import.meta.url), 'utf8')));
-
         await execAsync(`rm ${join(directory, `angular-prerender-${version}.tgz`)}`);
 
         await rimrafAsync(directory);
@@ -39,6 +37,7 @@ describe('angular-prerender', () => {
         this.timeout(600000);
 
         directory = env.CI ? await makeFakedTemporaryDirectory() : await mkdtempAsync(`${tmpdir()}${sep}`);
+        ({ version } = JSON.parse(readFileSync(new URL('../../package.json', import.meta.url), 'utf8')));
 
         if (env.CI) {
             await execAsync('git config --global user.email "user@example.com"');
