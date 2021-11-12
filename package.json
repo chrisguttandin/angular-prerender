@@ -102,8 +102,8 @@
         "prepublishOnly": "npm run build",
         "start": "node build/node/app.js",
         "test": "npm run build && npm run test:integration && npm run test:unit",
-        "test:integration": "if [[ ${TYPE} == \"\" || ${TYPE} == \"integration\" ]]; then mocha --bail --parallel --recursive --require config/mocha/config-integration.js test/integration; fi",
-        "test:unit": "if [[ ${TYPE} == \"\" || ${TYPE} == \"unit\" ]]; then mocha --bail --parallel --recursive --require config/mocha/config-unit.js test/unit; fi"
+        "test:integration": "if [ \"$TYPE\" = \"\" -o \"$TYPE\" = \"integration\" ]; then mocha --bail --parallel --recursive --require config/mocha/config-integration.js test/integration; fi",
+        "test:unit": "if [ \"$TYPE\" = \"\" -o \"$TYPE\" = \"unit\" ]; then mocha --bail --parallel --recursive --require config/mocha/config-unit.js test/unit; fi"
     },
     "type": "module",
     "version": "9.0.28"
