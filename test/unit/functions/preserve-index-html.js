@@ -1,5 +1,5 @@
 import { preserveIndexHtml } from '../../../build/node/functions/preserve-index-html.js';
-import sinon from 'sinon';
+import { stub } from 'sinon';
 
 describe('preserveIndexHtml()', () => {
     let browserOutputPath;
@@ -10,8 +10,8 @@ describe('preserveIndexHtml()', () => {
     beforeEach(() => {
         browserOutputPath = '/browser/output/path';
         document = '<!DOCTYPE HTML><html lang="en"><head><meta charset="UTF-8"></head><body></body></html>';
-        readFileAsync = sinon.stub();
-        writeFileAsync = sinon.stub();
+        readFileAsync = stub();
+        writeFileAsync = stub();
     });
 
     describe('with a missing ngsw.json file', () => {
