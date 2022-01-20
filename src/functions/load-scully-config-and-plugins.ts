@@ -2,6 +2,7 @@ import chalk from 'chalk';
 import { mkdirSync } from 'fs';
 import { dirname, join, resolve, sep } from 'path';
 import { JsonValue } from 'type-fest';
+import { fileURLToPath } from 'url';
 import { IScullyConfig } from '../interfaces';
 import {
     TPluginFunction,
@@ -143,7 +144,7 @@ export const loadScullyConfigAndPlugins = async (
         filename,
         id: filename,
         loaded: true,
-        parent: require.cache[__dirname],
+        parent: require.cache[dirname(fileURLToPath(import.meta.url))],
         path: paths[0],
         paths,
         require
