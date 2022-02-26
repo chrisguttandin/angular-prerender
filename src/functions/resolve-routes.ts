@@ -1,7 +1,7 @@
 import { IParameterValuesMap } from '../interfaces';
 
-export const resolveRoutes = (routesWithParameters: { parameterValueMaps: IParameterValuesMap[]; route: string }[]) => {
-    return routesWithParameters
+export const resolveRoutes = (routesWithParameters: { parameterValueMaps: IParameterValuesMap[]; route: string }[]) =>
+    routesWithParameters
         .map(({ route, parameterValueMaps }) => {
             if (parameterValueMaps.length === 0) {
                 return [route];
@@ -24,4 +24,3 @@ export const resolveRoutes = (routesWithParameters: { parameterValueMaps: IParam
             return resolvedRoutes;
         })
         .flat();
-};

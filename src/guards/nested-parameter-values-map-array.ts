@@ -3,6 +3,5 @@ import { isNestedParameterValuesMap } from './nested-parameter-values-map.js';
 
 export const isNestedParameterValuesMapArray = (
     nestedParameterValuesMapArray: unknown
-): nestedParameterValuesMapArray is IParameterValuesMap[] => {
-    return Array.isArray(nestedParameterValuesMapArray) && nestedParameterValuesMapArray.every(isNestedParameterValuesMap);
-};
+): nestedParameterValuesMapArray is IParameterValuesMap[] =>
+    Array.isArray(nestedParameterValuesMapArray) && nestedParameterValuesMapArray.every(isNestedParameterValuesMap);

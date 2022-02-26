@@ -9,7 +9,7 @@ export const coerceParameterValues = (parameterValues: string): INestedParameter
         if (isNestedParameterValuesMapArray(json) || isNestedParameterValuesMap(json)) {
             return json;
         }
-    } catch {} // tslint:disable-line:no-empty
+    } catch {} // eslint-disable-line no-empty
 
     throw new Error(`Please specify valid parameter values. The given value "${parameterValues}" is invalid.`);
 };

@@ -31,6 +31,7 @@ export const readProperty: TReadPropertyFunction = (projects, defaultProject, ta
 
         if (configuration === undefined) {
             throw new Error(
+                // eslint-disable-next-line max-len
                 `The configuration "${targetSpecifier[2]}" was not found for the target "${targetSpecifier[1]}" inside the configuration of the "${projectSpecifier}" project.`
             );
         }

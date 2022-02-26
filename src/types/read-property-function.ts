@@ -1,4 +1,5 @@
-import { WorkspaceSchema } from '@schematics/angular/utility/workspace-models'; // tslint:disable-line:no-submodule-imports
+// eslint-disable-next-line import/no-internal-modules, node/file-extension-in-import
+import { WorkspaceSchema } from '@schematics/angular/utility/workspace-models';
 import { TTargetSpecifier } from '../types';
 
 export type TReadPropertyFunction = (

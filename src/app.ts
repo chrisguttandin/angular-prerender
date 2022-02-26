@@ -86,7 +86,7 @@ if (missingPeerDependencies.length > 0) {
         .strict().argv;
 
     if (commandLineArguments instanceof Promise) {
-        throw new Error('The command line arguments are expected to get parsed synchronously.');
+        throw new TypeError('The command line arguments are expected to get parsed synchronously.');
     }
 
     const {

@@ -1,8 +1,8 @@
-import chalk from 'chalk';
 import { mkdirSync } from 'fs';
 import { dirname, join, resolve, sep } from 'path';
-import { JsonValue } from 'type-fest';
 import { fileURLToPath } from 'url';
+import chalk from 'chalk';
+import { JsonValue } from 'type-fest';
 import { IScullyConfig } from '../interfaces';
 import {
     TPluginFunction,
@@ -15,26 +15,17 @@ import {
 } from '../types';
 
 const createFolderFor = (filename: string) => mkdirSync(dirname(filename), { recursive: true });
-
-const logWarn = (...text: unknown[]) => console.log(chalk.yellow(...text)); // tslint:disable-line:max-line-length no-console
-
-const createGetMyConfig = (
-    pluginConfig: Map<TPluginName, JsonValue>,
-    pluginFunctionStore: WeakMap<TPostProcessByHtmlPluginFunction, TPluginName>
-) => {
-    return (plugin: TPostProcessByHtmlPluginFunction): JsonValue => {
+const logWarn = (...text: unknown[]) => console.log(chalk.yellow(...text)); // eslint-disable-line no-console
+const createGetMyConfig =
+    (pluginConfig: Map<TPluginName, JsonValue>, pluginFunctionStore: WeakMap<TPostProcessByHtmlPluginFunction, TPluginName>) =>
+    (plugin: TPostProcessByHtmlPluginFunction): JsonValue => {
         const name = pluginFunctionStore.get(plugin);
 
         return name === undefined ? {} : pluginConfig.get(name) ?? {};
     };
-};
-
-const createRegisterPlugin = (
-    pluginFunctionStore: WeakMap<TPluginFunction, TPluginName>,
-    plugins: TPlugins,
-    scullyConfig: IScullyConfig
-): TRegisterPluginFunction => {
-    return (type: TPluginType, name: TPluginName, plugin: TPluginFunction, priority = 100) => {
+const createRegisterPlugin =
+    (pluginFunctionStore: WeakMap<TPluginFunction, TPluginName>, plugins: TPlugins, scullyConfig: IScullyConfig): TRegisterPluginFunction =>
+    (type: TPluginType, name: TPluginName, plugin: TPluginFunction, priority = 100) => {
         const sanitizedType = type === 'render' ? 'postProcessByHtml' : type;
 
         if (sanitizedType === 'postProcessByHtml') {
@@ -97,15 +88,12 @@ const createRegisterPlugin = (
 
         pluginFunctionStore.set(plugin, name);
     };
-};
-
-const createSetPluginConfig = (pluginConfig: Map<TPluginName, JsonValue>) => {
-    return (name: TPluginName, config: JsonValue) => pluginConfig.set(name, config);
-};
+const createSetPluginConfig = (pluginConfig: Map<TPluginName, JsonValue>) => (name: TPluginName, config: JsonValue) =>
+    pluginConfig.set(name, config);
 
 export const loadScullyConfigAndPlugins = async (
     cwd: string,
-    require: NodeRequire,
+    require: NodeRequire, // eslint-disable-line no-undef
     scullyConfigFile?: string
 ): Promise<{ config: null; plugins: null } | { config: IScullyConfig; plugins: TPlugins }> => {
     if (scullyConfigFile === undefined) {
@@ -153,7 +141,7 @@ export const loadScullyConfigAndPlugins = async (
     const { config } = <{ config: Partial<IScullyConfig> }>await import(resolve(scullyConfigFile));
 
     if (originalCache === undefined) {
-        delete require.cache[filename]; // tslint:disable-line:no-dynamic-delete
+        delete require.cache[filename]; // eslint-disable-line @typescript-eslint/no-dynamic-delete
     } else {
         require.cache[filename] = originalCache;
     }

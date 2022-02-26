@@ -1,5 +1,5 @@
 import { TTargetSpecifier } from '../types';
-import { INestedParameterValuesMap } from './nested-parameter-values-map';
+import { INestedParameterValuesMap } from './nested-parameter-values-map.js';
 
 export interface ICommandLineArguments {
     browserTarget: TTargetSpecifier;
