@@ -2,5 +2,13 @@
     "env": {
         "node": true
     },
-    "extends": "eslint-config-holy-grail"
+    "extends": "eslint-config-holy-grail",
+    "overrides": [
+        {
+            "files": ["*.ts"],
+            "rules": {
+                "node/file-extension-in-import": ["error", "always"]
+            }
+        }
+    ]
 }
