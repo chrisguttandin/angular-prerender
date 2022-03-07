@@ -60,7 +60,7 @@
         "sinon": "^13.0.1",
         "sinon-chai": "^3.7.0",
         "tsconfig-holy-grail": "^11.1.27",
-        "zone.js": "^0.11.4"
+        "zone.js": "^0.11.5"
     },
     "engines": {
         "node": ">=12.20.1"
