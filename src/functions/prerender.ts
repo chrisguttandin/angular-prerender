@@ -37,7 +37,7 @@ export const prerender = async (
     enableProdMode();
 
     if (isVerbose) {
-        console.log(chalk`{gray The path of the angular.json config file is "${config}".}`); // eslint-disable-line no-console
+        console.log(chalk.gray(`The path of the angular.json config file is "${config}".`)); // eslint-disable-line no-console
     }
 
     const { defaultProject, projects } = <WorkspaceSchema>JSON.parse(await readFileAsync(config, 'utf8'));
@@ -45,46 +45,46 @@ export const prerender = async (
     const serverOutputPath = join(dirname(config), readProperty(projects, defaultProject, serverTarget, 'outputPath'), sep);
 
     if (isVerbose) {
-        console.log(chalk`{gray The resolved output path of the browser target is "${browserOutputPath}".}`); // eslint-disable-line max-len, no-console
-        console.log(chalk`{gray The resolved output path of the server target is "${serverOutputPath}".}`); // eslint-disable-line max-len, no-console
+        console.log(chalk.gray(`The resolved output path of the browser target is "${browserOutputPath}".`)); // eslint-disable-line max-len, no-console
+        console.log(chalk.gray(`The resolved output path of the server target is "${serverOutputPath}".`)); // eslint-disable-line max-len, no-console
     }
 
     const main = join(serverOutputPath, 'main.js');
 
     if (isVerbose) {
-        console.log(chalk`{gray The path of the main.js file is "${main}".}`); // eslint-disable-line no-console
+        console.log(chalk.gray(`The path of the main.js file is "${main}".`)); // eslint-disable-line no-console
     }
 
     const unbundledMain = await unbundleTokens(expressResponseToken, hapiResponseToken, main);
 
     if (isVerbose && main !== unbundledMain) {
-        console.log(chalk`{gray The main.js contains bundled tokens which have been replaced with classic require statements.}`); // eslint-disable-line max-len, no-console
+        console.log(chalk.gray(`The main.js contains bundled tokens which have been replaced with classic require statements.`)); // eslint-disable-line max-len, no-console
     }
 
     const render = await bindRenderFunction(unbundledMain);
     const index = join(browserOutputPath, 'index.html');
 
     if (isVerbose) {
-        console.log(chalk`{gray The path of the index.html file is "${index}".}`); // eslint-disable-line no-console
+        console.log(chalk.gray(`The path of the index.html file is "${index}".`)); // eslint-disable-line no-console
     }
 
     const document = await readFileAsync(index, 'utf8');
     const tsConfig = join(cwd(), readProperty(projects, defaultProject, browserTarget, 'tsConfig'));
 
     if (isVerbose) {
-        console.log(chalk`{gray The path of the tsconfig.json file used to retrieve the routes is "${tsConfig}".}`); // eslint-disable-line max-len, no-console
+        console.log(chalk.gray(`The path of the tsconfig.json file used to retrieve the routes is "${tsConfig}".`)); // eslint-disable-line max-len, no-console
     }
 
     const retrievedRoutes = retrieveRoutes(
         tsConfig,
         // eslint-disable-next-line no-console
-        (err) => console.log(chalk`{yellow Retrieving the routes statically threw an error with the following message "${err.message}".}`)
+        (err) => console.log(chalk.yellow(`Retrieving the routes statically threw an error with the following message "${err.message}".`))
     );
 
     if (includeRoutes.length === 0 && retrievedRoutes.length === 0) {
         // eslint-disable-next-line no-console
         console.log(
-            chalk`{yellow No routes could be retrieved and no routes are included manually thus the default route at "/" will be added.}`
+            chalk.yellow(`No routes could be retrieved and no routes are included manually thus the default route at "/" will be added.`)
         );
 
         retrievedRoutes.push('/');
@@ -93,13 +93,13 @@ export const prerender = async (
     const mappedRoutes = mapRoutes([...includeRoutes, ...retrievedRoutes], nestedParameterValues);
     const renderableRoutesWithParameters = mappedRoutes.filter(({ parameterValueMaps, route }) => {
         if (route.match(/\*\*/) !== null) {
-            console.log(chalk`{yellow The route at "${route}" will not be rendered because it contains a wildcard.}`); // eslint-disable-line max-len, no-console
+            console.log(chalk.yellow(`The route at "${route}" will not be rendered because it contains a wildcard.`)); // eslint-disable-line max-len, no-console
 
             return false;
         }
 
         if (excludeRoutes.includes(route)) {
-            console.log(chalk`{yellow The route at "${route}" was excluded.}`); // eslint-disable-line no-console
+            console.log(chalk.yellow(`The route at "${route}" was excluded.`)); // eslint-disable-line no-console
 
             return false;
         }
@@ -109,8 +109,10 @@ export const prerender = async (
                 if (values.length === 0) {
                     // eslint-disable-next-line no-console
                     console.log(
-                        // eslint-disable-next-line max-len
-                        chalk`{yellow The route at "${route}" will not be rendered because it contains a segement with an unspecified parameter "${parameter}".}`
+                        chalk.yellow(
+                            // eslint-disable-next-line max-len
+                            `The route at "${route}" will not be rendered because it contains a segement with an unspecified parameter "${parameter}".`
+                        )
                     );
 
                     return false;
@@ -211,28 +213,30 @@ export const prerender = async (
                 if (shouldPreserveIndexHtml) {
                     // eslint-disable-next-line no-console
                     console.log(
-                        chalk`{green The index.html file will be preserved as start.html because it would otherwise be overwritten.}`
+                        chalk.green(`The index.html file will be preserved as start.html because it would otherwise be overwritten.`)
                     );
 
                     const didUpdateNgServiceWorker = await preserveIndexHtml(browserOutputPath, document, readFileAsync, writeFileAsync);
 
                     if (didUpdateNgServiceWorker) {
-                        console.log(chalk`{green The ngsw.json file was updated to replace index.html with start.html.}`); // eslint-disable-line max-len, no-console
+                        console.log(chalk.green(`The ngsw.json file was updated to replace index.html with start.html.`)); // eslint-disable-line max-len, no-console
                     }
                 } else {
                     // eslint-disable-next-line no-console
                     console.log(
-                        // eslint-disable-next-line max-len
-                        chalk`{yellow The index.html file will be overwritten by the following route. This can be prevented by using the --preserve-index-html flag.}`
+                        chalk.yellow(
+                            // eslint-disable-next-line max-len
+                            `The index.html file will be overwritten by the following route. This can be prevented by using the --preserve-index-html flag.`
+                        )
                     );
                 }
             }
 
             await writeFileAsync(join(path, 'index.html'), transformedHtml);
 
-            console.log(chalk`{green The route at "${route}" was rendered successfully.}`); // eslint-disable-line no-console
+            console.log(chalk.green(`The route at "${route}" was rendered successfully.`)); // eslint-disable-line no-console
         } else {
-            console.log(chalk`{yellow The route at "${route}" was skipped because it's status code was ${statusCode}.}`); // eslint-disable-line max-len, no-console
+            console.log(chalk.yellow(`The route at "${route}" was skipped because it's status code was ${statusCode}.`)); // eslint-disable-line max-len, no-console
         }
     }
 };

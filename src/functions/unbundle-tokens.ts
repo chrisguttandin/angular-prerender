@@ -14,11 +14,11 @@ export const unbundleTokens = async (expressResponseToken: any, hapiResponseToke
 
     if (!ANGULAR_IMPORT_REGEX.test(mainContent) && INJECTION_TOKEN_REGEX.test(mainContent)) {
         if (expressResponseToken === null && hapiResponseToken === null) {
-            console.log(chalk`{yellow No engine was found.}`); // eslint-disable-line no-console
+            console.log(chalk.yellow('No engine was found.')); // eslint-disable-line no-console
         }
 
         if (expressResponseToken !== null && hapiResponseToken !== null) {
-            console.log(chalk`{yellow Both engines were found.}`); // eslint-disable-line no-console
+            console.log(chalk.yellow('Both engines were found.')); // eslint-disable-line no-console
         }
 
         const engine = expressResponseToken !== null ? 'EXPRESS' : hapiResponseToken !== null ? 'HAPI' : null;
