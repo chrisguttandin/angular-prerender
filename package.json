@@ -49,7 +49,7 @@
         "chai": "^4.3.6",
         "commitizen": "^4.2.4",
         "cz-conventional-changelog": "^3.3.0",
-        "eslint": "^8.10.0",
+        "eslint": "^8.13.0",
         "eslint-config-holy-grail": "^52.0.2",
         "husky": "^7.0.4",
         "mocha": "^9.2.1",
