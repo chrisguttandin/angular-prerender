@@ -25,7 +25,7 @@
         "@schematics/angular": "^13.3.4",
         "chalk": "^4.1.2",
         "guess-parser": "^0.4.22",
-        "tslib": "^2.3.1",
+        "tslib": "^2.4.0",
         "type-fest": "^2.12.2",
         "typescript": "^4.6.3",
         "yargs": "^17.4.1"
