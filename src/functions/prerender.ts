@@ -11,6 +11,7 @@ import { mapRoutes } from './map-routes.js';
 import { preserveIndexHtml } from './preserve-index-html.js';
 import { resolveRoutes } from './resolve-routes.js';
 import { retrieveRoutes } from './retrieve-routes.js';
+import { scanRoutes } from './scan-routes.js';
 import { unbundleTokens } from './unbundle-tokens.js';
 
 const mkdirAsync = promisify(mkdir);
@@ -25,6 +26,7 @@ export const prerender = async (
     expressResponseToken: any,
     hapiResponseToken: any,
     includeRoutes: string[],
+    isRecursive: boolean,
     isVerbose: boolean,
     nestedParameterValues: INestedParameterValuesMap | INestedParameterValuesMap[],
     readProperty: TReadPropertyFunction,
@@ -235,6 +237,20 @@ export const prerender = async (
             await writeFileAsync(join(path, 'index.html'), transformedHtml);
 
             console.log(chalk.green(`The route at "${route}" was rendered successfully.`)); // eslint-disable-line no-console
+
+            if (isRecursive) {
+                const additionalRoutes = scanRoutes(html, route).filter((additionalRoute) => !processedRoutes.includes(additionalRoute));
+
+                for (const additionalRoute of additionalRoutes) {
+                    if (excludeRoutes.includes(additionalRoute)) {
+                        console.log(chalk.yellow(`The route at "${additionalRoute}" was excluded.`)); // eslint-disable-line no-console
+
+                        continue;
+                    }
+
+                    processedRoutes.push(additionalRoute);
+                }
+            }
         } else {
             console.log(chalk.yellow(`The route at "${route}" was skipped because it's status code was ${statusCode}.`)); // eslint-disable-line max-len, no-console
         }
