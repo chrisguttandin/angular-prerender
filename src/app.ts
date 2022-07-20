@@ -42,7 +42,7 @@ if (missingPeerDependencies.length > 0) {
             type: 'string'
         })
         .option('exclude-routes', {
-            default: [],
+            default: <ICommandLineArguments['excludeRoutes']>[],
             describe: 'specify routes to skip',
             type: 'array'
         })
@@ -52,7 +52,7 @@ if (missingPeerDependencies.length > 0) {
             type: 'boolean'
         })
         .option('include-routes', {
-            default: [],
+            default: <ICommandLineArguments['includeRoutes']>[],
             describe: 'specify routes to include',
             type: 'array'
         })
