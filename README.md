@@ -4,7 +4,6 @@
 
 **A command line tool to prerender Angular Apps.**
 
-[![dependencies](https://img.shields.io/david/chrisguttandin/angular-prerender.svg?style=flat-square)](https://github.com/chrisguttandin/angular-prerender/network/dependencies)
 [![version](https://img.shields.io/npm/v/angular-prerender.svg?style=flat-square)](https://www.npmjs.com/package/angular-prerender)
 
 This command line tool is meant to simplify the build process of static [Angular](https://angular.io/) apps. It works by analyzing the config file created by the [Angular CLI](https://cli.angular.io/). It looks for a client and server app target defined in the angular.json file. It does then execute the server side rendering for each route and merges the output into the static build for the client.
