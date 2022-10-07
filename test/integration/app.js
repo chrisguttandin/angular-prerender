@@ -83,7 +83,7 @@ describe('angular-prerender', () => {
                 this.timeout(600000);
 
                 await execAsync(`npm install ${join(directory, `angular-prerender-${version}.tgz`)}`, { cwd: projectDirectory });
-                await execAsync('npx angular-prerender', { cwd: projectDirectory });
+                await execAsync('npx angular-prerender --browser-target universe:build', { cwd: projectDirectory });
 
                 const content = await readFileAsync(join(projectDirectory, 'dist/universe/browser/index.html'), 'utf8');
 
@@ -154,7 +154,9 @@ describe('angular-prerender', () => {
                     await execAsync(`npm install ${join(directory, `angular-prerender-${version}.tgz`)}`, {
                         cwd: projectDirectory
                     });
-                    await execAsync('npx angular-prerender --ignore-status-code false', { cwd: projectDirectory });
+                    await execAsync('npx angular-prerender --ignore-status-code false --browser-target universe:build', {
+                        cwd: projectDirectory
+                    });
 
                     const content = await readFileAsync(join(projectDirectory, 'dist/universe/browser/index.html'), 'utf8');
 
@@ -214,7 +216,9 @@ describe('angular-prerender', () => {
                     await execAsync(`npm install ${join(directory, `angular-prerender-${version}.tgz`)}`, {
                         cwd: projectDirectory
                     });
-                    await execAsync('npx angular-prerender --ignore-status-code false', { cwd: projectDirectory });
+                    await execAsync('npx angular-prerender --ignore-status-code false --browser-target universe:build', {
+                        cwd: projectDirectory
+                    });
 
                     const content = await readFileAsync(join(projectDirectory, 'dist/universe/browser/index.html'), 'utf8');
 
@@ -292,7 +296,9 @@ describe('angular-prerender', () => {
                     await execAsync(`npm install ${join(directory, `angular-prerender-${version}.tgz`)}`, {
                         cwd: projectDirectory
                     });
-                    await execAsync('npx angular-prerender --ignore-status-code false', { cwd: projectDirectory });
+                    await execAsync('npx angular-prerender --ignore-status-code false --browser-target universe:build', {
+                        cwd: projectDirectory
+                    });
 
                     const content = await readFileAsync(join(projectDirectory, 'dist/universe/browser/index.html'), 'utf8');
 
@@ -352,7 +358,9 @@ describe('angular-prerender', () => {
                     await execAsync(`npm install ${join(directory, `angular-prerender-${version}.tgz`)}`, {
                         cwd: projectDirectory
                     });
-                    await execAsync('npx angular-prerender --ignore-status-code false', { cwd: projectDirectory });
+                    await execAsync('npx angular-prerender --ignore-status-code false --browser-target universe:build', {
+                        cwd: projectDirectory
+                    });
 
                     const content = await readFileAsync(join(projectDirectory, 'dist/universe/browser/index.html'), 'utf8');
 
