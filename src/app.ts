@@ -108,7 +108,7 @@ if (missingPeerDependencies.length > 0) {
         verbose: isVerbose
     } = commandLineArguments;
     const { prerender } = await import('./functions/prerender.js');
-    const { enableProdMode, expressResponseToken, hapiResponseToken } = await loadPeerDependencies(cwd(), require);
+    const { enableProdMode, expressResponseToken } = await loadPeerDependencies(cwd(), require);
     const { config: scullyConfig, plugins: scullyPlugins } = await loadScullyConfigAndPlugins(cwd(), require, scullyConfigFile);
 
     prerender(
@@ -117,7 +117,6 @@ if (missingPeerDependencies.length > 0) {
         enableProdMode,
         excludeRoutes,
         expressResponseToken,
-        hapiResponseToken,
         includeRoutes,
         isRecursive,
         isVerbose,

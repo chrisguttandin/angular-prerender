@@ -5,5 +5,4 @@ export * from './nested-parameter-values-map.js';
 export * from './ng-service-worker.js';
 export * from './parameter-values-map.js';
 export * from './partial-express-response.js';
-export * from './partial-hapi-response.js';
 export * from './scully-config.js';

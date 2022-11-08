@@ -9,19 +9,15 @@ const writeFileAsync = promisify(writeFile);
 const ANGULAR_IMPORT_REGEX = /require\("@angular\/core"\)/;
 const INJECTION_TOKEN_REGEX = /const\sRESPONSE=new\sInjectionToken\("RESPONSE"\);/;
 
-export const unbundleTokens = async (expressResponseToken: any, hapiResponseToken: any, main: string) => {
+export const unbundleTokens = async (expressResponseToken: any, main: string) => {
     const mainContent = await readFileAsync(main, 'utf8');
 
     if (!ANGULAR_IMPORT_REGEX.test(mainContent) && INJECTION_TOKEN_REGEX.test(mainContent)) {
-        if (expressResponseToken === null && hapiResponseToken === null) {
+        if (expressResponseToken === null) {
             console.log(chalk.yellow('No engine was found.')); // eslint-disable-line no-console
         }
 
-        if (expressResponseToken !== null && hapiResponseToken !== null) {
-            console.log(chalk.yellow('Both engines were found.')); // eslint-disable-line no-console
-        }
-
-        const engine = expressResponseToken !== null ? 'EXPRESS' : hapiResponseToken !== null ? 'HAPI' : null;
+        const engine = expressResponseToken !== null ? 'EXPRESS' : null;
 
         if (engine !== null) {
             const unbundledMain = `${main}.unbundled.cjs`;

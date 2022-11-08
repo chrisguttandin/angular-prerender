@@ -4,7 +4,7 @@ import { promisify } from 'util';
 import { cwd } from 'process';
 import { WorkspaceSchema } from '@schematics/angular/utility/workspace-models'; // eslint-disable-line import/no-internal-modules, max-len, node/file-extension-in-import
 import chalk from 'chalk';
-import { INestedParameterValuesMap, IPartialExpressResponse, IPartialHapiResponse, IScullyConfig } from '../interfaces';
+import { INestedParameterValuesMap, IPartialExpressResponse, IScullyConfig } from '../interfaces';
 import { TEnableProdModeFunction, TPlugins, TReadPropertyFunction, TTargetSpecifier } from '../types';
 import { bindRenderFunction } from './bind-render-function.js';
 import { mapRoutes } from './map-routes.js';
@@ -24,7 +24,6 @@ export const prerender = async (
     enableProdMode: TEnableProdModeFunction,
     excludeRoutes: string[],
     expressResponseToken: any,
-    hapiResponseToken: any,
     includeRoutes: string[],
     isRecursive: boolean,
     isVerbose: boolean,
@@ -57,7 +56,7 @@ export const prerender = async (
         console.log(chalk.gray(`The path of the main.js file is "${main}".`)); // eslint-disable-line no-console
     }
 
-    const unbundledMain = await unbundleTokens(expressResponseToken, hapiResponseToken, main);
+    const unbundledMain = await unbundleTokens(expressResponseToken, main);
 
     if (isVerbose && main !== unbundledMain) {
         console.log(chalk.gray(`The main.js contains bundled tokens which have been replaced with classic require statements.`)); // eslint-disable-line max-len, no-console
@@ -156,13 +155,6 @@ export const prerender = async (
                 return expressResponse;
             }
         };
-        const hapiResponse: IPartialHapiResponse = {
-            code: (value) => {
-                statusCode = value;
-
-                return hapiResponse;
-            }
-        };
         const html = await render({
             document,
             extraProviders: [
@@ -171,12 +163,6 @@ export const prerender = async (
                     : {
                           provide: '_A_HOPEFULLY_UNIQUE_EXPRESS_RESPONSE_TOKEN_',
                           useValue: expressResponse
-                      },
-                hapiResponseToken === null
-                    ? []
-                    : {
-                          provide: '_A_HOPEFULLY_UNIQUE_HAPI_RESPONSE_TOKEN_',
-                          useValue: hapiResponse
                       }
             ],
             url: route
