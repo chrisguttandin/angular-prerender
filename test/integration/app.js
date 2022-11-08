@@ -98,9 +98,15 @@ describe('angular-prerender', () => {
             it('should render the default URL', async function () {
                 this.timeout(600000);
 
-                await execAsync(`npx ${relative(projectDirectory, join(directory, `angular-prerender-${version}.tgz`))}`, {
-                    cwd: projectDirectory
-                });
+                await execAsync(
+                    `npx ${relative(
+                        projectDirectory,
+                        join(directory, `angular-prerender-${version}.tgz`)
+                    )} --browser-target universe:build --server-target universe:server`,
+                    {
+                        cwd: projectDirectory
+                    }
+                );
 
                 const content = await readFileAsync(join(projectDirectory, 'dist/universe/browser/index.html'), 'utf8');
 
@@ -158,7 +164,7 @@ describe('angular-prerender', () => {
                         cwd: projectDirectory
                     });
                     await execAsync(
-                        'npx angular-prerender --ignore-status-code false --browser-target universe:build --server-target universe:server',
+                        'npx angular-prerender --browser-target universe:build --ignore-status-code false --server-target universe:server',
                         {
                             cwd: projectDirectory
                         }
@@ -175,7 +181,10 @@ describe('angular-prerender', () => {
                     this.timeout(600000);
 
                     await execAsync(
-                        `npx ${relative(projectDirectory, join(directory, `angular-prerender-${version}.tgz`))} --ignore-status-code false`,
+                        `npx ${relative(
+                            projectDirectory,
+                            join(directory, `angular-prerender-${version}.tgz`)
+                        )} --browser-target universe:build --ignore-status-code false --server-target universe:server`,
                         {
                             cwd: projectDirectory
                         }
@@ -223,7 +232,7 @@ describe('angular-prerender', () => {
                         cwd: projectDirectory
                     });
                     await execAsync(
-                        'npx angular-prerender --ignore-status-code false --browser-target universe:build --server-target universe:server',
+                        'npx angular-prerender --browser-target universe:build --ignore-status-code false --server-target universe:server',
                         {
                             cwd: projectDirectory
                         }
@@ -240,7 +249,10 @@ describe('angular-prerender', () => {
                     this.timeout(600000);
 
                     await execAsync(
-                        `npx ${relative(projectDirectory, join(directory, `angular-prerender-${version}.tgz`))} --ignore-status-code false`,
+                        `npx ${relative(
+                            projectDirectory,
+                            join(directory, `angular-prerender-${version}.tgz`)
+                        )} --browser-target universe:build --ignore-status-code false --server-target universe:server`,
                         {
                             cwd: projectDirectory
                         }
