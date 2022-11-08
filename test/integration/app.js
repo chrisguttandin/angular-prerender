@@ -21,6 +21,7 @@ const makeFakedTemporaryDirectory = async () => {
 };
 
 describe('angular-prerender', () => {
+    let angularMajorVersion;
     let directory;
     let peerDependencies;
     let projectDirectory;
@@ -45,17 +46,17 @@ describe('angular-prerender', () => {
             await execAsync('git config --global user.name "user"');
         }
 
-        await execAsync(
-            `npx --package @angular/cli@${peerDependencies['@angular/core']} --call "ng new universe --no-interactive --routing"`,
-            { cwd: directory }
-        );
+        angularMajorVersion = peerDependencies['@angular/core'].split(/\./).shift();
+
+        await execAsync(`npx --package @angular/cli@${angularMajorVersion} --call "ng new universe --no-interactive --routing"`, {
+            cwd: directory
+        });
 
         projectDirectory = join(directory, 'universe');
 
-        await execAsync(
-            `npx --package @angular/cli@${peerDependencies['@angular/core']} --call "ng generate universal --project universe"`,
-            { cwd: projectDirectory }
-        );
+        await execAsync(`npx --package @angular/cli@${angularMajorVersion} --call "ng generate universal --project universe"`, {
+            cwd: projectDirectory
+        });
         await execAsync('git add --all', { cwd: projectDirectory });
         await execAsync('git commit --amend --no-edit --no-verify', { cwd: projectDirectory });
 
@@ -72,8 +73,8 @@ describe('angular-prerender', () => {
         beforeEach(async function () {
             this.timeout(600000);
 
-            await execAsync(`npx --package @angular/cli@${peerDependencies['@angular/core']} --call "ng build"`, { cwd: projectDirectory });
-            await execAsync(`npx --package @angular/cli@${peerDependencies['@angular/core']} --call "ng run universe:server"`, {
+            await execAsync(`npx --package @angular/cli@${angularMajorVersion} --call "ng build"`, { cwd: projectDirectory });
+            await execAsync(`npx --package @angular/cli@${angularMajorVersion} --call "ng run universe:server"`, {
                 cwd: projectDirectory
             });
         });
@@ -112,7 +113,7 @@ describe('angular-prerender', () => {
         beforeEach(async function () {
             this.timeout(600000);
 
-            await execAsync(`npm install @nguniversal/express-engine@${peerDependencies['@angular/core']} express`, {
+            await execAsync(`npm install @nguniversal/express-engine@${angularMajorVersion} express`, {
                 cwd: projectDirectory
             });
             await execAsync('npm install @types/express --save-dev', { cwd: projectDirectory });
@@ -141,10 +142,10 @@ describe('angular-prerender', () => {
                         )
                 );
 
-                await execAsync(`npx --package @angular/cli@${peerDependencies['@angular/core']} --call "ng build"`, {
+                await execAsync(`npx --package @angular/cli@${angularMajorVersion} --call "ng build"`, {
                     cwd: projectDirectory
                 });
-                await execAsync(`npx --package @angular/cli@${peerDependencies['@angular/core']} --call "ng run universe:server"`, {
+                await execAsync(`npx --package @angular/cli@${angularMajorVersion} --call "ng run universe:server"`, {
                     cwd: projectDirectory
                 });
             });
@@ -206,10 +207,10 @@ describe('angular-prerender', () => {
                         )
                 );
 
-                await execAsync(`npx --package @angular/cli@${peerDependencies['@angular/core']} --call "ng build"`, {
+                await execAsync(`npx --package @angular/cli@${angularMajorVersion} --call "ng build"`, {
                     cwd: projectDirectory
                 });
-                await execAsync(`npx --package @angular/cli@${peerDependencies['@angular/core']} --call "ng run universe:server"`, {
+                await execAsync(`npx --package @angular/cli@${angularMajorVersion} --call "ng run universe:server"`, {
                     cwd: projectDirectory
                 });
             });
@@ -257,7 +258,7 @@ describe('angular-prerender', () => {
         beforeEach(async function () {
             this.timeout(600000);
 
-            await execAsync(`npm install @hapi/hapi @nguniversal/hapi-engine@${peerDependencies['@angular/core']}`, {
+            await execAsync(`npm install @hapi/hapi @nguniversal/hapi-engine@${angularMajorVersion}`, {
                 cwd: projectDirectory
             });
             await execAsync('npm install @types/hapi__hapi --save-dev', { cwd: projectDirectory });
@@ -289,10 +290,10 @@ describe('angular-prerender', () => {
                         )
                 );
 
-                await execAsync(`npx --package @angular/cli@${peerDependencies['@angular/core']} --call "ng build"`, {
+                await execAsync(`npx --package @angular/cli@${angularMajorVersion} --call "ng build"`, {
                     cwd: projectDirectory
                 });
-                await execAsync(`npx --package @angular/cli@${peerDependencies['@angular/core']} --call "ng run universe:server"`, {
+                await execAsync(`npx --package @angular/cli@${angularMajorVersion} --call "ng run universe:server"`, {
                     cwd: projectDirectory
                 });
             });
@@ -354,10 +355,10 @@ describe('angular-prerender', () => {
                         )
                 );
 
-                await execAsync(`npx --package @angular/cli@${peerDependencies['@angular/core']} --call "ng build"`, {
+                await execAsync(`npx --package @angular/cli@${angularMajorVersion} --call "ng build"`, {
                     cwd: projectDirectory
                 });
-                await execAsync(`npx --package @angular/cli@${peerDependencies['@angular/core']} --call "ng run universe:server"`, {
+                await execAsync(`npx --package @angular/cli@${angularMajorVersion} --call "ng run universe:server"`, {
                     cwd: projectDirectory
                 });
             });
