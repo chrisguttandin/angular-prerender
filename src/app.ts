@@ -122,6 +122,7 @@ if (missingPeerDependencies.length > 0) {
         isVerbose,
         nestedParameterValuesMap,
         readProperty,
+        require,
         scullyConfig,
         scullyPlugins,
         serverTarget,

@@ -18,9 +18,6 @@ export const loadPeerDependencies = async (cwd: string, require: NodeRequire) =>
 
         return {};
     };
-
-    await loadPeerDependency('zone.js/dist/zone-node');
-
     const { enableProdMode } = await loadPeerDependency('@angular/core');
     const { RESPONSE: expressResponseToken = null } = await loadOptionalPeerDependency('@nguniversal/express-engine/tokens');
 

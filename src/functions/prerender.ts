@@ -29,6 +29,8 @@ export const prerender = async (
     isVerbose: boolean,
     nestedParameterValues: INestedParameterValuesMap | INestedParameterValuesMap[],
     readProperty: TReadPropertyFunction,
+    // eslint-disable-next-line no-undef
+    require: NodeRequire,
     scullyConfig: null | IScullyConfig,
     scullyPlugins: null | TPlugins,
     serverTarget: TTargetSpecifier,
@@ -63,6 +65,9 @@ export const prerender = async (
     }
 
     const render = await bindRenderFunction(unbundledMain);
+
+    await import(require.resolve('zone.js/dist/zone-node', { paths: [cwd()] }));
+
     const index = join(browserOutputPath, 'index.html');
 
     if (isVerbose) {
