@@ -16,10 +16,10 @@ angular-prerender is available on [npm](https://www.npmjs.com/package/angular-pr
 npm install angular-prerender --save-dev
 ```
 
-In case you used all the default settings of the CLI angular-prerender will be able to pick up all the necessary information on its own. You can run it on the command line by only specifying the project name (assuming it's named "universe").
+In case you used all the default settings of the CLI angular-prerender will be able to pick up all the necessary information on its own. You can run it on the command line by only specifying the browser and server target.
 
 ```shell
-npx angular-prerender --browser-target universe:build
+npx angular-prerender --browser-target universe:build --server-target universe:server
 ```
 
 It is also possible to skip the explicit installation of angular-prerender.
@@ -33,7 +33,7 @@ ng generate universal --project universe
 npm install angular-prerender --save-dev
 ng build
 ng run universe:server
-npx angular-prerender --browser-target universe:build
+npx angular-prerender --browser-target universe:build --server-target universe:server
 ```
 
 ## Arguments
