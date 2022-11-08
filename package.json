@@ -47,7 +47,7 @@
         "@commitlint/cli": "^17.2.0",
         "@commitlint/config-angular": "^17.2.0",
         "@types/yargs": "^17.0.13",
-        "chai": "^4.3.6",
+        "chai": "^4.3.7",
         "commitizen": "^4.2.5",
         "cz-conventional-changelog": "^3.3.0",
         "eslint": "^8.27.0",
