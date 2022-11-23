@@ -51,7 +51,7 @@
         "commitizen": "^4.2.5",
         "cz-conventional-changelog": "^3.3.0",
         "eslint": "^8.28.0",
-        "eslint-config-holy-grail": "^54.0.3",
+        "eslint-config-holy-grail": "^54.0.4",
         "husky": "^8.0.2",
         "mocha": "^10.1.0",
         "prettier": "^2.7.1",
