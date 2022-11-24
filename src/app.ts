@@ -44,6 +44,8 @@ if (missingPeerDependencies.length > 0) {
         .option('exclude-routes', {
             default: <ICommandLineArguments['excludeRoutes']>[],
             describe: 'specify routes to skip',
+            /* eslint-disable-next-line id-denylist */
+            string: true,
             type: 'array'
         })
         .option('ignore-status-code', {
@@ -54,6 +56,8 @@ if (missingPeerDependencies.length > 0) {
         .option('include-routes', {
             default: <ICommandLineArguments['includeRoutes']>[],
             describe: 'specify routes to include',
+            /* eslint-disable-next-line id-denylist */
+            string: true,
             type: 'array'
         })
         .option('parameter-values', {
