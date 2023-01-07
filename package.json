@@ -61,7 +61,7 @@
         "sinon": "^15.0.1",
         "sinon-chai": "^3.7.0",
         "tsconfig-holy-grail": "^12.0.0",
-        "zone.js": "^0.11.8"
+        "zone.js": "^0.12.0"
     },
     "engines": {
         "node": ">=14.15.4"
@@ -85,7 +85,7 @@
     "peerDependencies": {
         "@angular/core": "^15.0.4",
         "@angular/platform-server": "^15.0.4",
-        "zone.js": "~0.11.4"
+        "zone.js": "^0.12.0"
     },
     "repository": {
         "type": "git",
