@@ -7,7 +7,7 @@ const writeFileAsync = promisify(writeFile);
 
 // eslint-disable-next-line padding-line-between-statements
 const ANGULAR_IMPORT_REGEX = /require\("@angular\/core"\)/;
-const INJECTION_TOKEN_REGEX = /const\sRESPONSE=new\sInjectionToken\("RESPONSE"\);/;
+const INJECTION_TOKEN_REGEX = /const\sRESPONSE=new\score.[\w$]+\("RESPONSE"\);/;
 
 export const unbundleTokens = async (expressResponseToken: any, main: string) => {
     const mainContent = await readFileAsync(main, 'utf8');
