@@ -5,7 +5,7 @@ import { cwd } from 'process';
 import { WorkspaceSchema } from '@schematics/angular/utility/workspace-models'; // eslint-disable-line import/no-internal-modules, max-len, node/file-extension-in-import
 import chalk from 'chalk';
 import { INestedParameterValuesMap, IPartialExpressResponse, IScullyConfig } from '../interfaces';
-import { TEnableProdModeFunction, TPlugins, TReadPropertyFunction, TTargetSpecifier } from '../types';
+import { TPlugins, TReadPropertyFunction, TTargetSpecifier } from '../types';
 import { bindRenderFunction } from './bind-render-function.js';
 import { mapRoutes } from './map-routes.js';
 import { preserveIndexHtml } from './preserve-index-html.js';
@@ -21,7 +21,6 @@ const writeFileAsync = promisify(writeFile);
 export const prerender = async (
     browserTarget: TTargetSpecifier,
     config: string,
-    enableProdMode: TEnableProdModeFunction,
     excludeRoutes: string[],
     expressResponseToken: any,
     includeRoutes: string[],
@@ -37,8 +36,6 @@ export const prerender = async (
     shouldIgnoreStatusCode: boolean,
     shouldPreserveIndexHtml: boolean
 ) => {
-    enableProdMode();
-
     if (isVerbose) {
         console.log(chalk.gray(`The path of the angular.json config file is "${config}".`)); // eslint-disable-line no-console
     }

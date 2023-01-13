@@ -18,8 +18,7 @@ export const loadPeerDependencies = async (cwd: string, require: NodeRequire) =>
 
         return {};
     };
-    const { enableProdMode } = await loadPeerDependency('@angular/core');
     const { RESPONSE: expressResponseToken = null } = await loadOptionalPeerDependency('@nguniversal/express-engine/tokens');
 
-    return { enableProdMode, expressResponseToken };
+    return { expressResponseToken };
 };

@@ -1,4 +1,3 @@
-export * from './enable-prod-mode-function.js';
 export * from './plugin-function.js';
 export * from './plugin-name.js';
 export * from './plugin-type.js';
