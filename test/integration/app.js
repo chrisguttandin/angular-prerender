@@ -10,7 +10,6 @@ const execAsync = promisify(exec);
 const mkdirAsync = promisify(mkdir);
 const mkdtempAsync = promisify(mkdtemp);
 const readFileAsync = promisify(readFile);
-const rimrafAsync = promisify(rimraf);
 const writeFileAsync = promisify(writeFile);
 const makeFakedTemporaryDirectory = async () => {
     const fakedTemporaryDirectory = join(cwd(), '..', 'temp');
@@ -32,7 +31,7 @@ describe('angular-prerender', () => {
 
         await execAsync(`rm ${join(directory, `angular-prerender-${version}.tgz`)}`);
 
-        await rimrafAsync(directory);
+        await rimraf(directory);
     });
 
     before(async function () {
