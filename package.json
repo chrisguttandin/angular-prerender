@@ -60,7 +60,7 @@
         "rxjs": "^7.8.0",
         "sinon": "^15.0.2",
         "sinon-chai": "^3.7.0",
-        "tsconfig-holy-grail": "^12.0.1",
+        "tsconfig-holy-grail": "^12.0.2",
         "zone.js": "^0.12.0"
     },
     "engines": {
