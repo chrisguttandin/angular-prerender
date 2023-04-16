@@ -3,7 +3,7 @@ import { join, relative, sep } from 'path';
 import { mkdir, mkdtemp, readFile, readFileSync, writeFile } from 'fs';
 import { exec } from 'child_process';
 import { promisify } from 'util';
-import rimraf from 'rimraf';
+import { rimraf } from 'rimraf';
 import { tmpdir } from 'os';
 
 const execAsync = promisify(exec);
