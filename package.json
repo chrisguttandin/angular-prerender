@@ -105,5 +105,5 @@
         "test:unit": "if [ \"$TYPE\" = \"\" -o \"$TYPE\" = \"unit\" ]; then mocha --bail --parallel --recursive --require config/mocha/config-unit.js test/unit; fi"
     },
     "type": "module",
-    "version": "12.0.19"
+    "version": "12.0.20"
 }
