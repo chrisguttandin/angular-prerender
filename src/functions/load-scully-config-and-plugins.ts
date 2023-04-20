@@ -131,6 +131,7 @@ export const loadScullyConfigAndPlugins = async (
         },
         filename,
         id: filename,
+        isPreloading: false,
         loaded: true,
         parent: require.cache[dirname(fileURLToPath(import.meta.url))],
         path: paths[0],
