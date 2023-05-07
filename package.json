@@ -33,13 +33,13 @@
     },
     "description": "A command line tool to prerender Angular Apps.",
     "devDependencies": {
-        "@angular/animations": "^15.2.9",
-        "@angular/common": "^15.2.9",
-        "@angular/compiler": "^15.2.9",
-        "@angular/core": "^15.2.9",
-        "@angular/platform-browser": "^15.2.9",
-        "@angular/platform-browser-dynamic": "^15.2.9",
-        "@angular/platform-server": "^15.2.9",
+        "@angular/animations": "^16.0.0",
+        "@angular/common": "^16.0.0",
+        "@angular/compiler": "^16.0.0",
+        "@angular/core": "^16.0.0",
+        "@angular/platform-browser": "^16.0.0",
+        "@angular/platform-browser-dynamic": "^16.0.0",
+        "@angular/platform-server": "^16.0.0",
         "@babel/cli": "^7.21.5",
         "@babel/core": "^7.21.8",
         "@babel/preset-env": "^7.21.5",
@@ -83,8 +83,8 @@
     "license": "MIT",
     "name": "angular-prerender",
     "peerDependencies": {
-        "@angular/core": "^15.0.4",
-        "@angular/platform-server": "^15.0.4",
+        "@angular/core": "^16.0.0",
+        "@angular/platform-server": "^16.0.0",
         "zone.js": "^0.12.0"
     },
     "repository": {
