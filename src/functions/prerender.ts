@@ -40,7 +40,7 @@ export const prerender = async (
         console.log(chalk.gray(`The path of the angular.json config file is "${config}".`)); // eslint-disable-line no-console
     }
 
-    const { defaultProject, projects } = <WorkspaceSchema>JSON.parse(await readFileAsync(config, 'utf8'));
+    const { defaultProject, projects } = <WorkspaceSchema & { defaultProject?: string }>JSON.parse(await readFileAsync(config, 'utf8'));
     const browserOutputPath = join(dirname(config), readProperty(projects, defaultProject, browserTarget, 'outputPath'), sep);
     const serverOutputPath = join(dirname(config), readProperty(projects, defaultProject, serverTarget, 'outputPath'), sep);
 

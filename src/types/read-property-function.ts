@@ -4,7 +4,7 @@ import { TTargetSpecifier } from '../types';
 
 export type TReadPropertyFunction = (
     projects: WorkspaceSchema['projects'],
-    defaultProject: WorkspaceSchema['defaultProject'],
+    defaultProject: string | undefined,
     targetSpecifier: TTargetSpecifier,
     property: string
 ) => string;
