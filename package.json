@@ -41,7 +41,7 @@
         "@angular/platform-browser-dynamic": "^16.2.6",
         "@angular/platform-server": "^16.2.6",
         "@babel/cli": "^7.23.0",
-        "@babel/core": "^7.22.20",
+        "@babel/core": "^7.23.0",
         "@babel/preset-env": "^7.22.20",
         "@babel/register": "^7.22.15",
         "@commitlint/cli": "^17.7.1",
