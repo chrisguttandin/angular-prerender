@@ -46,7 +46,7 @@
         "@babel/register": "^7.22.15",
         "@commitlint/cli": "^17.7.2",
         "@commitlint/config-angular": "^17.7.0",
-        "@types/yargs": "^17.0.29",
+        "@types/yargs": "^17.0.30",
         "chai": "^4.3.10",
         "commitizen": "^4.3.0",
         "cz-conventional-changelog": "^3.3.0",
