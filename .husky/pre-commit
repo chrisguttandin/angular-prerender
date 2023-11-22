@@ -1,4 +1,4 @@
 #!/usr/bin/env sh
 . "$(dirname "$0")/_/husky.sh"
 
-pretty-quick --config config/prettier/config.json --staged && npm run lint
+npx lint-staged --config config/lint-staged/config.json && npm run lint
