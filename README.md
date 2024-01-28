@@ -16,10 +16,10 @@ angular-prerender is available on [npm](https://www.npmjs.com/package/angular-pr
 npm install angular-prerender --save-dev
 ```
 
-In case you used all the default settings of the CLI angular-prerender will be able to pick up all the necessary information on its own. You can run it on the command line by only specifying the browser and server target.
+In case you used all the default settings of the CLI angular-prerender will be able to pick up all the necessary information on its own. You can run it on the command line by only specifying the browser target.
 
 ```shell
-npx angular-prerender --browser-target universe:build --server-target universe:server
+npx angular-prerender --target universe:build
 ```
 
 It is also possible to skip the explicit installation of angular-prerender.
@@ -29,20 +29,15 @@ The following is a complete example which will generate a very basic static Angu
 ```shell
 npx @angular/cli new universe --routing
 cd universe
-ng generate universal --project universe
+ng add @angular/ssr
 npm install angular-prerender --save-dev
 ng build
-ng run universe:server
-npx angular-prerender --browser-target universe:build --server-target universe:server
+npx angular-prerender --target universe:build
 ```
 
 ## Arguments
 
 In some scenarios angular-prerender will not be able to grab all the information by analyzing the angular.json file alone. In that case you can help it by specifying some command line arguments.
-
-### --browser-target
-
-This lets you specify the name of the target of your client app. The Angular CLI will normally call it "build" and this is also used as a default value. It is also possible to use a full target specifier which does also include the project and an optional configuration separated by colons. This works similar as the target parameter of the [ng run command](https://angular.io/cli/run).
 
 ### --config
 
@@ -55,29 +50,6 @@ This option can be used to tell angular-prerender not to render specified routes
 ```shell
 npx angular-prerender --exclude-routes /do-not-render-1 /do-not-render-2
 ```
-
-Alternatively routes can also be excluded when setting the status code as described below.
-
-### --ignore-status-code
-
-When set to false this flag will make sure that status codes set on the response will not be ignored. An example of a component which sets the status code looks as follows:
-
-```typescript
-import { Component, Inject } from '@angular/core';
-import { RESPONSE } from '@nguniversal/express-engine/tokens';
-import { Response } from 'express';
-
-@Component({
-    // ...
-})
-class NotFoundComponent {
-    constructor(@Inject(RESPONSE) response: Response) {
-        response.status(404);
-    }
-}
-```
-
-If status codes are not ignored any route which sets the status code to 300 or above will be excluded.
 
 ### --include-routes
 
@@ -171,9 +143,9 @@ In case any of the newly discovered routes is one of the routes defined with [`-
 
 This option allows you to specify a path to a [Scully](https://scully.io) config file. `@scullyio/scully` and the respective plugins need to be installed for this to work. So far only the plugins specified as [`defaultPostRenderers`](https://scully.io/docs/Reference/config/#interface) and plugins of type [`routeProcess`](https://scully.io/docs/Reference/plugins/types/route-process) get applied.
 
-### --server-target
+### --target
 
-This lets you specify the name of the target of your server app. The Angular CLI will normally call it "server" and this is also used as a default value. It is also possible to use a full target specifier which does also include the project and an optional configuration separated by colons. This works similar as the target parameter of the [ng run command](https://angular.io/cli/run).
+This lets you specify the name of the target of your client app. The Angular CLI will normally call it "build" and this is also used as a default value. It is also possible to use a full target specifier which does also include the project and an optional configuration separated by colons. This works similar as the target parameter of the [ng run command](https://angular.io/cli/run).
 
 ### --verbose (-v)
 
@@ -181,4 +153,4 @@ This flag enables more detailed log messages.
 
 ## Acknowledgement
 
-This command line tool is only possible by bringing together the great power of [Angular Universal](https://github.com/angular/universal) (which is now on its way into the main [Angular repository](https://github.com/angular/angular)) and [Guess.js](https://github.com/guess-js) (which provides an excellent parser to retrieve the routes of an Angular app).
+This command line tool is only possible by bringing together the great power of [Angular Universal](https://github.com/angular/universal) (which is now included in the [Angular CLI repository](https://github.com/angular/angular-cli)) and [Guess.js](https://github.com/guess-js) (which provides an excellent parser to retrieve the routes of an Angular app).

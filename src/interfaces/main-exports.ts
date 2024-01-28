@@ -1,8 +1,5 @@
-import { Type } from '@angular/core';
-import { TRenderModuleFunction } from '../types';
+import type { ApplicationRef, Type } from '@angular/core';
 
 export interface IMainExports {
-    AppServerModule: Type<any>;
-
-    renderModule: TRenderModuleFunction;
+    default: Type<any> | (() => Promise<ApplicationRef>);
 }

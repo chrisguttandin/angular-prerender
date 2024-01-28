@@ -4,6 +4,7 @@ export * from './plugin-type.js';
 export * from './plugins.js';
 export * from './post-process-by-html-plugin-function.js';
 export * from './read-property-function.js';
+export * from './render-application-function.js';
 export * from './render-module-function.js';
 export * from './register-plugin-function.js';
 export * from './route-process-plugin-function.js';

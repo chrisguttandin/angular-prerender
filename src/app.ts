@@ -7,7 +7,6 @@ import yargs from 'yargs';
 import { peerDependencies } from './constants.js';
 import { coerceParameterValues } from './functions/coerce-parameter-values.js';
 import { coerceTargetSpecifier } from './functions/coerce-target-specifier.js';
-import { loadPeerDependencies } from './functions/load-peer-dependencies.js';
 import { loadScullyConfigAndPlugins } from './functions/load-scully-config-and-plugins.js';
 import { readProperty } from './functions/read-property.js';
 import { ICommandLineArguments } from './interfaces';
@@ -30,12 +29,6 @@ if (missingPeerDependencies.length > 0) {
 (async () => {
     const commandLineArguments = (<yargs.Argv<ICommandLineArguments>>yargs(argv.slice(2)))
         .help()
-        .option('browser-target', {
-            coerce: coerceTargetSpecifier,
-            default: 'build',
-            describe: 'specify the target inside your angular.json file which is used to build the single page app',
-            type: 'string'
-        })
         .option('config', {
             default: join(cwd(), 'angular.json'),
             describe: 'specify the path to the angular.json file',
@@ -47,11 +40,6 @@ if (missingPeerDependencies.length > 0) {
             /* eslint-disable-next-line id-denylist */
             string: true,
             type: 'array'
-        })
-        .option('ignore-status-code', {
-            default: true,
-            describe: 'set this to false if you want to not render routes that return a status code of 300 or above',
-            type: 'boolean'
         })
         .option('include-routes', {
             default: <ICommandLineArguments['includeRoutes']>[],
@@ -80,10 +68,10 @@ if (missingPeerDependencies.length > 0) {
             describe: 'specify the path to the Scully configuration file',
             type: 'string'
         })
-        .option('server-target', {
+        .option('target', {
             coerce: coerceTargetSpecifier,
-            default: 'server',
-            describe: 'specify the target inside your angular.json file which is used to build the server side code',
+            default: 'build',
+            describe: 'specify the target inside your angular.json file which is used to build the single page app',
             type: 'string'
         })
         .option('verbose', {
@@ -99,27 +87,22 @@ if (missingPeerDependencies.length > 0) {
     }
 
     const {
-        browserTarget,
         config,
         excludeRoutes,
-        ignoreStatusCode: shouldIgnoreStatusCode,
         includeRoutes,
         parameterValues: nestedParameterValuesMap,
         preserveIndexHtml: shouldPreserveIndexHtml,
         recursive: isRecursive,
         scullyConfig: scullyConfigFile,
-        serverTarget,
+        target,
         verbose: isVerbose
     } = commandLineArguments;
     const { prerender } = await import('./functions/prerender.js');
-    const { expressResponseToken } = await loadPeerDependencies(cwd(), require);
     const { config: scullyConfig, plugins: scullyPlugins } = await loadScullyConfigAndPlugins(cwd(), require, scullyConfigFile);
 
     prerender(
-        browserTarget,
         config,
         excludeRoutes,
-        expressResponseToken,
         includeRoutes,
         isRecursive,
         isVerbose,
@@ -128,8 +111,7 @@ if (missingPeerDependencies.length > 0) {
         require,
         scullyConfig,
         scullyPlugins,
-        serverTarget,
-        shouldIgnoreStatusCode,
+        target,
         shouldPreserveIndexHtml
     );
 })();

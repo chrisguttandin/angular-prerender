@@ -4,7 +4,7 @@ import { promisify } from 'util';
 import { cwd } from 'process';
 import { WorkspaceSchema } from '@schematics/angular/utility/workspace-models'; // eslint-disable-line import/no-internal-modules, max-len, node/file-extension-in-import
 import chalk from 'chalk';
-import { INestedParameterValuesMap, IPartialExpressResponse, IScullyConfig } from '../interfaces';
+import { INestedParameterValuesMap, IScullyConfig } from '../interfaces';
 import { TPlugins, TReadPropertyFunction, TTargetSpecifier } from '../types';
 import { bindRenderFunction } from './bind-render-function.js';
 import { mapRoutes } from './map-routes.js';
@@ -12,17 +12,14 @@ import { preserveIndexHtml } from './preserve-index-html.js';
 import { resolveRoutes } from './resolve-routes.js';
 import { retrieveRoutes } from './retrieve-routes.js';
 import { scanRoutes } from './scan-routes.js';
-import { unbundleTokens } from './unbundle-tokens.js';
 
 const mkdirAsync = promisify(mkdir);
 const readFileAsync = promisify(readFile);
 const writeFileAsync = promisify(writeFile);
 
 export const prerender = async (
-    browserTarget: TTargetSpecifier,
     config: string,
     excludeRoutes: string[],
-    expressResponseToken: any,
     includeRoutes: string[],
     isRecursive: boolean,
     isVerbose: boolean,
@@ -32,8 +29,7 @@ export const prerender = async (
     require: NodeRequire,
     scullyConfig: null | IScullyConfig,
     scullyPlugins: null | TPlugins,
-    serverTarget: TTargetSpecifier,
-    shouldIgnoreStatusCode: boolean,
+    target: TTargetSpecifier,
     shouldPreserveIndexHtml: boolean
 ) => {
     if (isVerbose) {
@@ -41,29 +37,26 @@ export const prerender = async (
     }
 
     const { defaultProject, projects } = <WorkspaceSchema & { defaultProject?: string }>JSON.parse(await readFileAsync(config, 'utf8'));
-    const browserOutputPath = join(dirname(config), readProperty(projects, defaultProject, browserTarget, 'outputPath'), sep);
-    const serverOutputPath = join(dirname(config), readProperty(projects, defaultProject, serverTarget, 'outputPath'), sep);
+    const outputPath = join(dirname(config), readProperty(projects, defaultProject, target, 'outputPath'), sep);
+    const browserOutputPath = join(outputPath, 'browser');
+    const serverOutputPath = join(outputPath, 'server');
 
     if (isVerbose) {
         console.log(chalk.gray(`The resolved output path of the browser target is "${browserOutputPath}".`)); // eslint-disable-line max-len, no-console
         console.log(chalk.gray(`The resolved output path of the server target is "${serverOutputPath}".`)); // eslint-disable-line max-len, no-console
     }
 
-    const main = join(serverOutputPath, 'main.js');
+    const main = join(serverOutputPath, 'main.server.mjs');
+    const renderUtils = join(serverOutputPath, 'render-utils.server.mjs');
 
     if (isVerbose) {
-        console.log(chalk.gray(`The path of the main.js file is "${main}".`)); // eslint-disable-line no-console
+        console.log(chalk.gray(`The path of the main.server.mjs file is "${main}".`)); // eslint-disable-line no-console
+        console.log(chalk.gray(`The path of the render-utils.server.mjs file is "${renderUtils}".`)); // eslint-disable-line no-console
     }
 
-    const unbundledMain = await unbundleTokens(expressResponseToken, main);
+    const render = await bindRenderFunction(main, renderUtils);
 
-    if (isVerbose && main !== unbundledMain) {
-        console.log(chalk.gray(`The main.js contains bundled tokens which have been replaced with classic require statements.`)); // eslint-disable-line max-len, no-console
-    }
-
-    const render = await bindRenderFunction(unbundledMain);
-
-    await import(require.resolve('zone.js/dist/zone-node', { paths: [cwd()] }));
+    await import(require.resolve('zone.js/node', { paths: [cwd()] }));
 
     const index = join(browserOutputPath, 'index.html');
 
@@ -72,7 +65,7 @@ export const prerender = async (
     }
 
     const document = await readFileAsync(index, 'utf8');
-    const tsConfig = join(cwd(), readProperty(projects, defaultProject, browserTarget, 'tsConfig'));
+    const tsConfig = join(cwd(), readProperty(projects, defaultProject, target, 'tsConfig'));
 
     if (isVerbose) {
         console.log(chalk.gray(`The path of the tsconfig.json file used to retrieve the routes is "${tsConfig}".`)); // eslint-disable-line max-len, no-console
@@ -148,25 +141,9 @@ export const prerender = async (
 
         await mkdirAsync(path, { recursive: true });
 
-        let statusCode = 200;
-
-        const expressResponse: IPartialExpressResponse = {
-            status: (value) => {
-                statusCode = value;
-
-                return expressResponse;
-            }
-        };
         const html = await render({
             document,
-            extraProviders: [
-                expressResponseToken === null
-                    ? []
-                    : {
-                          provide: '_A_HOPEFULLY_UNIQUE_EXPRESS_RESPONSE_TOKEN_',
-                          useValue: expressResponse
-                      }
-            ],
+            platformProviders: [],
             url: route
         });
         const transformedHtml =
@@ -198,49 +175,43 @@ export const prerender = async (
                   }, Promise.resolve(html))
                 : html;
 
-        if (shouldIgnoreStatusCode || statusCode < 300) {
-            if (path === browserOutputPath) {
-                if (shouldPreserveIndexHtml) {
-                    // eslint-disable-next-line no-console
-                    console.log(
-                        chalk.green(`The index.html file will be preserved as start.html because it would otherwise be overwritten.`)
-                    );
+        if (path === browserOutputPath) {
+            if (shouldPreserveIndexHtml) {
+                // eslint-disable-next-line no-console
+                console.log(chalk.green(`The index.html file will be preserved as start.html because it would otherwise be overwritten.`));
 
-                    const didUpdateNgServiceWorker = await preserveIndexHtml(browserOutputPath, document, readFileAsync, writeFileAsync);
+                const didUpdateNgServiceWorker = await preserveIndexHtml(browserOutputPath, document, readFileAsync, writeFileAsync);
 
-                    if (didUpdateNgServiceWorker) {
-                        console.log(chalk.green(`The ngsw.json file was updated to replace index.html with start.html.`)); // eslint-disable-line max-len, no-console
-                    }
-                } else {
-                    // eslint-disable-next-line no-console
-                    console.log(
-                        chalk.yellow(
-                            // eslint-disable-next-line max-len
-                            `The index.html file will be overwritten by the following route. This can be prevented by using the --preserve-index-html flag.`
-                        )
-                    );
+                if (didUpdateNgServiceWorker) {
+                    console.log(chalk.green(`The ngsw.json file was updated to replace index.html with start.html.`)); // eslint-disable-line max-len, no-console
                 }
+            } else {
+                // eslint-disable-next-line no-console
+                console.log(
+                    chalk.yellow(
+                        // eslint-disable-next-line max-len
+                        `The index.html file will be overwritten by the following route. This can be prevented by using the --preserve-index-html flag.`
+                    )
+                );
             }
+        }
 
-            await writeFileAsync(join(path, 'index.html'), transformedHtml);
+        await writeFileAsync(join(path, 'index.html'), transformedHtml);
 
-            console.log(chalk.green(`The route at "${route}" was rendered successfully.`)); // eslint-disable-line no-console
+        console.log(chalk.green(`The route at "${route}" was rendered successfully.`)); // eslint-disable-line no-console
 
-            if (isRecursive) {
-                const additionalRoutes = scanRoutes(html, route).filter((additionalRoute) => !processedRoutes.includes(additionalRoute));
+        if (isRecursive) {
+            const additionalRoutes = scanRoutes(html, route).filter((additionalRoute) => !processedRoutes.includes(additionalRoute));
 
-                for (const additionalRoute of additionalRoutes) {
-                    if (excludeRoutes.includes(additionalRoute)) {
-                        console.log(chalk.yellow(`The route at "${additionalRoute}" was excluded.`)); // eslint-disable-line no-console
+            for (const additionalRoute of additionalRoutes) {
+                if (excludeRoutes.includes(additionalRoute)) {
+                    console.log(chalk.yellow(`The route at "${additionalRoute}" was excluded.`)); // eslint-disable-line no-console
 
-                        continue;
-                    }
-
-                    processedRoutes.push(additionalRoute);
+                    continue;
                 }
+
+                processedRoutes.push(additionalRoute);
             }
-        } else {
-            console.log(chalk.yellow(`The route at "${route}" was skipped because it's status code was ${statusCode}.`)); // eslint-disable-line max-len, no-console
         }
     }
 };

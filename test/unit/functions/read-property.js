@@ -12,7 +12,7 @@ describe('readProperty()', () => {
 
         it('should throw an error', () => {
             expect(() => {
-                readProperty(projects, defaultProject, [null, 'browser-target', null], 'outputPath');
+                readProperty(projects, defaultProject, [null, 'target', null], 'outputPath');
             }).to.throw('Please specify a project or set the default project.');
         });
     });
@@ -28,7 +28,7 @@ describe('readProperty()', () => {
 
         it('should throw an error', () => {
             expect(() => {
-                readProperty(projects, defaultProject, [null, 'browser-target', null], 'outputPath');
+                readProperty(projects, defaultProject, [null, 'target', null], 'outputPath');
             }).to.throw('No project with the name "default-project" was found.');
         });
     });
@@ -45,7 +45,7 @@ describe('readProperty()', () => {
         describe('without any defined target', () => {
             it('should throw an error', () => {
                 expect(() => {
-                    readProperty(projects, defaultProject, [null, 'browser-target', null], 'outputPath');
+                    readProperty(projects, defaultProject, [null, 'target', null], 'outputPath');
                 }).to.throw('No target was found for the "default-project" project.');
             });
         });
@@ -57,19 +57,19 @@ describe('readProperty()', () => {
 
             it('should throw an error', () => {
                 expect(() => {
-                    readProperty(projects, defaultProject, [null, 'browser-target', null], 'outputPath');
-                }).to.throw('The target "browser-target" was not found inside the configuration of the "default-project" project.');
+                    readProperty(projects, defaultProject, [null, 'target', null], 'outputPath');
+                }).to.throw('The target "target" was not found inside the configuration of the "default-project" project.');
             });
         });
 
         describe('with an existent target', () => {
             beforeEach(() => {
-                projects['default-project'].targets = { 'browser-target': { options: { outputPath: 'the/ouput/path' } } };
+                projects['default-project'].targets = { target: { options: { outputPath: 'the/ouput/path' } } };
             });
 
             describe('without any defined configuration', () => {
                 it('should return the value', () => {
-                    expect(readProperty(projects, defaultProject, [null, 'browser-target', null], 'outputPath')).to.equal('the/ouput/path');
+                    expect(readProperty(projects, defaultProject, [null, 'target', null], 'outputPath')).to.equal('the/ouput/path');
                 });
             });
         });
@@ -86,7 +86,7 @@ describe('readProperty()', () => {
 
         it('should throw an error', () => {
             expect(() => {
-                readProperty(projects, defaultProject, ['project', 'browser-target', null], 'outputPath');
+                readProperty(projects, defaultProject, ['project', 'target', null], 'outputPath');
             }).to.throw('No project with the name "project" was found.');
         });
     });
@@ -103,7 +103,7 @@ describe('readProperty()', () => {
         describe('without any defined target', () => {
             it('should throw an error', () => {
                 expect(() => {
-                    readProperty(projects, defaultProject, ['project', 'browser-target', null], 'outputPath');
+                    readProperty(projects, defaultProject, ['project', 'target', null], 'outputPath');
                 }).to.throw('No target was found for the "project" project.');
             });
         });
@@ -115,34 +115,32 @@ describe('readProperty()', () => {
 
             it('should throw an error', () => {
                 expect(() => {
-                    readProperty(projects, defaultProject, ['project', 'browser-target', null], 'outputPath');
-                }).to.throw('The target "browser-target" was not found inside the configuration of the "project" project.');
+                    readProperty(projects, defaultProject, ['project', 'target', null], 'outputPath');
+                }).to.throw('The target "target" was not found inside the configuration of the "project" project.');
             });
         });
 
         describe('with an existent target', () => {
             beforeEach(() => {
-                projects.project.targets = { 'browser-target': { options: { outputPath: 'the/ouput/path' } } };
+                projects.project.targets = { target: { options: { outputPath: 'the/ouput/path' } } };
             });
 
             describe('without any defined configuration', () => {
                 it('should return the value', () => {
-                    expect(readProperty(projects, defaultProject, ['project', 'browser-target', null], 'outputPath')).to.equal(
-                        'the/ouput/path'
-                    );
+                    expect(readProperty(projects, defaultProject, ['project', 'target', null], 'outputPath')).to.equal('the/ouput/path');
                 });
             });
 
             describe('with an unexistent configuration', () => {
                 beforeEach(() => {
-                    projects.project.targets['browser-target'].configurations = {};
+                    projects.project.targets['target'].configurations = {};
                 });
 
                 it('should throw an error', () => {
                     expect(() => {
-                        readProperty(projects, defaultProject, ['project', 'browser-target', 'configuration'], 'outputPath');
+                        readProperty(projects, defaultProject, ['project', 'target', 'configuration'], 'outputPath');
                     }).to.throw(
-                        'The configuration "configuration" was not found for the target "browser-target" inside the configuration of the "project" project.'
+                        'The configuration "configuration" was not found for the target "target" inside the configuration of the "project" project.'
                     );
                 });
             });
@@ -150,27 +148,27 @@ describe('readProperty()', () => {
             describe('with an existent configuration', () => {
                 describe('with the property defined as part of the options', () => {
                     beforeEach(() => {
-                        projects.project.targets['browser-target'].options = { outputPath: 'the/ouput/path' };
-                        projects.project.targets['browser-target'].configurations = { configuration: {} };
+                        projects.project.targets['target'].options = { outputPath: 'the/ouput/path' };
+                        projects.project.targets['target'].configurations = { configuration: {} };
                     });
 
                     it('should return the value', () => {
-                        expect(
-                            readProperty(projects, defaultProject, ['project', 'browser-target', 'configuration'], 'outputPath')
-                        ).to.equal('the/ouput/path');
+                        expect(readProperty(projects, defaultProject, ['project', 'target', 'configuration'], 'outputPath')).to.equal(
+                            'the/ouput/path'
+                        );
                     });
                 });
 
                 describe('with the property defined as part of the configuration', () => {
                     beforeEach(() => {
-                        projects.project.targets['browser-target'].options = { outputPath: 'the/ouput/path' };
-                        projects.project.targets['browser-target'].configurations = { configuration: { outputPath: 'another/ouput/path' } };
+                        projects.project.targets['target'].options = { outputPath: 'the/ouput/path' };
+                        projects.project.targets['target'].configurations = { configuration: { outputPath: 'another/ouput/path' } };
                     });
 
                     it('should return the value', () => {
-                        expect(
-                            readProperty(projects, defaultProject, ['project', 'browser-target', 'configuration'], 'outputPath')
-                        ).to.equal('another/ouput/path');
+                        expect(readProperty(projects, defaultProject, ['project', 'target', 'configuration'], 'outputPath')).to.equal(
+                            'another/ouput/path'
+                        );
                     });
                 });
             });

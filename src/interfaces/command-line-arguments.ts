@@ -2,13 +2,9 @@ import { TTargetSpecifier } from '../types';
 import { INestedParameterValuesMap } from './nested-parameter-values-map.js';
 
 export interface ICommandLineArguments {
-    browserTarget: TTargetSpecifier;
-
     config: string;
 
     excludeRoutes: string[];
-
-    ignoreStatusCode: boolean;
 
     includeRoutes: string[];
 
@@ -20,7 +16,7 @@ export interface ICommandLineArguments {
 
     scullyConfig?: string;
 
-    serverTarget: TTargetSpecifier;
+    target: TTargetSpecifier;
 
     verbose: boolean;
 }
