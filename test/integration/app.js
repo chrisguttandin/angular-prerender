@@ -46,10 +46,10 @@ describe('angular-prerender', () => {
 
                 await execAsync(`rm ${join(directory, `angular-prerender-${version}.tgz`)}`);
 
-                await rimraf(directory, { preserveRoot: false });
+                await rimraf(directory);
             });
 
-            beforeEach(async function () {
+            before(async function () {
                 this.timeout(600000);
 
                 directory = env.CI ? await makeFakedTemporaryDirectory() : await mkdtempAsync(`${tmpdir()}${sep}`);
@@ -77,6 +77,10 @@ describe('angular-prerender', () => {
 
                 await execAsync('npm pack');
                 await execAsync(`mv ${join(cwd(), `angular-prerender-${version}.tgz`)} ${directory}`);
+            });
+
+            beforeEach(async function () {
+                this.timeout(600000);
 
                 await execAsync('git checkout .', { cwd: projectDirectory });
                 await execAsync('git clean --force', { cwd: projectDirectory });
