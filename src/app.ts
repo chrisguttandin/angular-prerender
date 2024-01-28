@@ -111,7 +111,7 @@ if (missingPeerDependencies.length > 0) {
         require,
         scullyConfig,
         scullyPlugins,
-        target,
-        shouldPreserveIndexHtml
+        shouldPreserveIndexHtml,
+        target
     );
 })();

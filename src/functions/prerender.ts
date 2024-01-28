@@ -29,8 +29,8 @@ export const prerender = async (
     require: NodeRequire,
     scullyConfig: null | IScullyConfig,
     scullyPlugins: null | TPlugins,
-    target: TTargetSpecifier,
-    shouldPreserveIndexHtml: boolean
+    shouldPreserveIndexHtml: boolean,
+    target: TTargetSpecifier
 ) => {
     if (isVerbose) {
         console.log(chalk.gray(`The path of the angular.json config file is "${config}".`)); // eslint-disable-line no-console
