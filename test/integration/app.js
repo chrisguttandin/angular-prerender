@@ -66,6 +66,12 @@ describe('angular-prerender', () => {
                 await execAsync(`npx --package @angular/cli@${angularMajorVersion} --call "ng add @angular/ssr --skip-confirmation"`, {
                     cwd: projectDirectory
                 });
+                await execAsync(
+                    `npx --package @angular/cli@${angularMajorVersion} --call "ng config projects.universe.architect.build.options.prerender false"`,
+                    {
+                        cwd: projectDirectory
+                    }
+                );
                 await execAsync('git add --all', { cwd: projectDirectory });
                 await execAsync('git commit --amend --no-edit --no-verify', { cwd: projectDirectory });
 

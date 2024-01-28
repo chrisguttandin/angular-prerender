@@ -30,6 +30,7 @@ The following is a complete example which will generate a very basic static Angu
 npx @angular/cli new universe --routing
 cd universe
 ng add @angular/ssr
+ng config projects.universe.architect.build.options.prerender false
 npm install angular-prerender --save-dev
 ng build
 npx angular-prerender --target universe:build
