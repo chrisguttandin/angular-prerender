@@ -46,7 +46,7 @@ describe('angular-prerender', () => {
 
                 await execAsync(`rm ${join(directory, `angular-prerender-${version}.tgz`)}`);
 
-                await rimraf(directory);
+                await rimraf(directory, { preserveRoot: false });
             });
 
             beforeEach(async function () {
