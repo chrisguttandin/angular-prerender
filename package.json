@@ -44,7 +44,7 @@
         "@babel/core": "^7.24.4",
         "@babel/preset-env": "^7.24.4",
         "@babel/register": "^7.23.7",
-        "@commitlint/cli": "^19.2.2",
+        "@commitlint/cli": "^19.3.0",
         "@commitlint/config-angular": "^19.2.2",
         "@types/yargs": "^17.0.32",
         "chai": "^4.3.10",
