@@ -1,19 +1,17 @@
 import { cwd, env } from 'process';
 import { join, relative, sep } from 'path';
-import { mkdir, mkdtemp, readFile, readFileSync } from 'fs';
+import { mkdir, mkdtemp, readFile } from 'fs/promises';
 import { exec } from 'child_process';
 import { promisify } from 'util';
+import { readFileSync } from 'fs';
 import { rimraf } from 'rimraf';
 import { tmpdir } from 'os';
 
 const execAsync = promisify(exec);
-const mkdirAsync = promisify(mkdir);
-const mkdtempAsync = promisify(mkdtemp);
-const readFileAsync = promisify(readFile);
 const makeFakedTemporaryDirectory = async () => {
     const fakedTemporaryDirectory = join(cwd(), '..', 'temp');
 
-    await mkdirAsync(fakedTemporaryDirectory);
+    await mkdir(fakedTemporaryDirectory);
 
     return fakedTemporaryDirectory;
 };
@@ -52,7 +50,7 @@ describe('angular-prerender', () => {
             before(async function () {
                 this.timeout(600000);
 
-                directory = env.CI ? await makeFakedTemporaryDirectory() : await mkdtempAsync(`${tmpdir()}${sep}`);
+                directory = env.CI ? await makeFakedTemporaryDirectory() : await mkdtemp(`${tmpdir()}${sep}`);
 
                 await execAsync(
                     `npx --package @angular/cli@${angularMajorVersion} --call "ng new universe --no-interactive --routing --standalone ${standalone}"`,
@@ -97,7 +95,7 @@ describe('angular-prerender', () => {
                         cwd: projectDirectory
                     });
 
-                    const content = await readFileAsync(join(projectDirectory, 'dist/universe/browser/index.html'), 'utf8');
+                    const content = await readFile(join(projectDirectory, 'dist/universe/browser/index.html'), 'utf8');
 
                     expect(content).to.match(/<h1.*>Hello, universe<\/h1>/);
                 });
@@ -114,7 +112,7 @@ describe('angular-prerender', () => {
                         }
                     );
 
-                    const content = await readFileAsync(join(projectDirectory, 'dist/universe/browser/index.html'), 'utf8');
+                    const content = await readFile(join(projectDirectory, 'dist/universe/browser/index.html'), 'utf8');
 
                     expect(content).to.match(/<h1.*>Hello, universe<\/h1>/);
                 });

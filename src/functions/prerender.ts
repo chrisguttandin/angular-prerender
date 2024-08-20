@@ -1,6 +1,5 @@
-import { mkdir, readFile, writeFile } from 'fs';
+import { mkdir, readFile, writeFile } from 'fs/promises';
 import { dirname, join, sep } from 'path';
-import { promisify } from 'util';
 import { cwd } from 'process';
 import { WorkspaceSchema } from '@schematics/angular/utility/workspace-models'; // eslint-disable-line import/no-internal-modules, max-len, node/file-extension-in-import
 import chalk from 'chalk';
@@ -12,10 +11,6 @@ import { preserveIndexHtml } from './preserve-index-html.js';
 import { resolveRoutes } from './resolve-routes.js';
 import { retrieveRoutes } from './retrieve-routes.js';
 import { scanRoutes } from './scan-routes.js';
-
-const mkdirAsync = promisify(mkdir);
-const readFileAsync = promisify(readFile);
-const writeFileAsync = promisify(writeFile);
 
 export const prerender = async (
     config: string,
@@ -36,7 +31,7 @@ export const prerender = async (
         console.log(chalk.gray(`The path of the angular.json config file is "${config}".`)); // eslint-disable-line no-console
     }
 
-    const { defaultProject, projects } = <WorkspaceSchema & { defaultProject?: string }>JSON.parse(await readFileAsync(config, 'utf8'));
+    const { defaultProject, projects } = <WorkspaceSchema & { defaultProject?: string }>JSON.parse(await readFile(config, 'utf8'));
     const outputPath = join(dirname(config), readProperty(projects, defaultProject, target, 'outputPath'), sep);
     const browserOutputPath = join(outputPath, 'browser');
     const serverOutputPath = join(outputPath, 'server');
@@ -64,7 +59,7 @@ export const prerender = async (
         console.log(chalk.gray(`The path of the index.html file is "${index}".`)); // eslint-disable-line no-console
     }
 
-    const document = await readFileAsync(index, 'utf8');
+    const document = await readFile(index, 'utf8');
     const tsConfig = join(cwd(), readProperty(projects, defaultProject, target, 'tsConfig'));
 
     if (isVerbose) {
@@ -119,7 +114,7 @@ export const prerender = async (
         );
     });
     const resolvedRoutes = resolveRoutes(renderableRoutesWithParameters);
-    const routeProcessPlugins = scullyPlugins === null ? [] : scullyPlugins.get('routeProcess') ?? [];
+    const routeProcessPlugins = scullyPlugins === null ? [] : (scullyPlugins.get('routeProcess') ?? []);
     const routeProcessPluginEntries = Array.from(routeProcessPlugins.entries());
 
     routeProcessPluginEntries.sort(([a], [b]) => a - b);
@@ -139,7 +134,7 @@ export const prerender = async (
     for (const route of processedRoutes) {
         const path = join(browserOutputPath, route, sep);
 
-        await mkdirAsync(path, { recursive: true });
+        await mkdir(path, { recursive: true });
 
         const html = await render({
             document,
@@ -180,7 +175,7 @@ export const prerender = async (
                 // eslint-disable-next-line no-console
                 console.log(chalk.green(`The index.html file will be preserved as start.html because it would otherwise be overwritten.`));
 
-                const didUpdateNgServiceWorker = await preserveIndexHtml(browserOutputPath, document, readFileAsync, writeFileAsync);
+                const didUpdateNgServiceWorker = await preserveIndexHtml(browserOutputPath, document, readFile, writeFile);
 
                 if (didUpdateNgServiceWorker) {
                     console.log(chalk.green(`The ngsw.json file was updated to replace index.html with start.html.`)); // eslint-disable-line max-len, no-console
@@ -196,7 +191,7 @@ export const prerender = async (
             }
         }
 
-        await writeFileAsync(join(path, 'index.html'), transformedHtml);
+        await writeFile(join(path, 'index.html'), transformedHtml);
 
         console.log(chalk.green(`The route at "${route}" was rendered successfully.`)); // eslint-disable-line no-console
 
