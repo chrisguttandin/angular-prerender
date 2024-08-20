@@ -27,7 +27,7 @@
         "domino": "^2.1.6",
         "guess-parser": "^0.4.22",
         "tslib": "^2.6.3",
-        "type-fest": "^4.24.0",
+        "type-fest": "^4.25.0",
         "typescript": "^5.5.4",
         "yargs": "^17.7.2"
     },
