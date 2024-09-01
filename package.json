@@ -42,7 +42,7 @@
         "@angular/platform-server": "^17.3.8",
         "@babel/cli": "^7.25.6",
         "@babel/core": "^7.25.2",
-        "@babel/preset-env": "^7.25.3",
+        "@babel/preset-env": "^7.25.4",
         "@babel/register": "^7.24.6",
         "@commitlint/cli": "^19.4.0",
         "@commitlint/config-angular": "^19.3.0",
