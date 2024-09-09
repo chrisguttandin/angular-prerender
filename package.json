@@ -97,7 +97,7 @@
         "lint:config": "eslint --config config/eslint/config.json --ext .js --report-unused-disable-directives config/",
         "lint:src": "eslint --config config/eslint/src.json --ext .ts --report-unused-disable-directives src/",
         "lint:test": "eslint --config config/eslint/test.json --ext .js --report-unused-disable-directives test/",
-        "prepare": "husky install",
+        "prepare": "husky",
         "prepublishOnly": "npm run build",
         "start": "node build/node/app.js",
         "test": "npm run build && npm run test:integration && npm run test:unit",
