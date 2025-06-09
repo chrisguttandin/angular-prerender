@@ -54,7 +54,7 @@
         "eslint-config-holy-grail": "^60.0.34",
         "husky": "^9.1.7",
         "lint-staged": "^15.5.0",
-        "mocha": "^11.2.2",
+        "mocha": "^11.6.0",
         "prettier": "^3.5.3",
         "rimraf": "^6.0.1",
         "rxjs": "^7.8.2",
