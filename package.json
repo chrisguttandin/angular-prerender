@@ -59,7 +59,7 @@
         "rimraf": "^6.1.2",
         "rxjs": "^7.8.2",
         "sinon": "^21.0.1",
-        "sinon-chai": "^3.7.0",
+        "sinon-chai": "^4.0.1",
         "tsconfig-holy-grail": "^15.0.2",
         "zone.js": "^0.14.10"
     },
