@@ -1,9 +1,10 @@
 import { expect, use } from 'chai';
 import babelRegister from '@babel/register';
+import { join } from 'path';
 import { readFileSync } from 'fs';
 import sinonChai from 'sinon-chai';
 
-babelRegister(JSON.parse(readFileSync(new URL('../babel/test.json', import.meta.url), 'utf8')));
+babelRegister(JSON.parse(readFileSync(join(import.meta.dirname, '../babel/test.json'))));
 
 use(sinonChai);
 
