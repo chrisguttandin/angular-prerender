@@ -5,7 +5,7 @@
             {
                 "modules": false,
                 "targets": {
-                    "node": "18.2"
+                    "node": "22.21"
                 }
             }
         ]
