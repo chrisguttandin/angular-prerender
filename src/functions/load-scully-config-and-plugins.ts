@@ -14,6 +14,7 @@ import {
     TRouteProcessPluginFunction
 } from '../types';
 
+// eslint-disable-next-line node/no-sync
 const createFolderFor = (filename: string) => mkdirSync(dirname(filename), { recursive: true });
 const logWarn = (...text: unknown[]) => console.log(chalk.yellow(...text)); // eslint-disable-line no-console
 const createGetMyConfig =
@@ -21,7 +22,7 @@ const createGetMyConfig =
     (plugin: TPostProcessByHtmlPluginFunction): JsonValue => {
         const name = pluginFunctionStore.get(plugin);
 
-        return name === undefined ? {} : pluginConfig.get(name) ?? {};
+        return name === undefined ? {} : (pluginConfig.get(name) ?? {});
     };
 const createRegisterPlugin =
     (pluginFunctionStore: WeakMap<TPluginFunction, TPluginName>, plugins: TPlugins, scullyConfig: IScullyConfig): TRegisterPluginFunction =>

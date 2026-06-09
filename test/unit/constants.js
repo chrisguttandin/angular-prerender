@@ -5,6 +5,7 @@ describe('constants', () => {
     let packagePeerDependencies;
 
     beforeEach(() => {
+        // eslint-disable-next-line node/no-sync
         ({ peerDependencies: packagePeerDependencies } = JSON.parse(readFileSync(new URL('../../package.json', import.meta.url), 'utf8')));
     });
 

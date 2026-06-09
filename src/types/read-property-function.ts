@@ -1,4 +1,4 @@
-// eslint-disable-next-line import/no-internal-modules, node/file-extension-in-import
+// eslint-disable-next-line import/no-internal-modules
 import { WorkspaceSchema } from '@schematics/angular/utility/workspace-models';
 import { TTargetSpecifier } from '../types';
 

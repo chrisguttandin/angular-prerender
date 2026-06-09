@@ -1,7 +1,7 @@
 import { mkdir, readFile, writeFile } from 'fs/promises';
 import { dirname, join, sep } from 'path';
 import { cwd } from 'process';
-import { WorkspaceSchema } from '@schematics/angular/utility/workspace-models'; // eslint-disable-line import/no-internal-modules, max-len, node/file-extension-in-import
+import { WorkspaceSchema } from '@schematics/angular/utility/workspace-models'; // eslint-disable-line import/no-internal-modules
 import chalk from 'chalk';
 import { INestedParameterValuesMap, IScullyConfig } from '../interfaces';
 import { TPlugins, TReadPropertyFunction, TTargetSpecifier } from '../types';
@@ -120,8 +120,7 @@ export const prerender = async (
     routeProcessPluginEntries.sort(([a], [b]) => a - b);
 
     const processedRoutes = await routeProcessPluginEntries
-        .map(([, nameAndPlugin]) => nameAndPlugin.map(([, plugin]) => plugin))
-        .flat()
+        .flatMap(([, nameAndPlugin]) => nameAndPlugin.map(([, plugin]) => plugin))
         .reduce(
             (promisedRoutes, routeProcessPlugin) =>
                 promisedRoutes.then((partiallyProcessedRoutes) =>

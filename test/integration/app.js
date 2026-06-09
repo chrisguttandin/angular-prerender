@@ -24,6 +24,7 @@ describe('angular-prerender', () => {
     before(async function () {
         this.timeout(600000);
 
+        // eslint-disable-next-line node/no-sync
         ({ peerDependencies, version } = JSON.parse(readFileSync(new URL('../../package.json', import.meta.url), 'utf8')));
 
         if (env.CI) {
