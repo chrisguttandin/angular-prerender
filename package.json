@@ -43,7 +43,7 @@
         "@babel/cli": "^7.29.7",
         "@babel/core": "^7.29.7",
         "@babel/preset-env": "^7.29.7",
-        "@babel/register": "^7.29.3",
+        "@babel/register": "^7.29.7",
         "@commitlint/cli": "^21.0.1",
         "@commitlint/config-angular": "^21.0.1",
         "@types/yargs": "^17.0.35",
