@@ -28,6 +28,11 @@ jobs:
               with:
                   node-version: ${{ matrix.node-version }}
 
+            - name: Update npm
+              run: |
+                  npm install --global npm@11
+                  npm --version
+
             - name: Cache node modules
               uses: actions/cache@v6
               with:
