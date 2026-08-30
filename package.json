@@ -24,7 +24,7 @@
     "dependencies": {
         "@schematics/angular": "^17.3.7",
         "chalk": "^5.6.2",
-        "domino": "^2.1.7",
+        "domino": "^2.1.8",
         "guess-parser": "^0.4.22",
         "tslib": "^2.8.1",
         "type-fest": "^5.8.0",
