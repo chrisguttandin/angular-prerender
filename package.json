@@ -83,6 +83,7 @@
     ],
     "license": "MIT",
     "name": "angular-prerender",
+    "packageManager": "npm@12",
     "peerDependencies": {
         "@angular/core": "^17.0.0",
         "@angular/platform-server": "^17.0.0",
